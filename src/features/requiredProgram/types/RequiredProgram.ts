@@ -17,7 +17,7 @@ export const RequiredProgram = z.object({
     type: z.array(z.nativeEnum(EActivityType)).optional(),
     space: z.nativeEnum(ESpace).optional(),
   }),
-  count: z.number().min(1),
+  count: z.number().min(0),
 });
 
 export const RequiredProgramPartial = RequiredProgram.partial();
