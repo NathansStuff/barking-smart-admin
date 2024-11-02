@@ -1,0 +1,20 @@
+{
+  "editor.defaultFormatter": "esbenp.prettier-vscode",
+  "editor.codeActionsOnSave": {
+        "source.fixAll": "always",
+        // "source.organizeImports": "always",
+        "source.sortMembers": "explicit"
+  },
+  "editor.formatOnSave": true,
+  "typescript.tsdk": "node_modules/typescript/lib",
+  "typescript.enablePromptUseWorkspaceTsdk": true,
+  "liveServer.settings.port": 5501,
+  "files.associations": {
+    "*.css": "tailwindcss"
+  },
+  "workbench.editor.customLabels.patterns": {
+    "**/app/**/page.tsx": "${dirname} - Page",
+    "**/app/**/layout.tsx": "${dirname} - Layout",
+  },
+  "editor.lightbulb.enabled": "off"
+}
