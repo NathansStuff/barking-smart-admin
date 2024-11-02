@@ -221,14 +221,16 @@ function ProgramPage(): ReactNode {
                   className={`h-8 w-8 ${row.original.approved ? 'hover:bg-destructive/90' : 'hover:bg-green-600'}`}
                 >
                   {row.original.approved ? (
-                    <Ban className="h-4 w-4" />
+                    <Ban className='h-4 w-4' />
                   ) : (
-                    <CheckCircle className="h-4 w-4" />
+                    <CheckCircle className='h-4 w-4' />
                   )}
                 </Button>
               </TooltipTrigger>
               <TooltipContent>
-                {row.original.approved ? 'Unapprove program' : 'Approve program'}
+                {row.original.approved
+                  ? 'Unapprove program'
+                  : 'Approve program'}
               </TooltipContent>
             </Tooltip>
           )}

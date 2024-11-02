@@ -14,12 +14,8 @@ import {
 } from '@/components/ui/card';
 
 export const metadata: Metadata = {
-  title: 'Contact Us - UltimateVanGuide.com',
-  description:
-    'Contact UltimateVanGuide.com with questions, comments, or suggestions.',
-  alternates: {
-    canonical: '/contact',
-  },
+  title: 'Barking Smart Admin',
+  description: 'Barking Smart Administrative website',
 };
 
 function ProfilePage(): ReactNode {
