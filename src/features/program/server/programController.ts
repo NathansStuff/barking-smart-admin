@@ -42,8 +42,12 @@ export async function getAllProgramsHandler(
     approved: searchParams.has('approved')
       ? searchParams.get('approved') === 'true'
       : undefined,
-    energyLevelMin: parseInt(searchParams.get('energyLevelMin') || '0'),
-    energyLevelMax: parseInt(searchParams.get('energyLevelMax') || '0'),
+    energyLevelMin: searchParams.has('energyLevelMin')
+      ? parseInt(searchParams.get('energyLevelMin')!)
+      : undefined,
+    energyLevelMax: searchParams.has('energyLevelMax')
+      ? parseInt(searchParams.get('energyLevelMax')!)
+      : undefined,
   };
 
   const result = await getAllProgramsService({
