@@ -1,5 +1,7 @@
 const puppeteer = require('puppeteer');
 
+const MIN_PROGRAMS = 3;
+
 async function run() {
   const browser = await puppeteer.launch({
     headless: false,
@@ -18,25 +20,43 @@ async function run() {
         waitUntil: 'networkidle0',
       });
 
-      // Wait for the text to be present and extract its value
-      const totalProgramsText = await page.evaluate(() => {
-        const xpath = "//*[contains(text(), 'Total Filtered Programs')]";
-        const element = document.evaluate(
-          xpath,
-          document,
-          null,
-          XPathResult.FIRST_ORDERED_NODE_TYPE,
-          null
-        ).singleNodeValue;
-        if (element) {
-          const text = element.textContent;
-          return text.match(/Total Filtered Programs:\s*(\d+)/)?.[1] || 'not found';
-        }
-        return 'not found';
-      });
+      async function checkAndCreatePrograms(url) {
+        // Get current program count
+        const totalProgramsText = await page.evaluate(() => {
+          const xpath = "//*[contains(text(), 'Total Filtered Programs')]";
+          const element = document.evaluate(
+            xpath,
+            document,
+            null,
+            XPathResult.FIRST_ORDERED_NODE_TYPE,
+            null
+          ).singleNodeValue;
+          if (element) {
+            const text = element.textContent;
+            return text.match(/Total Filtered Programs:\s*(\d+)/)?.[1] || 'not found';
+          }
+          return 'not found';
+        });
 
+        const programCount = parseInt(totalProgramsText);
+        if (!isNaN(programCount) && programCount < MIN_PROGRAMS) {
+          console.log(`Found ${programCount} programs, which is less than minimum ${MIN_PROGRAMS}. Creating new program...`);
+          await page.click('button[id="create-program-button"]');
+          await page.waitForNavigation({ waitUntil: 'networkidle0' });
+          await new Promise(resolve => setTimeout(resolve, 10000));
+          await page.click('button[id="submit-program-button"]');
+
+          // Return to original URL and recursively check again
+          await page.goto(url, { waitUntil: 'networkidle0' });
+          return checkAndCreatePrograms(url);
+        }
+
+        return totalProgramsText;
+      }
+
+      const finalProgramCount = await checkAndCreatePrograms(url);
       console.log(`URL: ${url}`);
-      console.log(`Total Filtered Programs: ${totalProgramsText}`);
+      console.log(`Final Total Filtered Programs: ${finalProgramCount}`);
       console.log('-------------------');
 
       // Add a small delay between requests to avoid overwhelming the server

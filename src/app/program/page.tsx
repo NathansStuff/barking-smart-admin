@@ -650,7 +650,7 @@ function ProgramPage(): ReactNode {
       <TooltipProvider>
         <div className='container mx-auto p-4'>
           <div className='mb-4 flex justify-end'>
-            <Button onClick={handleCreateProgram}>Create Program</Button>
+            <Button onClick={handleCreateProgram} id='create-program-button'>Create Program</Button>
           </div>
           <Card>
             <Filters />

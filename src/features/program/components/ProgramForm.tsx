@@ -743,6 +743,7 @@ function ProgramForm({ program, initialData }: Props): ReactNode {
           <Button
             type='submit'
             className='w-full'
+            id='submit-program-button'
             disabled={createMutation.isPending || updateMutation.isPending}
           >
             {program ? 'Update' : 'Create'} Program
