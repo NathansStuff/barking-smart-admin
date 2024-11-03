@@ -32,8 +32,8 @@ function DashboardPage(): ReactNode {
     );
   }
 
-  const totalPrograms = allProgramsQuery.data?.programs.length ?? 0;
-  const pendingPrograms = pendingProgramsQuery.data?.programs.length ?? 0;
+  const totalPrograms = allProgramsQuery.data?.total ?? 0;
+  const pendingPrograms = pendingProgramsQuery.data?.total ?? 0;
 
   return (
     <>
