@@ -2,7 +2,7 @@
 
 import { ReactNode } from 'react';
 
-import { useRouter, useSearchParams } from 'next/navigation';
+import { useSearchParams } from 'next/navigation';
 
 import VerifedOnly from '@/components/container/VerifiedOnly';
 import {
@@ -20,7 +20,6 @@ import { ELocation } from '@/features/program/types/ELocation';
 import { ESpace } from '@/features/program/types/ESpace';
 
 function CreateProgramPage(): ReactNode {
-  const router = useRouter();
   const searchParams = useSearchParams();
 
   // Parse URL parameters
@@ -47,10 +46,7 @@ function CreateProgramPage(): ReactNode {
             <CardDescription>Create a new program</CardDescription>
           </CardHeader>
           <CardContent>
-            <ProgramForm
-              initialData={initialData}
-              onSuccess={() => router.push('/program')}
-            />
+            <ProgramForm initialData={initialData} />
           </CardContent>
         </Card>
       </div>

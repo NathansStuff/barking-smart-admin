@@ -25,6 +25,7 @@ export const useCreateProgram = (): UseMutationResult<
         `${env.NEXT_PUBLIC_BASE_URL}/api/program`,
         json
       );
+      console.log(response.data);
       return response.data;
     },
     onSuccess: () => {

@@ -19,7 +19,7 @@ export async function createProgramHandler(
   const data = await req.json();
   const safeBody = Program.parse(data);
   const program = await createProgramService(safeBody);
-  return NextResponse.json({ program }, { status: ResponseCode.OK });
+  return NextResponse.json(program, { status: ResponseCode.OK });
 }
 
 export async function getAllProgramsHandler(

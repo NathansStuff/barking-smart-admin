@@ -2,8 +2,6 @@
 
 import { ReactNode } from 'react';
 
-import { useRouter } from 'next/navigation';
-
 import VerifedOnly from '@/components/container/VerifiedOnly';
 import {
   Card,
@@ -18,7 +16,6 @@ import ProgramForm from '@/features/program/components/ProgramForm';
 import ProgramLoadingPage from '../ProgramLoadingPage';
 
 function EditProgramPage({ params }: { params: { id: string } }): ReactNode {
-  const router = useRouter();
   const programQuery = useGetProgramById(params.id);
 
   if (programQuery.isLoading) {
@@ -40,10 +37,7 @@ function EditProgramPage({ params }: { params: { id: string } }): ReactNode {
             <CardDescription>Edit existing program</CardDescription>
           </CardHeader>
           <CardContent>
-            <ProgramForm
-              program={programQuery.data?.program}
-              onSuccess={() => router.push('/program')}
-            />
+            <ProgramForm program={programQuery.data?.program} />
           </CardContent>
         </Card>
       </div>

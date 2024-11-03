@@ -5,6 +5,8 @@ import { useForm } from 'react-hook-form';
 
 import { zodResolver } from '@hookform/resolvers/zod';
 import { ExternalLink } from 'lucide-react';
+import { useRouter } from 'next/navigation';
+import { toast } from 'sonner';
 
 import { Button } from '@/components/ui/button';
 import {
@@ -34,12 +36,12 @@ import ProgramUpload from './ProgramUpload';
 type Props = {
   program?: ProgramWithId;
   initialData?: Partial<Program>;
-  onSuccess?: () => void;
 };
 
-function ProgramForm({ program, initialData, onSuccess }: Props): ReactNode {
+function ProgramForm({ program, initialData }: Props): ReactNode {
   const createMutation = useCreateProgram();
   const updateMutation = useUpdateProgram();
+  const router = useRouter();
 
   const form = useForm<Program>({
     resolver: zodResolver(Program),
@@ -50,8 +52,10 @@ function ProgramForm({ program, initialData, onSuccess }: Props): ReactNode {
       setup: program?.setup || '',
       instructions: program?.instructions || '',
       additionalTips: program?.additionalTips || '',
-      canvaLink: program?.canvaLink || '',
-      pdfLink: program?.pdfLink || '',
+      canvaLink: program?.canvaLink || undefined,
+      pdfLink: program?.pdfLink || undefined,
+      canvaUpToDate: program?.canvaUpToDate || false,
+      pdfUpToDate: program?.pdfUpToDate || false,
       tags: program?.tags || {
         location: initialData?.tags?.location || ELocation.INDOORS,
         energyLevel: initialData?.tags?.energyLevel || 1,
@@ -65,20 +69,31 @@ function ProgramForm({ program, initialData, onSuccess }: Props): ReactNode {
 
   const onSubmit = async (data: Program): Promise<void> => {
     if (program) {
+      toast.loading('Updating program...');
       updateMutation.mutate(
         { id: program._id.toString(), data },
         {
           onSuccess: () => {
-            onSuccess?.();
-            form.reset();
+            toast.dismiss();
+            toast.success('Program updated successfully');
+          },
+          onError: (error) => {
+            toast.dismiss();
+            toast.error(`Failed to update program: ${  error.message}`);
           },
         }
       );
     } else {
+      toast.loading('Creating program...');
       createMutation.mutate(data, {
-        onSuccess: () => {
-          onSuccess?.();
-          form.reset();
+        onSuccess: (response) => {
+          toast.dismiss();
+          toast.success('Program created successfully');
+          router.push(`/program/${response._id}`);
+        },
+        onError: (error) => {
+          toast.dismiss();
+          toast.error(`Failed to create program: ${  error.message}`);
         },
       });
     }
@@ -114,6 +129,8 @@ function ProgramForm({ program, initialData, onSuccess }: Props): ReactNode {
       form.setValue('instructions', aiContent.instructions);
       form.setValue('additionalTips', aiContent.additionalTips);
       form.setValue('tags', aiContent.tags);
+      form.setValue('canvaUpToDate', false);
+      form.setValue('pdfUpToDate', false);
     } catch (error) {
       console.error('Error generating content:', error);
       // Handle error (show toast, etc.)
@@ -362,6 +379,27 @@ function ProgramForm({ program, initialData, onSuccess }: Props): ReactNode {
                     <Input
                       {...field}
                       type='url'
+                      onChange={e => {
+                        const value = e.target.value.trim() === '' ? undefined : e.target.value;
+                        field.onChange(value);
+                        form.setValue('canvaUpToDate', false);
+                      }}
+                    />
+                    <FormField
+                      control={form.control}
+                      name='canvaUpToDate'
+                      render={({ field: upToDateField }) => (
+                        <Button
+                          type='button'
+                          size='icon'
+                          variant={upToDateField.value ? 'default' : 'outline'}
+                          onClick={() =>
+                            upToDateField.onChange(!upToDateField.value)
+                          }
+                        >
+                          {upToDateField.value ? '✓' : '✗'}
+                        </Button>
+                      )}
                     />
                     {field.value && (
                       <Button
@@ -392,6 +430,29 @@ function ProgramForm({ program, initialData, onSuccess }: Props): ReactNode {
                       <Input
                         {...field}
                         type='url'
+                        onChange={e => {
+                          const value = e.target.value.trim() === '' ? undefined : e.target.value;
+                          field.onChange(value);
+                          form.setValue('pdfUpToDate', false);
+                        }}
+                      />
+                      <FormField
+                        control={form.control}
+                        name='pdfUpToDate'
+                        render={({ field: upToDateField }) => (
+                          <Button
+                            type='button'
+                            size='icon'
+                            variant={
+                              upToDateField.value ? 'default' : 'outline'
+                            }
+                            onClick={() =>
+                              upToDateField.onChange(!upToDateField.value)
+                            }
+                          >
+                            {upToDateField.value ? '✓' : '✗'}
+                          </Button>
+                        )}
                       />
                       {field.value && (
                         <Button
@@ -405,7 +466,10 @@ function ProgramForm({ program, initialData, onSuccess }: Props): ReactNode {
                       )}
                     </div>
                     <ProgramUpload
-                      onUploadSuccess={url => field.onChange(url)}
+                      onUploadSuccess={url => {
+                        field.onChange(url);
+                        form.setValue('pdfUpToDate', false);
+                      }}
                     />
                   </div>
                 </FormControl>
