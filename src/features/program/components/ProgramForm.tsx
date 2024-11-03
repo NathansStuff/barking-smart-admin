@@ -44,7 +44,10 @@ function ProgramForm({ program, initialData, onSuccess }: Props): ReactNode {
     defaultValues: {
       title: program?.title || '',
       description: program?.description || '',
-      content: program?.content || '',
+      materialsNeeded: program?.materialsNeeded || '',
+      setup: program?.setup || '',
+      instructions: program?.instructions || '',
+      additionalTips: program?.additionalTips || '',
       canvaLink: program?.canvaLink || '',
       pdfLink: program?.pdfLink || '',
       tags: program?.tags || {
@@ -106,29 +109,75 @@ function ProgramForm({ program, initialData, onSuccess }: Props): ReactNode {
             name='description'
             render={({ field }) => (
               <FormItem>
-                <FormLabel>Description</FormLabel>
+                <FormLabel>Description - Not in PDF, in UI only</FormLabel>
                 <FormControl>
                   <Textarea
                     {...field}
-                    className='h-24'
+                    className='h-20'
                   />
                 </FormControl>
                 <FormMessage />
               </FormItem>
             )}
           />
-
           <FormField
             control={form.control}
-            name='content'
+            name='materialsNeeded'
             render={({ field }) => (
               <FormItem>
-                <FormLabel>Content</FormLabel>
+                <FormLabel>Materials Needed</FormLabel>
                 <FormControl>
                   <Textarea
                     {...field}
-                    className='h-48'
-                    placeholder='Enter the detailed content of your program...'
+                    className='h-40'
+                  />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={form.control}
+            name='setup'
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Setup</FormLabel>
+                <FormControl>
+                  <Textarea
+                    {...field}
+                    className='h-40'
+                  />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={form.control}
+            name='instructions'
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Instructions</FormLabel>
+                <FormControl>
+                  <Textarea
+                    {...field}
+                    className='h-40'
+                  />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={form.control}
+            name='additionalTips'
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Additional Tips</FormLabel>
+                <FormControl>
+                  <Textarea
+                    {...field}
+                    className='h-24'
                   />
                 </FormControl>
                 <FormMessage />

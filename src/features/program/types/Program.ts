@@ -10,7 +10,10 @@ import { ESpace } from './ESpace';
 export const Program = z.object({
   title: z.string(),
   description: z.string(),
-  content: z.string(),
+  materialsNeeded: z.string(),
+  setup: z.string(),
+  instructions: z.string(),
+  additionalTips: z.string(),
   canvaLink: z.string().url().optional(),
   pdfLink: z.string().url().optional(),
   approved: z.boolean().default(false),
