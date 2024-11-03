@@ -19,6 +19,7 @@ import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 
 import { generateProgramContent } from '../api/generateProgramContent';
+import { generateProgramFieldname } from '../api/generateProgramFieldname';
 import { useCreateProgram } from '../api/useCreateProgram';
 import { useUpdateProgram } from '../api/useUpdateProgram';
 import { EActivityType } from '../types/EActivityType';
@@ -118,7 +119,93 @@ function ProgramForm({ program, initialData, onSuccess }: Props): ReactNode {
       // Handle error (show toast, etc.)
     }
   };
+  // Add this function to handle individual field generation
+  const handleGenerateField = async (fieldName: string): Promise<void> => {
+    try {
+      const currentValues = form.getValues();
+      let context = `Generate ${fieldName} for a dog enrichment activity`;
 
+      if (currentValues.title && fieldName !== 'title') {
+        context += `. Title: ${currentValues.title}`;
+      }
+      if (currentValues.description && fieldName !== 'description') {
+        context += `. Description: ${currentValues.description}`;
+      }
+      if (currentValues.materialsNeeded && fieldName !== 'materialsNeeded') {
+        context += `. Materials needed: ${currentValues.materialsNeeded}`;
+      }
+      if (currentValues.setup && fieldName !== 'setup') {
+        context += `. Setup: ${currentValues.setup}`;
+      }
+      if (currentValues.instructions && fieldName !== 'instructions') {
+        context += `. Instructions: ${currentValues.instructions}`;
+      }
+      if (currentValues.additionalTips && fieldName !== 'additionalTips') {
+        context += `. Additional tips: ${currentValues.additionalTips}`;
+      }
+
+      // Add context from tags
+      if (currentValues.tags) {
+        if (currentValues.tags.location) {
+          context += `. Location: ${currentValues.tags.location}`;
+        }
+        if (currentValues.tags.space) {
+          context += `. Space required: ${currentValues.tags.space}`;
+        }
+        if (currentValues.tags.duration) {
+          context += `. Duration: ${currentValues.tags.duration}`;
+        }
+        if (currentValues.tags.challenge) {
+          context += `. Difficulty: ${currentValues.tags.challenge}`;
+        }
+        if (currentValues.tags.energyLevel) {
+          context += `. Energy level: ${currentValues.tags.energyLevel}/10`;
+        }
+        if (currentValues.tags.type.length > 0) {
+          context += `. Activity types: ${currentValues.tags.type.join(', ')}`;
+        }
+      }
+
+      // Only allow specific field names to be generated
+      const allowedFields = [
+        'title',
+        'description',
+        'materialsNeeded',
+        'setup',
+        'instructions',
+        'additionalTips',
+      ] as const;
+
+      if (
+        !allowedFields.includes(fieldName as (typeof allowedFields)[number])
+      ) {
+        throw new Error(`Invalid field name: ${fieldName}`);
+      }
+
+      const content = await generateProgramFieldname(fieldName, context);
+      form.setValue(fieldName as (typeof allowedFields)[number], content);
+    } catch (error) {
+      console.error(`Error generating ${fieldName}:`, error);
+    }
+  };
+
+  function GenerateFieldButton({
+    onGenerate,
+  }: {
+    onGenerate: () => Promise<void>;
+  }): ReactNode {
+    return (
+      <Button
+        type='button'
+        variant='outline'
+        size='sm'
+        onClick={onGenerate}
+        className='ml-2'
+      >
+        Generate
+      </Button>
+    );
+  }
   return (
     <Form {...form}>
       <form
@@ -129,7 +216,7 @@ function ProgramForm({ program, initialData, onSuccess }: Props): ReactNode {
         <Button
           type='button'
           onClick={generateContent}
-          className='mb-4'
+          className='mb-2'
         >
           Generate Content with AI
         </Button>
@@ -141,7 +228,12 @@ function ProgramForm({ program, initialData, onSuccess }: Props): ReactNode {
             name='title'
             render={({ field }) => (
               <FormItem>
-                <FormLabel>Title</FormLabel>
+                <div className='flex gap-4 items-center'>
+                  <FormLabel>Title</FormLabel>
+                  <GenerateFieldButton
+                    onGenerate={() => handleGenerateField('title')}
+                  />
+                </div>
                 <FormControl>
                   <Input {...field} />
                 </FormControl>
@@ -155,7 +247,12 @@ function ProgramForm({ program, initialData, onSuccess }: Props): ReactNode {
             name='description'
             render={({ field }) => (
               <FormItem>
-                <FormLabel>Description - Not in PDF, in UI only</FormLabel>
+                <div className='flex gap-4 items-center'>
+                  <FormLabel>Description - Not in PDF, in UI only</FormLabel>
+                  <GenerateFieldButton
+                    onGenerate={() => handleGenerateField('description')}
+                  />
+                </div>
                 <FormControl>
                   <Textarea
                     {...field}
@@ -171,7 +268,12 @@ function ProgramForm({ program, initialData, onSuccess }: Props): ReactNode {
             name='materialsNeeded'
             render={({ field }) => (
               <FormItem>
-                <FormLabel>Materials Needed</FormLabel>
+                <div className='flex gap-4 items-center'>
+                  <FormLabel>Materials Needed</FormLabel>
+                  <GenerateFieldButton
+                    onGenerate={() => handleGenerateField('materialsNeeded')}
+                  />
+                </div>
                 <FormControl>
                   <Textarea
                     {...field}
@@ -187,7 +289,12 @@ function ProgramForm({ program, initialData, onSuccess }: Props): ReactNode {
             name='setup'
             render={({ field }) => (
               <FormItem>
-                <FormLabel>Setup</FormLabel>
+                <div className='flex gap-4 items-center'>
+                  <FormLabel>Setup</FormLabel>
+                  <GenerateFieldButton
+                    onGenerate={() => handleGenerateField('setup')}
+                  />
+                </div>
                 <FormControl>
                   <Textarea
                     {...field}
@@ -203,7 +310,12 @@ function ProgramForm({ program, initialData, onSuccess }: Props): ReactNode {
             name='instructions'
             render={({ field }) => (
               <FormItem>
-                <FormLabel>Instructions</FormLabel>
+                <div className='flex gap-4 items-center'>
+                  <FormLabel>Instructions</FormLabel>
+                  <GenerateFieldButton
+                    onGenerate={() => handleGenerateField('instructions')}
+                  />
+                </div>
                 <FormControl>
                   <Textarea
                     {...field}
@@ -219,7 +331,12 @@ function ProgramForm({ program, initialData, onSuccess }: Props): ReactNode {
             name='additionalTips'
             render={({ field }) => (
               <FormItem>
-                <FormLabel>Additional Tips</FormLabel>
+                <div className='flex gap-4 items-center'>
+                  <FormLabel>Additional Tips</FormLabel>
+                  <GenerateFieldButton
+                    onGenerate={() => handleGenerateField('additionalTips')}
+                  />
+                </div>
                 <FormControl>
                   <Textarea
                     {...field}

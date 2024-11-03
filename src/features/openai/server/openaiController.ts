@@ -1,7 +1,7 @@
 import { ResponseCode } from '@operation-firefly/error-handling';
 import { NextRequest, NextResponse } from 'next/server';
 
-import { generateProgramContent } from './openaiService';
+import { generateProgramContent, generateProgramField } from './openaiService';
 
 export async function generateProgramContentHandler(
   req: NextRequest
@@ -14,6 +14,23 @@ export async function generateProgramContentHandler(
     console.log(error);
     return NextResponse.json(
       { error: 'Failed to generate program content' },
+      { status: ResponseCode.INTERNAL_SERVER_ERROR }
+    );
+  }
+}
+
+export async function generateProgramFieldHandler(
+  req: NextRequest
+): Promise<NextResponse> {
+  try {
+    const data = await req.json();
+    const { fieldName, context } = data;
+    const content = await generateProgramField(fieldName, context);
+    return NextResponse.json({ content }, { status: ResponseCode.OK });
+  } catch (error) {
+    console.error(error);
+    return NextResponse.json(
+      { error: 'Failed to generate field content' },
       { status: ResponseCode.INTERNAL_SERVER_ERROR }
     );
   }
