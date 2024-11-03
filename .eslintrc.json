@@ -1,7 +1,7 @@
 {
   "extends": ["next/core-web-vitals", "next/typescript", "prettier"],
   "plugins": ["unused-imports", "simple-import-sort", "n"],
-  "ignorePatterns": ["src/components/ui/*"], // Shadcn UI components are not linted
+  "ignorePatterns": ["src/components/ui/*", "scripts/*"], // Shadcn UI components are not linted
   "rules": {
     "prefer-arrow-callback": ["error"],
     "prefer-template": ["error"],

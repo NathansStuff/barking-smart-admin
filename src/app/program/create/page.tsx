@@ -4,7 +4,6 @@ import { ReactNode } from 'react';
 
 import { useSearchParams } from 'next/navigation';
 
-import VerifedOnly from '@/components/container/VerifiedOnly';
 import {
   Card,
   CardContent,
@@ -35,9 +34,13 @@ function CreateProgramPage(): ReactNode {
   };
 
   // Helper function to get random array of enum values
-  const getRandomEnumArray = <T,>(enumObj: { [key: string]: T }, minItems: number = 1): T[] => {
+  const getRandomEnumArray = <T,>(
+    enumObj: { [key: string]: T },
+    minItems: number = 1
+  ): T[] => {
     const enumValues = Object.values(enumObj);
-    const numItems = Math.floor(Math.random() * (enumValues.length - minItems + 1)) + minItems;
+    const numItems =
+      Math.floor(Math.random() * (enumValues.length - minItems + 1)) + minItems;
     const shuffled = [...enumValues].sort(() => Math.random() - 0.5);
     return shuffled.slice(0, numItems);
   };
@@ -45,18 +48,27 @@ function CreateProgramPage(): ReactNode {
   // Parse URL parameters
   const initialData = {
     tags: {
-      location: (searchParams.get('location') as ELocation) || getRandomEnumValue(ELocation),
+      location:
+        (searchParams.get('location') as ELocation) ||
+        getRandomEnumValue(ELocation),
       energyLevel: energyLevelValue,
-      duration: (searchParams.get('duration') as EDuration) || getRandomEnumValue(EDuration),
-      type: searchParams.get('type')?.split(',') as EActivityType[] || getRandomEnumArray(EActivityType),
-      space: (searchParams.get('space') as ESpace) || getRandomEnumValue(ESpace),
-      challenge: (searchParams.get('challenge') as EChallenge) || getRandomEnumValue(EChallenge),
+      duration:
+        (searchParams.get('duration') as EDuration) ||
+        getRandomEnumValue(EDuration),
+      type:
+        (searchParams.get('type')?.split(',') as EActivityType[]) ||
+        getRandomEnumArray(EActivityType),
+      space:
+        (searchParams.get('space') as ESpace) || getRandomEnumValue(ESpace),
+      challenge:
+        (searchParams.get('challenge') as EChallenge) ||
+        getRandomEnumValue(EChallenge),
     },
   };
 
   return (
     <>
-      <VerifedOnly />
+      {/* <VerifedOnly /> */}
       <div className='container mx-auto p-4'>
         <Card>
           <CardHeader>

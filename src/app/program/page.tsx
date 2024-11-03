@@ -20,7 +20,6 @@ import { Route } from 'next';
 import { useSearchParams } from 'next/navigation';
 import { useRouter } from 'next/navigation';
 
-import VerifedOnly from '@/components/container/VerifiedOnly';
 import { DataTable } from '@/components/general/DataTable/components/DataTable';
 import { DataTablePagination } from '@/components/general/DataTable/components/DataTablePagination';
 import { UseDataTable } from '@/components/general/DataTable/hooks/UseDataTable';
@@ -327,8 +326,12 @@ function ProgramPage(): ReactNode {
       type: filters.type === 'all' ? undefined : filters.type,
       approved: filters.approved,
       ...(filters.energyLevel !== 'all' && {
-        energyLevelMin: energyLevelToNumeric(filters.energyLevel as EEnergyLevel)[0],
-        energyLevelMax: energyLevelToNumeric(filters.energyLevel as EEnergyLevel)[1]
+        energyLevelMin: energyLevelToNumeric(
+          filters.energyLevel as EEnergyLevel
+        )[0],
+        energyLevelMax: energyLevelToNumeric(
+          filters.energyLevel as EEnergyLevel
+        )[1],
       }),
     },
   });
@@ -599,7 +602,9 @@ function ProgramPage(): ReactNode {
     if (filters.title) params.set('title', filters.title);
     if (filters.location !== 'all') params.set('location', filters.location);
     if (filters.energyLevel !== 'all') {
-      const [minLevel, maxLevel] = energyLevelToNumeric(filters.energyLevel as EEnergyLevel);
+      const [minLevel, maxLevel] = energyLevelToNumeric(
+        filters.energyLevel as EEnergyLevel
+      );
       params.set('energyLevel', filters.energyLevel);
       params.set('energyLevelMin', minLevel.toString());
       params.set('energyLevelMax', maxLevel.toString());
@@ -632,7 +637,7 @@ function ProgramPage(): ReactNode {
   if (programQuery.isLoading) {
     return (
       <>
-        <VerifedOnly />
+        {/* <VerifedOnly /> */}
         <ProgramLoadingPage />
       </>
     );
@@ -640,7 +645,7 @@ function ProgramPage(): ReactNode {
 
   return (
     <>
-      <VerifedOnly />
+      {/* <VerifedOnly /> */}
       <ConfirmDialog />
       <TooltipProvider>
         <div className='container mx-auto p-4'>
