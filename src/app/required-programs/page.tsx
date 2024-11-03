@@ -1,11 +1,12 @@
 'use client';
 
-import React, { ReactNode, useMemo, useState } from 'react';
+import React, { ReactNode, useEffect, useMemo, useState } from 'react';
 
 import { ColumnDef, SortingState } from '@tanstack/react-table';
 import debounce from 'lodash/debounce';
 import { ArrowDown, ArrowUp, ArrowUpDown } from 'lucide-react';
-import { useRouter } from 'next/navigation';
+import { Route } from 'next';
+import { useRouter, useSearchParams } from 'next/navigation';
 
 import AdminOnly from '@/components/container/AdminOnly';
 import { DataTable } from '@/components/general/DataTable/components/DataTable';
@@ -39,6 +40,17 @@ import {
 
 import { RequiredProgramSkeleton } from './RequiredProgramSkeleton';
 
+type FilterValue<T> = T | 'all';
+
+interface Filters {
+  location: FilterValue<ELocation>;
+  energyLevel: FilterValue<EEnergyLevel>;
+  duration: FilterValue<EDuration>;
+  challenge: FilterValue<EChallenge>;
+  space: FilterValue<ESpace>;
+  type: FilterValue<EActivityType>;
+}
+
 function RequiredProgramsPage(): ReactNode {
   console.log('Component function called');
   const [pagination, setPagination] = useState({
@@ -48,16 +60,55 @@ function RequiredProgramsPage(): ReactNode {
 
   const [sorting, setSorting] = useState<SortingState>([]);
 
-  const [filters, setFilters] = useState({
-    location: 'all',
-    energyLevel: 'all',
-    duration: 'all',
-    challenge: 'all',
-    type: 'all',
-    space: 'all',
+  const router = useRouter();
+  const searchParams = useSearchParams();
+
+  const [filters, setFilters] = useState<Filters>({
+    location: (searchParams.get('location') as FilterValue<ELocation>) || 'all',
+    energyLevel:
+      (searchParams.get('energyLevel') as FilterValue<EEnergyLevel>) || 'all',
+    duration: (searchParams.get('duration') as FilterValue<EDuration>) || 'all',
+    challenge:
+      (searchParams.get('challenge') as FilterValue<EChallenge>) || 'all',
+    space: (searchParams.get('space') as FilterValue<ESpace>) || 'all',
+    type: (searchParams.get('type') as FilterValue<EActivityType>) || 'all',
   });
 
-  const router = useRouter();
+  useEffect(() => {
+    const hasActiveFilters = Object.entries(filters).some(
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
+      ([_, value]) => value !== 'all'
+    );
+
+    if (!hasActiveFilters) {
+      router.replace('/required-programs', { scroll: false });
+      return;
+    }
+
+    const params = new URLSearchParams();
+    if (filters.location !== 'all') params.set('location', filters.location);
+    if (filters.energyLevel !== 'all')
+      params.set('energyLevel', filters.energyLevel);
+    if (filters.duration !== 'all') params.set('duration', filters.duration);
+    if (filters.challenge !== 'all') params.set('challenge', filters.challenge);
+    if (filters.space !== 'all') params.set('space', filters.space);
+    if (filters.type !== 'all') params.set('type', filters.type);
+
+    const queryString = params.toString();
+    const path: Route = `/required-programs?${queryString ? `${queryString}` : ''}`;
+    router.replace(path, { scroll: false });
+  }, [filters, router]);
+
+  const handleClearFilters = (): void => {
+    setFilters({
+      location: 'all',
+      energyLevel: 'all',
+      duration: 'all',
+      challenge: 'all',
+      space: 'all',
+      type: 'all',
+    });
+  };
 
   const columns: ColumnDef<RequiredProgramWithId>[] = [
     {
@@ -365,7 +416,7 @@ function RequiredProgramsPage(): ReactNode {
       <div className='p-4 grid gap-4 md:grid-cols-3 lg:grid-cols-6'>
         <Select
           value={filters.location}
-          onValueChange={value =>
+          onValueChange={(value: FilterValue<ELocation>) =>
             setFilters(prev => ({ ...prev, location: value }))
           }
         >
@@ -375,10 +426,7 @@ function RequiredProgramsPage(): ReactNode {
           <SelectContent>
             <SelectItem value='all'>All Locations</SelectItem>
             {Object.values(ELocation).map(location => (
-              <SelectItem
-                key={location}
-                value={location}
-              >
+              <SelectItem key={location} value={location}>
                 {location}
               </SelectItem>
             ))}
@@ -387,7 +435,7 @@ function RequiredProgramsPage(): ReactNode {
 
         <Select
           value={filters.energyLevel}
-          onValueChange={value =>
+          onValueChange={(value: FilterValue<EEnergyLevel>) =>
             setFilters(prev => ({ ...prev, energyLevel: value }))
           }
         >
@@ -397,10 +445,7 @@ function RequiredProgramsPage(): ReactNode {
           <SelectContent>
             <SelectItem value='all'>All Energy Levels</SelectItem>
             {Object.values(EEnergyLevel).map(level => (
-              <SelectItem
-                key={level}
-                value={level}
-              >
+              <SelectItem key={level} value={level}>
                 {level}
               </SelectItem>
             ))}
@@ -409,7 +454,7 @@ function RequiredProgramsPage(): ReactNode {
 
         <Select
           value={filters.duration}
-          onValueChange={value =>
+          onValueChange={(value: FilterValue<EDuration>) =>
             setFilters(prev => ({ ...prev, duration: value }))
           }
         >
@@ -419,10 +464,7 @@ function RequiredProgramsPage(): ReactNode {
           <SelectContent>
             <SelectItem value='all'>All Durations</SelectItem>
             {Object.values(EDuration).map(duration => (
-              <SelectItem
-                key={duration}
-                value={duration}
-              >
+              <SelectItem key={duration} value={duration}>
                 {duration}
               </SelectItem>
             ))}
@@ -431,7 +473,7 @@ function RequiredProgramsPage(): ReactNode {
 
         <Select
           value={filters.challenge}
-          onValueChange={value =>
+          onValueChange={(value: FilterValue<EChallenge>) =>
             setFilters(prev => ({ ...prev, challenge: value }))
           }
         >
@@ -441,10 +483,7 @@ function RequiredProgramsPage(): ReactNode {
           <SelectContent>
             <SelectItem value='all'>All Challenges</SelectItem>
             {Object.values(EChallenge).map(challenge => (
-              <SelectItem
-                key={challenge}
-                value={challenge}
-              >
+              <SelectItem key={challenge} value={challenge}>
                 {challenge}
               </SelectItem>
             ))}
@@ -453,7 +492,7 @@ function RequiredProgramsPage(): ReactNode {
 
         <Select
           value={filters.type}
-          onValueChange={value =>
+          onValueChange={(value: FilterValue<EActivityType>) =>
             setFilters(prev => ({ ...prev, type: value }))
           }
         >
@@ -463,10 +502,7 @@ function RequiredProgramsPage(): ReactNode {
           <SelectContent>
             <SelectItem value='all'>All Types</SelectItem>
             {Object.values(EActivityType).map(type => (
-              <SelectItem
-                key={type}
-                value={type}
-              >
+              <SelectItem key={type} value={type}>
                 {type}
               </SelectItem>
             ))}
@@ -475,7 +511,7 @@ function RequiredProgramsPage(): ReactNode {
 
         <Select
           value={filters.space}
-          onValueChange={value =>
+          onValueChange={(value: FilterValue<ESpace>) =>
             setFilters(prev => ({ ...prev, space: value }))
           }
         >
@@ -485,10 +521,7 @@ function RequiredProgramsPage(): ReactNode {
           <SelectContent>
             <SelectItem value='all'>All Spaces</SelectItem>
             {Object.values(ESpace).map(space => (
-              <SelectItem
-                key={space}
-                value={space}
-              >
+              <SelectItem key={space} value={space}>
                 {space}
               </SelectItem>
             ))}
@@ -497,16 +530,7 @@ function RequiredProgramsPage(): ReactNode {
 
         <Button
           variant='outline'
-          onClick={() =>
-            setFilters({
-              location: 'all',
-              energyLevel: 'all',
-              duration: 'all',
-              challenge: 'all',
-              type: 'all',
-              space: 'all',
-            })
-          }
+          onClick={handleClearFilters}
           className='col-span-full'
         >
           Clear Filters

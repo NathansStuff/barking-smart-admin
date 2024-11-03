@@ -381,6 +381,29 @@ function ProgramPage(): ReactNode {
     debouncedUpdateFilters(newFilters);
   };
 
+  const handleClearFilters = (): void => {
+    setFilters({
+      title: '',
+      location: 'all',
+      energyLevel: 'all',
+      duration: 'all',
+      challenge: 'all',
+      space: 'all',
+      type: 'all',
+      approved: undefined,
+    });
+    debouncedUpdateFilters({
+      title: '',
+      location: 'all',
+      energyLevel: 'all',
+      duration: 'all',
+      challenge: 'all',
+      space: 'all',
+      type: 'all',
+      approved: undefined,
+    });
+  };
+
   function Filters(): ReactNode {
     const userRole = useSelector(selectRole);
     const isAdmin = userRole === EUserRole.ADMIN;
@@ -513,6 +536,13 @@ function ProgramPage(): ReactNode {
             </Select>
           )}
         </div>
+        <Button
+          variant='outline'
+          onClick={handleClearFilters}
+          className='w-full'
+        >
+          Clear Filters
+        </Button>
       </div>
     );
   }
