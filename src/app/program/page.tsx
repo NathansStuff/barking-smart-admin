@@ -52,6 +52,7 @@ import { EEnergyLevel } from '@/features/program/types/EEnergyLevel';
 import { ELocation } from '@/features/program/types/ELocation';
 import { ESpace } from '@/features/program/types/ESpace';
 import { ProgramWithId } from '@/features/program/types/Program';
+import { energyLevelToNumeric } from '@/features/program/utils/determineEnergyLevel';
 import { EUserRole } from '@/features/user/types/EUserRole';
 import UseConfirm from '@/hooks/UseConfirm';
 
@@ -60,12 +61,20 @@ import ProgramLoadingPage from './ProgramLoadingPage';
 interface ProgramFilters {
   title: string;
   location: string | 'all';
-  energyLevel: string | 'all';
+  energyLevel: 'all' | EEnergyLevel;
   duration: string | 'all';
   challenge: string | 'all';
   space: string | 'all';
   type: string | 'all';
   approved: boolean | undefined;
+}
+
+// Helper function to validate energy level value
+function isValidEnergyLevel(value: string | null): value is EEnergyLevel {
+  return (
+    value !== null &&
+    Object.values(EEnergyLevel).includes(value as EEnergyLevel)
+  );
 }
 
 function ProgramPage(): ReactNode {
@@ -75,7 +84,10 @@ function ProgramPage(): ReactNode {
   const [filters, setFilters] = useState<ProgramFilters>({
     title: searchParams.get('title') || '',
     location: (searchParams.get('location') as ELocation) || 'all',
-    energyLevel: (searchParams.get('energyLevel') as EEnergyLevel) || 'all',
+    energyLevel: ((): 'all' | EEnergyLevel => {
+      const param = searchParams.get('energyLevel');
+      return isValidEnergyLevel(param) ? param : 'all';
+    })(),
     duration: (searchParams.get('duration') as EDuration) || 'all',
     challenge: (searchParams.get('challenge') as EChallenge) || 'all',
     space: (searchParams.get('space') as ESpace) || 'all',
@@ -314,6 +326,10 @@ function ProgramPage(): ReactNode {
       space: filters.space === 'all' ? undefined : filters.space,
       type: filters.type === 'all' ? undefined : filters.type,
       approved: filters.approved,
+      ...(filters.energyLevel !== 'all' && {
+        energyLevelMin: energyLevelToNumeric(filters.energyLevel as EEnergyLevel)[0],
+        energyLevelMax: energyLevelToNumeric(filters.energyLevel as EEnergyLevel)[1]
+      }),
     },
   });
 
@@ -376,13 +392,22 @@ function ProgramPage(): ReactNode {
     key: keyof ProgramFilters,
     value: string | boolean | undefined
   ): void => {
-    const newFilters = { ...filters, [key]: value };
+    const newFilters = {
+      ...filters,
+      [key]:
+        key === 'energyLevel'
+          ? isValidEnergyLevel(value as string)
+            ? value
+            : 'all'
+          : value,
+    } as ProgramFilters;
+
     setFilters(newFilters);
     debouncedUpdateFilters(newFilters);
   };
 
   const handleClearFilters = (): void => {
-    setFilters({
+    const clearedFilters: ProgramFilters = {
       title: '',
       location: 'all',
       energyLevel: 'all',
@@ -391,17 +416,9 @@ function ProgramPage(): ReactNode {
       space: 'all',
       type: 'all',
       approved: undefined,
-    });
-    debouncedUpdateFilters({
-      title: '',
-      location: 'all',
-      energyLevel: 'all',
-      duration: 'all',
-      challenge: 'all',
-      space: 'all',
-      type: 'all',
-      approved: undefined,
-    });
+    };
+    setFilters(clearedFilters);
+    debouncedUpdateFilters(clearedFilters);
   };
 
   function Filters(): ReactNode {
@@ -535,6 +552,25 @@ function ProgramPage(): ReactNode {
               </SelectContent>
             </Select>
           )}
+          <Select
+            value={filters.energyLevel}
+            onValueChange={value => handleFilterChange('energyLevel', value)}
+          >
+            <SelectTrigger>
+              <SelectValue placeholder='Select energy level' />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value='all'>All Energy Levels</SelectItem>
+              {Object.values(EEnergyLevel).map(level => (
+                <SelectItem
+                  key={level}
+                  value={level}
+                >
+                  {level}
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
         </div>
         <Button
           variant='outline'
@@ -562,8 +598,12 @@ function ProgramPage(): ReactNode {
     const params = new URLSearchParams();
     if (filters.title) params.set('title', filters.title);
     if (filters.location !== 'all') params.set('location', filters.location);
-    if (filters.energyLevel !== 'all')
+    if (filters.energyLevel !== 'all') {
+      const [minLevel, maxLevel] = energyLevelToNumeric(filters.energyLevel as EEnergyLevel);
       params.set('energyLevel', filters.energyLevel);
+      params.set('energyLevelMin', minLevel.toString());
+      params.set('energyLevelMax', maxLevel.toString());
+    }
     if (filters.duration !== 'all') params.set('duration', filters.duration);
     if (filters.challenge !== 'all') params.set('challenge', filters.challenge);
     if (filters.space !== 'all') params.set('space', filters.space);
@@ -575,6 +615,19 @@ function ProgramPage(): ReactNode {
     const path: Route = `/program?${queryString ? `${queryString}` : ''}`;
     router.replace(path, { scroll: false });
   }, [filters, router]);
+
+  const handleCreateProgram = (): void => {
+    const params = new URLSearchParams({
+      location: filters.location,
+      energyLevel: filters.energyLevel,
+      duration: filters.duration,
+      challenge: filters.challenge,
+      space: filters.space,
+      type: filters.type,
+    });
+
+    router.push(`/program/create?${params.toString()}`);
+  };
 
   if (programQuery.isLoading) {
     return (
@@ -592,9 +645,7 @@ function ProgramPage(): ReactNode {
       <TooltipProvider>
         <div className='container mx-auto p-4'>
           <div className='mb-4 flex justify-end'>
-            <Button onClick={() => router.push('/program/create')}>
-              Create Program
-            </Button>
+            <Button onClick={handleCreateProgram}>Create Program</Button>
           </div>
           <Card>
             <Filters />

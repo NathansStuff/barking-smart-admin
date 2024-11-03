@@ -26,9 +26,9 @@ export function energyLevelToNumeric(level: EEnergyLevel): [number, number] {
     case EEnergyLevel.LOW:
       return [1, 3];
     case EEnergyLevel.MEDIUM:
-      return [4, 7];
+      return [4, 6];
     case EEnergyLevel.HIGH:
-      return [8, 10];
+      return [7, 10];
     default:
       return [1, 10];
   }

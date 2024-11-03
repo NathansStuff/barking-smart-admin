@@ -1,6 +1,6 @@
 'use client';
 
-import { ReactNode, useState } from 'react';
+import { ReactNode, useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -79,23 +79,23 @@ function ProgramForm({ program, initialData }: Props): ReactNode {
             toast.dismiss();
             toast.success('Program updated successfully');
           },
-          onError: (error) => {
+          onError: error => {
             toast.dismiss();
-            toast.error(`Failed to update program: ${  error.message}`);
+            toast.error(`Failed to update program: ${error.message}`);
           },
         }
       );
     } else {
       toast.loading('Creating program...');
       createMutation.mutate(data, {
-        onSuccess: (response) => {
+        onSuccess: response => {
           toast.dismiss();
           toast.success('Program created successfully');
           router.push(`/program/${response._id}`);
         },
-        onError: (error) => {
+        onError: error => {
           toast.dismiss();
-          toast.error(`Failed to create program: ${  error.message}`);
+          toast.error(`Failed to create program: ${error.message}`);
         },
       });
     }
@@ -232,12 +232,20 @@ function ProgramForm({ program, initialData }: Props): ReactNode {
       </Button>
     );
   }
+
+  // Add useEffect to trigger content generation on mount if no program exists
+  useEffect(() => {
+    if (!program && !initialData?.title) {
+      generateContent();
+    }
+  }, []); // Empty dependency array means this runs once on mount
+
   return (
     <Form {...form}>
-      <div className="relative">
+      <div className='relative'>
         {isGenerating && (
-          <div className="absolute inset-0 bg-background/80 flex items-center justify-center z-50 rounded-lg">
-            <Loader2 className="size-40 animate-spin" />
+          <div className='absolute inset-0 bg-background/80 flex items-center justify-center z-50 rounded-lg'>
+            <Loader2 className='size-40 animate-spin' />
           </div>
         )}
         <form
@@ -395,7 +403,10 @@ function ProgramForm({ program, initialData }: Props): ReactNode {
                         {...field}
                         type='url'
                         onChange={e => {
-                          const value = e.target.value.trim() === '' ? undefined : e.target.value;
+                          const value =
+                            e.target.value.trim() === ''
+                              ? undefined
+                              : e.target.value;
                           field.onChange(value);
                           form.setValue('canvaUpToDate', false);
                         }}
@@ -407,7 +418,9 @@ function ProgramForm({ program, initialData }: Props): ReactNode {
                           <Button
                             type='button'
                             size='icon'
-                            variant={upToDateField.value ? 'default' : 'outline'}
+                            variant={
+                              upToDateField.value ? 'default' : 'outline'
+                            }
                             onClick={() =>
                               upToDateField.onChange(!upToDateField.value)
                             }
@@ -446,7 +459,10 @@ function ProgramForm({ program, initialData }: Props): ReactNode {
                           {...field}
                           type='url'
                           onChange={e => {
-                            const value = e.target.value.trim() === '' ? undefined : e.target.value;
+                            const value =
+                              e.target.value.trim() === ''
+                                ? undefined
+                                : e.target.value;
                             field.onChange(value);
                             form.setValue('pdfUpToDate', false);
                           }}
@@ -535,7 +551,9 @@ function ProgramForm({ program, initialData }: Props): ReactNode {
                         <Button
                           key={space}
                           type='button'
-                          variant={field.value === space ? 'default' : 'outline'}
+                          variant={
+                            field.value === space ? 'default' : 'outline'
+                          }
                           onClick={() => field.onChange(space)}
                         >
                           {space}

@@ -22,7 +22,6 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select';
-import { useCountAllTags } from '@/features/program/api/useCountAllTags';
 import { EActivityType } from '@/features/program/types/EActivityType';
 import { EChallenge } from '@/features/program/types/EChallenge';
 import { EDuration } from '@/features/program/types/EDuration';
@@ -402,8 +401,6 @@ function RequiredProgramsPage(): ReactNode {
 
   // Slice the data according to the current page
   const paginatedPrograms = allPrograms.slice(pageStart, pageEnd);
-
-  const allTagCounts = useCountAllTags();
 
   const { table } = UseDataTable({
     data: paginatedPrograms,

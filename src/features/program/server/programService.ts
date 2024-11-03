@@ -29,6 +29,8 @@ interface GetProgramsOptions {
     challenge?: string;
     space?: string;
     type?: string;
+    energyLevelMin?: number;
+    energyLevelMax?: number;
   };
 }
 
@@ -65,6 +67,16 @@ export async function getAllProgramsService(
   if (options.filters?.type) {
     filter['tags.type'] = options.filters.type;
   }
+
+  // Add energy level range filter
+  console.log('options.filters?.energyLevelMin', options.filters?.energyLevelMin);
+  if (options.filters?.energyLevelMin !== undefined && options.filters?.energyLevelMax !== undefined) {
+    filter.energyLevel = {
+      $gte: options.filters.energyLevelMin,
+      $lte: options.filters.energyLevelMax
+    };
+  }
+  console.log('filter', filter);
 
   const total = await ProgramModel.countDocuments(filter);
   const programs = await ProgramModel.find(filter)

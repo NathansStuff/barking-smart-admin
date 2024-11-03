@@ -13,6 +13,8 @@ interface GetProgramsParams {
     title?: string;
     location?: string;
     energyLevel?: EEnergyLevel | 'all';
+    energyLevelMin?: number;
+    energyLevelMax?: number;
     duration?: string;
     challenge?: string;
     space?: string;
@@ -40,6 +42,8 @@ export function useGetPrograms(
     searchParams.append('location', params.filters.location);
   if (params.filters?.energyLevel && params.filters.energyLevel !== 'all')
     searchParams.append('energyLevel', params.filters.energyLevel.toString());
+  if (params.filters?.energyLevelMin) searchParams.append('energyLevelMin', params.filters.energyLevelMin.toString());
+  if (params.filters?.energyLevelMax) searchParams.append('energyLevelMax', params.filters.energyLevelMax.toString());
   if (params.filters?.duration && params.filters.duration !== 'all')
     searchParams.append('duration', params.filters.duration);
   if (params.filters?.challenge && params.filters.challenge !== 'all')

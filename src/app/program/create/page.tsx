@@ -16,23 +16,41 @@ import ProgramForm from '@/features/program/components/ProgramForm';
 import { EActivityType } from '@/features/program/types/EActivityType';
 import { EChallenge } from '@/features/program/types/EChallenge';
 import { EDuration } from '@/features/program/types/EDuration';
+import { EEnergyLevel } from '@/features/program/types/EEnergyLevel';
 import { ELocation } from '@/features/program/types/ELocation';
 import { ESpace } from '@/features/program/types/ESpace';
+import { energyLevelToNumeric } from '@/features/program/utils/determineEnergyLevel';
 
 function CreateProgramPage(): ReactNode {
   const searchParams = useSearchParams();
+  const energyLevel =
+    (searchParams.get('energyLevel') as EEnergyLevel) || EEnergyLevel.LOW;
+  const [min, max] = energyLevelToNumeric(energyLevel);
+  const energyLevelValue = Math.floor(Math.random() * (max - min + 1)) + min;
+
+  // Helper function to get random enum value
+  const getRandomEnumValue = <T,>(enumObj: { [key: string]: T }): T => {
+    const enumValues = Object.values(enumObj);
+    return enumValues[Math.floor(Math.random() * enumValues.length)];
+  };
+
+  // Helper function to get random array of enum values
+  const getRandomEnumArray = <T,>(enumObj: { [key: string]: T }, minItems: number = 1): T[] => {
+    const enumValues = Object.values(enumObj);
+    const numItems = Math.floor(Math.random() * (enumValues.length - minItems + 1)) + minItems;
+    const shuffled = [...enumValues].sort(() => Math.random() - 0.5);
+    return shuffled.slice(0, numItems);
+  };
 
   // Parse URL parameters
   const initialData = {
     tags: {
-      location:
-        (searchParams.get('location') as ELocation) || ELocation.INDOORS,
-      energyLevel: parseInt(searchParams.get('energy') || '1'),
-      duration: (searchParams.get('duration') as EDuration) || EDuration.LONG,
-      type: (searchParams.get('types')?.split(',') || []) as EActivityType[],
-      space: (searchParams.get('space') as ESpace) || ESpace.LARGE,
-      challenge:
-        (searchParams.get('challenge') as EChallenge) || EChallenge.EASY,
+      location: (searchParams.get('location') as ELocation) || getRandomEnumValue(ELocation),
+      energyLevel: energyLevelValue,
+      duration: (searchParams.get('duration') as EDuration) || getRandomEnumValue(EDuration),
+      type: searchParams.get('type')?.split(',') as EActivityType[] || getRandomEnumArray(EActivityType),
+      space: (searchParams.get('space') as ESpace) || getRandomEnumValue(ESpace),
+      challenge: (searchParams.get('challenge') as EChallenge) || getRandomEnumValue(EChallenge),
     },
   };
 
