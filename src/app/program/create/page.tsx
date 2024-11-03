@@ -26,6 +26,17 @@ function CreateProgramPage(): ReactNode {
     (searchParams.get('energyLevel') as EEnergyLevel) || EEnergyLevel.LOW;
   const [min, max] = energyLevelToNumeric(energyLevel);
   const energyLevelValue = Math.floor(Math.random() * (max - min + 1)) + min;
+  // Helper function to validate enum value
+  const isValidEnumValue = <T,>(
+    enumObj: { [key: string]: T },
+    value: T | null | undefined
+  ): boolean => {
+    return (
+      value !== null &&
+      value !== undefined &&
+      Object.values(enumObj).includes(value)
+    );
+  };
 
   // Helper function to get random enum value
   const getRandomEnumValue = <T,>(enumObj: { [key: string]: T }): T => {
@@ -48,23 +59,43 @@ function CreateProgramPage(): ReactNode {
   // Parse URL parameters
   const initialData = {
     tags: {
-      location:
-        (searchParams.get('location') as ELocation) ||
-        getRandomEnumValue(ELocation),
+      location: ((): ELocation => {
+        const locationParam = searchParams.get('location') as ELocation;
+        return isValidEnumValue(ELocation, locationParam)
+          ? locationParam
+          : getRandomEnumValue(ELocation);
+      })(),
       energyLevel: energyLevelValue,
-      duration:
-        (searchParams.get('duration') as EDuration) ||
-        getRandomEnumValue(EDuration),
-      type:
-        (searchParams.get('type')?.split(',') as EActivityType[]) ||
-        getRandomEnumArray(EActivityType),
-      space:
-        (searchParams.get('space') as ESpace) || getRandomEnumValue(ESpace),
-      challenge:
-        (searchParams.get('challenge') as EChallenge) ||
-        getRandomEnumValue(EChallenge),
+      duration: ((): EDuration => {
+        const durationParam = searchParams.get('duration') as EDuration;
+        return isValidEnumValue(EDuration, durationParam)
+          ? durationParam
+          : getRandomEnumValue(EDuration);
+      })(),
+      type: ((): EActivityType[] => {
+        const typeParam = searchParams
+          .get('type')
+          ?.split(',') as EActivityType[];
+        return typeParam?.every(t => isValidEnumValue(EActivityType, t))
+          ? typeParam
+          : getRandomEnumArray(EActivityType);
+      })(),
+      space: ((): ESpace => {
+        const spaceParam = searchParams.get('space') as ESpace;
+        return isValidEnumValue(ESpace, spaceParam)
+          ? spaceParam
+          : getRandomEnumValue(ESpace);
+      })(),
+      challenge: ((): EChallenge => {
+        const challengeParam = searchParams.get('challenge') as EChallenge;
+        return isValidEnumValue(EChallenge, challengeParam)
+          ? challengeParam
+          : getRandomEnumValue(EChallenge);
+      })(),
     },
   };
+
+  console.log('initialData', initialData);
 
   return (
     <>

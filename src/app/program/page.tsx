@@ -659,6 +659,9 @@ function ProgramPage(): ReactNode {
               columns={columns}
             />
             <DataTablePagination table={table} />
+            <div className='p-4 text-right text-sm text-muted-foreground'>
+              Total Filtered Programs: {programQuery.data?.programs.length ?? 0}
+            </div>
           </Card>
         </div>
       </TooltipProvider>
