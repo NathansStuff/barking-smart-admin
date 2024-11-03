@@ -28,14 +28,24 @@ export async function getAllProgramsHandler(
   const searchParams = req.nextUrl.searchParams;
   const page = parseInt(searchParams.get('page') || '1');
   const limit = parseInt(searchParams.get('limit') || '10');
-  const title = searchParams.get('title') || undefined;
+
+  const filters = {
+    title: searchParams.get('title') || undefined,
+    location: searchParams.get('location') || undefined,
+    energyLevel: searchParams.get('energyLevel') || undefined,
+    duration: searchParams.get('duration') || undefined,
+    challenge: searchParams.get('challenge') || undefined,
+    space: searchParams.get('space') || undefined,
+    type: searchParams.get('type') || undefined,
+    approved: searchParams.has('approved')
+      ? searchParams.get('approved') === 'true'
+      : undefined,
+  };
 
   const result = await getAllProgramsService({
     page,
     limit,
-    filters: {
-      title,
-    },
+    filters,
   });
 
   return NextResponse.json(result, { status: ResponseCode.OK });

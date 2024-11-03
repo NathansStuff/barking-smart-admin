@@ -5,6 +5,7 @@ import React, { ReactNode, useMemo, useState } from 'react';
 import { ColumnDef, SortingState } from '@tanstack/react-table';
 import debounce from 'lodash/debounce';
 import { ArrowDown, ArrowUp, ArrowUpDown } from 'lucide-react';
+import { useRouter } from 'next/navigation';
 
 import AdminOnly from '@/components/container/AdminOnly';
 import { DataTable } from '@/components/general/DataTable/components/DataTable';
@@ -26,6 +27,7 @@ import { EDuration } from '@/features/program/types/EDuration';
 import { EEnergyLevel } from '@/features/program/types/EEnergyLevel';
 import { ELocation } from '@/features/program/types/ELocation';
 import { ESpace } from '@/features/program/types/ESpace';
+import { energyLevelToNumeric } from '@/features/program/utils/determineEnergyLevel';
 import { useCreateRequiredProgram } from '@/features/requiredProgram/api/useCreateRequiredProgram';
 import { useGetRequiredPrograms } from '@/features/requiredProgram/api/useGetRequiredPrograms';
 import { useUpdateRequiredProgram } from '@/features/requiredProgram/api/useUpdateRequiredProgram';
@@ -54,6 +56,8 @@ function RequiredProgramsPage(): ReactNode {
     type: 'all',
     space: 'all',
   });
+
+  const router = useRouter();
 
   const columns: ColumnDef<RequiredProgramWithId>[] = [
     {
@@ -214,6 +218,34 @@ function RequiredProgramsPage(): ReactNode {
           className='w-20'
         />
       ),
+    },
+    {
+      id: 'actions',
+      header: 'Actions',
+      cell: ({ row }): ReactNode => {
+        const tags = row.original.tags;
+        const searchParams = new URLSearchParams();
+
+        if (tags.location) searchParams.set('location', tags.location);
+        if (tags.energyLevel) {
+          const energyLevel = energyLevelToNumeric(tags.energyLevel);
+          searchParams.set('energyLevel', energyLevel.toString());
+        }
+        if (tags.duration) searchParams.set('duration', tags.duration);
+        if (tags.challenge) searchParams.set('challenge', tags.challenge);
+        if (tags.space) searchParams.set('space', tags.space);
+        if (tags.type?.length) searchParams.set('type', tags.type.join(','));
+
+        return (
+          <Button
+            variant='outline'
+            size='sm'
+            onClick={() => router.push(`/program?${searchParams.toString()}`)}
+          >
+            View Programs
+          </Button>
+        );
+      },
     },
   ];
 

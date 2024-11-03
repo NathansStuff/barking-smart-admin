@@ -1,6 +1,6 @@
 'use client';
 
-import { ReactNode, useMemo, useState } from 'react';
+import { ReactNode, useEffect, useMemo, useState } from 'react';
 import { useSelector } from 'react-redux';
 
 import { Column, ColumnDef, Row, SortingState } from '@tanstack/react-table';
@@ -16,6 +16,8 @@ import {
   FileText,
   Trash,
 } from 'lucide-react';
+import { Route } from 'next';
+import { useSearchParams } from 'next/navigation';
 import { useRouter } from 'next/navigation';
 
 import VerifedOnly from '@/components/container/VerifiedOnly';
@@ -46,6 +48,7 @@ import { useUpdateProgram } from '@/features/program/api/useUpdateProgram';
 import { EActivityType } from '@/features/program/types/EActivityType';
 import { EChallenge } from '@/features/program/types/EChallenge';
 import { EDuration } from '@/features/program/types/EDuration';
+import { EEnergyLevel } from '@/features/program/types/EEnergyLevel';
 import { ELocation } from '@/features/program/types/ELocation';
 import { ESpace } from '@/features/program/types/ESpace';
 import { ProgramWithId } from '@/features/program/types/Program';
@@ -67,15 +70,19 @@ interface ProgramFilters {
 
 function ProgramPage(): ReactNode {
   const router = useRouter();
+  const searchParams = useSearchParams();
+
   const [filters, setFilters] = useState<ProgramFilters>({
-    title: '',
-    location: 'all',
-    energyLevel: 'all',
-    duration: 'all',
-    challenge: 'all',
-    space: 'all',
-    type: 'all',
-    approved: undefined,
+    title: searchParams.get('title') || '',
+    location: (searchParams.get('location') as ELocation) || 'all',
+    energyLevel: (searchParams.get('energyLevel') as EEnergyLevel) || 'all',
+    duration: (searchParams.get('duration') as EDuration) || 'all',
+    challenge: (searchParams.get('challenge') as EChallenge) || 'all',
+    space: (searchParams.get('space') as ESpace) || 'all',
+    type: (searchParams.get('type') as EActivityType) || 'all',
+    approved: searchParams.has('approved')
+      ? searchParams.get('approved') === 'true'
+      : undefined,
   });
 
   const [pagination, setPagination] = useState({
@@ -509,6 +516,35 @@ function ProgramPage(): ReactNode {
       </div>
     );
   }
+
+  useEffect(() => {
+    const hasActiveFilters = Object.entries(filters).some(([key, value]) => {
+      if (key === 'approved') return value !== undefined;
+      if (key === 'title') return value !== '';
+      return value !== 'all';
+    });
+
+    if (!hasActiveFilters) {
+      router.replace('/program', { scroll: false });
+      return;
+    }
+
+    const params = new URLSearchParams();
+    if (filters.title) params.set('title', filters.title);
+    if (filters.location !== 'all') params.set('location', filters.location);
+    if (filters.energyLevel !== 'all')
+      params.set('energyLevel', filters.energyLevel);
+    if (filters.duration !== 'all') params.set('duration', filters.duration);
+    if (filters.challenge !== 'all') params.set('challenge', filters.challenge);
+    if (filters.space !== 'all') params.set('space', filters.space);
+    if (filters.type !== 'all') params.set('type', filters.type);
+    if (filters.approved !== undefined)
+      params.set('approved', filters.approved.toString());
+    const queryString = params.toString();
+
+    const path: Route = `/program?${queryString ? `${queryString}` : ''}`;
+    router.replace(path, { scroll: false });
+  }, [filters, router]);
 
   if (programQuery.isLoading) {
     return (
