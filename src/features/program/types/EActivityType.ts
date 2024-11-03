@@ -1,5 +1,5 @@
 export enum EActivityType {
-  Scent = 'SCENT',
-  Agility = 'AGILITY',
-  Puzzle = 'PUZZLE',
+  SCENT = 'SCENT',
+  AGILITY = 'AGILITY',
+  PUZZLE = 'PUZZLE',
 }

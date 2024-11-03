@@ -1,4 +1,3 @@
-
 import { EActivityType } from '@/features/program/types/EActivityType';
 import { EChallenge } from '@/features/program/types/EChallenge';
 import { EDuration } from '@/features/program/types/EDuration';
@@ -9,12 +8,12 @@ import { ESpace } from '@/features/program/types/ESpace';
 import { RequiredProgramWithId } from '../types/RequiredProgram';
 
 interface TagCombination {
-  location?: ELocation;
-  energyLevel?: EEnergyLevel;
-  duration?: EDuration;
-  challenge?: EChallenge;
-  type?: EActivityType[];
-  space?: ESpace;
+  location: ELocation;
+  energyLevel: EEnergyLevel;
+  duration: EDuration;
+  challenge: EChallenge;
+  type: EActivityType[];
+  space: ESpace;
 }
 
 export function generateTagCombinations(): TagCombination[] {
@@ -70,7 +69,7 @@ export function mergeWithExistingPrograms(
     // Create a new "virtual" program with count 0
     return {
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      _id: (`virtual_${Object.values(combo).join('_')}`) as any, // This ID helps React with keys
+      _id: `virtual_${Object.values(combo).join('_')}` as any, // This ID helps React with keys
       tags: combo,
       count: 0,
       createdAt: new Date(),

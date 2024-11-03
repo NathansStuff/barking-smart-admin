@@ -10,6 +10,17 @@ export function determineEnergyLevel(num: number): EEnergyLevel {
   }
 }
 
+export function determineEnergyLevelNumber(level: EEnergyLevel): number {
+  switch (level) {
+    case EEnergyLevel.LOW:
+      return 3;
+    case EEnergyLevel.MEDIUM:
+      return 6;
+    case EEnergyLevel.HIGH:
+      return 10;
+  }
+}
+
 export function energyLevelToNumeric(level: EEnergyLevel): [number, number] {
   switch (level) {
     case EEnergyLevel.LOW:

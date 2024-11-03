@@ -3,9 +3,11 @@ import { NextRequest, NextResponse } from 'next/server';
 
 import { getLastSegment } from '@/utils/getLastSegment';
 
-import { Program } from '../types/Program';
+import { Program, ProgramPartial } from '../types/Program';
 
 import {
+  countAllProgramsByTagsService,
+  countProgramsByTagsService,
   createProgramService,
   deleteProgramService,
   getAllProgramsService,
@@ -93,4 +95,18 @@ export async function deleteProgramHandler(
     );
   }
   return NextResponse.json({ program }, { status: ResponseCode.OK });
+}
+
+export async function countProgramsByTagsHandler(
+  req: NextRequest
+): Promise<NextResponse> {
+  const data = await req.json();
+  const tags = ProgramPartial.parse(data);
+  const count = await countProgramsByTagsService(tags);
+  return NextResponse.json({ count }, { status: ResponseCode.OK });
+}
+
+export async function countAllProgramsByTagsHandler(): Promise<NextResponse> {
+  const counts = await countAllProgramsByTagsService();
+  return NextResponse.json(counts, { status: ResponseCode.OK });
 }

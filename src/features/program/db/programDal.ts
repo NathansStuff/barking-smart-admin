@@ -21,7 +21,7 @@ export async function getAllPrograms(): Promise<ProgramWithId[]> {
 
 // Get Program by ID
 export async function getProgramById(
-  id: string,
+  id: string
 ): Promise<ProgramWithId | null> {
   await connectMongo();
   const result = await ProgramModel.findById(id);
@@ -31,7 +31,7 @@ export async function getProgramById(
 // Update Program
 export async function updateProgram(
   id: string,
-  program: Partial<Program>,
+  program: Partial<Program>
 ): Promise<ProgramWithId | null> {
   await connectMongo();
   const result = await ProgramModel.findByIdAndUpdate(id, program, {
@@ -44,5 +44,23 @@ export async function updateProgram(
 export async function deleteProgram(id: string): Promise<ProgramWithId | null> {
   await connectMongo();
   const result = await ProgramModel.findByIdAndDelete(id);
+  return result;
+}
+
+// Get Programs Count by tags
+export async function getProgramsByTags(
+  tags: Partial<Program>
+): Promise<number> {
+  await connectMongo();
+
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const query: any = {};
+  if (tags.tags) {
+    Object.entries(tags.tags).forEach(([key, value]) => {
+      query[`tags.${key}`] = key === 'type' ? { $in: value } : value;
+    });
+  }
+
+  const result = await ProgramModel.countDocuments(query);
   return result;
 }

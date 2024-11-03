@@ -22,6 +22,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select';
+import { useCountAllTags } from '@/features/program/api/useCountAllTags';
 import { EActivityType } from '@/features/program/types/EActivityType';
 import { EChallenge } from '@/features/program/types/EChallenge';
 import { EDuration } from '@/features/program/types/EDuration';
@@ -402,6 +403,8 @@ function RequiredProgramsPage(): ReactNode {
   // Slice the data according to the current page
   const paginatedPrograms = allPrograms.slice(pageStart, pageEnd);
 
+  const allTagCounts = useCountAllTags();
+
   const { table } = UseDataTable({
     data: paginatedPrograms,
     columns,
@@ -426,7 +429,10 @@ function RequiredProgramsPage(): ReactNode {
           <SelectContent>
             <SelectItem value='all'>All Locations</SelectItem>
             {Object.values(ELocation).map(location => (
-              <SelectItem key={location} value={location}>
+              <SelectItem
+                key={location}
+                value={location}
+              >
                 {location}
               </SelectItem>
             ))}
@@ -445,7 +451,10 @@ function RequiredProgramsPage(): ReactNode {
           <SelectContent>
             <SelectItem value='all'>All Energy Levels</SelectItem>
             {Object.values(EEnergyLevel).map(level => (
-              <SelectItem key={level} value={level}>
+              <SelectItem
+                key={level}
+                value={level}
+              >
                 {level}
               </SelectItem>
             ))}
@@ -464,7 +473,10 @@ function RequiredProgramsPage(): ReactNode {
           <SelectContent>
             <SelectItem value='all'>All Durations</SelectItem>
             {Object.values(EDuration).map(duration => (
-              <SelectItem key={duration} value={duration}>
+              <SelectItem
+                key={duration}
+                value={duration}
+              >
                 {duration}
               </SelectItem>
             ))}
@@ -483,7 +495,10 @@ function RequiredProgramsPage(): ReactNode {
           <SelectContent>
             <SelectItem value='all'>All Challenges</SelectItem>
             {Object.values(EChallenge).map(challenge => (
-              <SelectItem key={challenge} value={challenge}>
+              <SelectItem
+                key={challenge}
+                value={challenge}
+              >
                 {challenge}
               </SelectItem>
             ))}
@@ -502,7 +517,10 @@ function RequiredProgramsPage(): ReactNode {
           <SelectContent>
             <SelectItem value='all'>All Types</SelectItem>
             {Object.values(EActivityType).map(type => (
-              <SelectItem key={type} value={type}>
+              <SelectItem
+                key={type}
+                value={type}
+              >
                 {type}
               </SelectItem>
             ))}
@@ -521,7 +539,10 @@ function RequiredProgramsPage(): ReactNode {
           <SelectContent>
             <SelectItem value='all'>All Spaces</SelectItem>
             {Object.values(ESpace).map(space => (
-              <SelectItem key={space} value={space}>
+              <SelectItem
+                key={space}
+                value={space}
+              >
                 {space}
               </SelectItem>
             ))}
