@@ -23,7 +23,7 @@ async function run() {
       async function checkAndCreatePrograms(url) {
         // Get current program count
         const totalProgramsText = await page.evaluate(() => {
-          const xpath = "//*[contains(text(), 'Total Filtered Programs')]";
+          const xpath = "//*[contains(text(), 'Filtered Programs')]";
           const element = document.evaluate(
             xpath,
             document,
@@ -33,7 +33,7 @@ async function run() {
           ).singleNodeValue;
           if (element) {
             const text = element.textContent;
-            return text.match(/Total Filtered Programs:\s*(\d+)/)?.[1] || 'not found';
+            return text.match(/Filtered Programs:\s*(\d+)/)?.[1] || 'not found';
           }
           return 'not found';
         });
