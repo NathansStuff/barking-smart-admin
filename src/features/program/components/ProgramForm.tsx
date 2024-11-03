@@ -62,7 +62,7 @@ function ProgramForm({ program, initialData }: Props): ReactNode {
         location: initialData?.tags?.location || ELocation.INDOORS,
         energyLevel: initialData?.tags?.energyLevel || 1,
         duration: initialData?.tags?.duration || EDuration.LONG,
-        challenge: EChallenge.EASY,
+        challenge: initialData?.tags?.challenge || EChallenge.EASY,
         type: initialData?.tags?.type || [],
         space: initialData?.tags?.space || ESpace.LARGE,
       },

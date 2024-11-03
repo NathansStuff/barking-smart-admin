@@ -29,6 +29,7 @@ export const useCreateProgram = (): UseMutationResult<
       return response.data;
     },
     onSuccess: () => {
+      // Invalidate all queries that start with 'programs'
       queryClient.invalidateQueries({ queryKey: ['programs'] });
     },
     onError: () => {},

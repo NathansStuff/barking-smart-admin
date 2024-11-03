@@ -42,6 +42,7 @@ export async function getAllProgramsService(
   page: number;
   totalPages: number;
 }> {
+  console.log('options', options);
   const page = options.page || 1;
   const limit = options.limit || 10;
   const skip = (page - 1) * limit;
@@ -71,7 +72,7 @@ export async function getAllProgramsService(
   // Add energy level range filter
   console.log('options.filters?.energyLevelMin', options.filters?.energyLevelMin);
   if (options.filters?.energyLevelMin !== undefined && options.filters?.energyLevelMax !== undefined) {
-    filter.energyLevel = {
+    filter['tags.energyLevel'] = {
       $gte: options.filters.energyLevelMin,
       $lte: options.filters.energyLevelMax
     };

@@ -660,7 +660,7 @@ function ProgramPage(): ReactNode {
             />
             <DataTablePagination table={table} />
             <div className='p-4 text-right text-sm text-muted-foreground'>
-              Filtered Programs: {programQuery.data?.programs.length ?? 0} / Total Programs: {programQuery.data?.total ?? 0}
+              Filtered Programs: {programQuery.data?.programs?.length ?? 0} / Total Programs: {programQuery.data?.total ?? 0}
             </div>
           </Card>
         </div>
