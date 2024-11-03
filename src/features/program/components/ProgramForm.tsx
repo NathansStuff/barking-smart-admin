@@ -18,6 +18,7 @@ import {
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 
+import { generateProgramContent } from '../api/generateProgramContent';
 import { useCreateProgram } from '../api/useCreateProgram';
 import { useUpdateProgram } from '../api/useUpdateProgram';
 import { EActivityType } from '../types/EActivityType';
@@ -82,12 +83,57 @@ function ProgramForm({ program, initialData, onSuccess }: Props): ReactNode {
     }
   };
 
+  const generateContent = async (): Promise<void> => {
+    try {
+      // Build prompt with existing form data
+      const currentValues = form.getValues();
+      let prompt = 'Generate a fun and engaging dog enrichment activity';
+
+      if (currentValues.title) prompt += ` similar to "${currentValues.title}"`;
+      if (currentValues.tags.location)
+        prompt += ` that can be done ${currentValues.tags.location}`;
+      if (currentValues.tags.space)
+        prompt += ` in a ${currentValues.tags.space} space`;
+      if (currentValues.tags.duration)
+        prompt += ` for a ${currentValues.tags.duration} duration`;
+      if (currentValues.tags.energyLevel)
+        prompt += ` with energy level ${currentValues.tags.energyLevel}/10`;
+      if (currentValues.tags.challenge)
+        prompt += ` at a ${currentValues.tags.challenge} difficulty level`;
+      if (currentValues.tags.type.length > 0)
+        prompt += ` involving ${currentValues.tags.type.join(' and ')}`;
+
+      const aiContent = await generateProgramContent(prompt);
+
+      // Update form with AI-generated content
+      form.setValue('title', aiContent.title);
+      form.setValue('description', aiContent.description);
+      form.setValue('materialsNeeded', aiContent.materialsNeeded);
+      form.setValue('setup', aiContent.setup);
+      form.setValue('instructions', aiContent.instructions);
+      form.setValue('additionalTips', aiContent.additionalTips);
+      form.setValue('tags', aiContent.tags);
+    } catch (error) {
+      console.error('Error generating content:', error);
+      // Handle error (show toast, etc.)
+    }
+  };
+
   return (
     <Form {...form}>
       <form
         onSubmit={form.handleSubmit(onSubmit)}
         className='space-y-6'
       >
+        {/* Add AI generation button */}
+        <Button
+          type='button'
+          onClick={generateContent}
+          className='mb-4'
+        >
+          Generate Content with AI
+        </Button>
+
         {/* Basic Information */}
         <div className='space-y-4'>
           <FormField
