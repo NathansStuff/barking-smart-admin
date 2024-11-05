@@ -4,7 +4,7 @@ const fs = require('fs');
 const MIN_PROGRAMS = 3;
 const CONCURRENT_BROWSERS = 1;
 const STATS_FILE = 'puppet-stats.json';
-const SKIP_INDEX = 254;
+const SKIP_INDEX = 254+55;
 const MAX_ATTEMPTS = 2;
 
 let completedUrls = 0;

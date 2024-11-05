@@ -11,84 +11,174 @@ async function generatePDF(program) {
   // Generate HTML content
   const html = `
     <!DOCTYPE html>
-    <html>
+    <html lang="en">
       <head>
         <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>${program.title}</title>
         <style>
+          @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap');
+
           body {
-            font-family: Arial, sans-serif;
+            font-family: 'Inter', Arial, sans-serif;
             line-height: 1.6;
-            max-width: 800px;
+            margin: 0;
+            padding: 40px;
+            color: #333;
+            background: linear-gradient(135deg, #2B2B5E 0%, #5B6B9A 100%);
+            min-height: 100vh;
+          }
+
+          .container {
+            background: white;
+            border-radius: 12px;
+            padding: 40px;
+            max-width: 1000px;
             margin: 0 auto;
-            padding: 20px;
+            position: relative;
+            overflow: hidden;
           }
-          h1 {
-            color: #2563eb;
-            border-bottom: 2px solid #2563eb;
-            padding-bottom: 10px;
+
+          .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 40px;
           }
-          .section {
-            margin: 20px 0;
+
+          .title {
+            font-size: 2.5em;
+            font-weight: 700;
+            color: #000;
+            margin: 0;
           }
-          .section-title {
-            font-weight: bold;
-            color: #1e40af;
-            margin-bottom: 10px;
-          }
+
           .tags {
             display: flex;
-            flex-wrap: wrap;
             gap: 10px;
-            margin: 10px 0;
+            flex-wrap: wrap;
+            margin-bottom: 20px;
           }
+
           .tag {
-            background: #e5e7eb;
-            padding: 4px 8px;
-            border-radius: 4px;
+            background: #8B1D24;
+            color: white;
+            padding: 8px 16px;
+            border-radius: 20px;
             font-size: 14px;
+            font-weight: 500;
+          }
+
+          .time-tag {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+          }
+
+          .time-tag::before {
+            content: "⏰";
+            font-size: 16px;
+          }
+
+          .section {
+            margin: 30px 0;
+          }
+
+          .section-title {
+            font-size: 1.8em;
+            font-weight: 700;
+            color: #000;
+            margin-bottom: 20px;
+          }
+
+          ul, ol {
+            margin: 0;
+            padding-left: 20px;
+          }
+
+          li {
+            margin-bottom: 15px;
+          }
+
+          .image-container {
+            position: absolute;
+            top: 40px;
+            right: 40px;
+            width: 200px;
+            height: 200px;
+            border-radius: 50%;
+            overflow: hidden;
+          }
+
+          .image-placeholder {
+            width: 100%;
+            height: 100%;
+            background: #f0f0f0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #666;
+          }
+
+          .corner-decoration {
+            position: absolute;
+            bottom: 0;
+            right: 0;
+            width: 200px;
+            height: 200px;
+            background: linear-gradient(135deg, #2B2B5E 0%, #5B6B9A 100%);
+            clip-path: polygon(100% 0, 100% 100%, 0 100%);
           }
         </style>
       </head>
       <body>
-        <h1>${program.title}</h1>
-
-        <div class="section">
-          <div class="section-title">Description</div>
-          <p>${program.description}</p>
-        </div>
-
-        <div class="section">
-          <div class="section-title">Materials Needed</div>
-          <p>${program.materialsNeeded}</p>
-        </div>
-
-        <div class="section">
-          <div class="section-title">Setup</div>
-          <p>${program.setup}</p>
-        </div>
-
-        <div class="section">
-          <div class="section-title">Instructions</div>
-          <p>${program.instructions}</p>
-        </div>
-
-        <div class="section">
-          <div class="section-title">Additional Tips</div>
-          <p>${program.additionalTips}</p>
-        </div>
-
-        <div class="section">
-          <div class="section-title">Program Details</div>
-          <div class="tags">
-            <span class="tag">Location: ${program.tags.location}</span>
-            <span class="tag">Energy Level: ${program.tags.energyLevel}/10</span>
-            <span class="tag">Duration: ${program.tags.duration}</span>
-            <span class="tag">Challenge: ${program.tags.challenge}</span>
-            <span class="tag">Space: ${program.tags.space}</span>
+        <div class="container">
+          <div class="header">
+            <div>
+              <h1 class="title">${program.title}</h1>
+              <div class="tags">
+                <span class="tag time-tag">${program.tags.duration}</span>
+                ${program.tags.type.map(tag => `<span class="tag">${tag}</span>`).join('')}
+              </div>
+            </div>
           </div>
-          <div class="tags">
-            ${program.tags.type.map(type => `<span class="tag">${type}</span>`).join('')}
+
+          <div class="section">
+            <h2 class="section-title">Materials Needed:</h2>
+            <ul>
+              ${program.materialsNeeded
+                .split(',')
+                .map(item => `<li>${item.trim()}</li>`)
+                .join('')}
+            </ul>
           </div>
+
+          <div class="section">
+            <h2 class="section-title">Setup</h2>
+            <p>${program.setup}</p>
+          </div>
+
+          <div class="section">
+            <h2 class="section-title">Instructions</h2>
+            <ol>
+              ${program.instructions
+                .split('\n')
+                .map(item => `<li>${item.replace(/^\d+\.\s*/, '')}</li>`)
+                .join('')}
+            </ol>
+          </div>
+
+          <div class="section">
+            <h2 class="section-title">Additional Tips</h2>
+            <ul>
+              ${program.additionalTips
+                .split('\n')
+                .map(tip => `<li>${tip.trim()}</li>`)
+                .join('')}
+            </ul>
+          </div>
+
+          <div class="corner-decoration"></div>
         </div>
       </body>
     </html>
@@ -102,15 +192,10 @@ async function generatePDF(program) {
     'generated',
     `${program.title.replace(/\s+/g, '-')}.pdf`
   );
+
   await page.pdf({
     path: pdfPath,
     format: 'A4',
-    margin: {
-      top: '20px',
-      right: '20px',
-      bottom: '20px',
-      left: '20px',
-    },
     printBackground: true,
   });
 
@@ -121,31 +206,30 @@ async function generatePDF(program) {
 // Example usage
 async function main() {
   try {
-    const exampleProgram = {
-      title: 'Example Program',
-      description: 'This is an example program description.',
-      materialsNeeded: 'Paper, pencils, markers',
-      setup: 'Arrange tables in groups',
-      instructions: '1. Start with...\n2. Then...',
-      additionalTips: 'Make sure to...',
+    const puzzleTreatProgram = {
+      title: 'PUZZLE TREAT BOX ADVENTURE',
+      description:
+        'An engaging puzzle game for dogs that combines mental stimulation with treats.',
+      materialsNeeded:
+        'A small cardboard box (like a shoebox) or a basket, 3-5 smaller containers or items that can hold treats, Toilet paper rolls (fold the ends to create a treat tube), Small Tupperware containers with lids (with a hole for sniffing), Socks or small cloth pouches, High-value treats (like small bits of dog kibble or favorite treats)',
+      setup:
+        "Place the smaller containers inside the cardboard box or basket. You can cover the main box with a cloth or leave it open, depending on your dog's comfort with different levels of challenge.",
+      instructions:
+        "1. Introduce the Game: Show your dog the treats before placing them in the containers to get them excited. Let them sniff around the box so they know there's something worth working for.\n2. Encourage Problem Solving: Place the box on the floor and encourage your dog to explore it. Cheer them on as they sniff, paw, or nudge to get to the treats.\n3. Provide Hints (if needed): If your dog seems stuck, you can give them a little hint by opening one container slightly or guiding them with your hand. Keep encouraging them so they feel successful as they work through the puzzle.\n4. Celebrate Wins: Each time your dog solves a part of the puzzle, give them gentle praise or a small reward to keep them engaged and motivated.",
+      additionalTips:
+        'Repeat and Rotate: You can repeat this activity a few times, swapping out different types of containers to keep it fresh.\nIncrease Challenge Over Time: Once your dog masters the basics, you can make it a bit harder by adding more containers or by partially hiding the main box under a light cover.',
       tags: {
-        location: 'INDOOR',
-        energyLevel: 5,
-        duration: 'THIRTY_MINUTES',
-        challenge: 'MEDIUM',
-        type: ['CRAFT', 'EDUCATIONAL'],
+        duration: '10Min',
+        type: ['INDOORS', 'EASY', 'SCENT', 'AGILITY', 'MENTAL'],
         space: 'SMALL',
       },
     };
 
-    const pdfPath = await generatePDF(exampleProgram);
+    const pdfPath = await generatePDF(puzzleTreatProgram);
     console.log(`PDF generated successfully at: ${pdfPath}`);
   } catch (error) {
     console.error('Error generating PDF:', error);
   }
 }
 
-// Run the example
 main();
-
-module.exports = { generatePDF };
