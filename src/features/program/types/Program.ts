@@ -14,10 +14,8 @@ export const Program = z.object({
   setup: z.string(),
   instructions: z.string(),
   additionalTips: z.string(),
-  canvaLink: z.string().url().optional(),
-  canvaUpToDate: z.boolean().default(false),
+  variation: z.number().default(1),
   pdfLink: z.string().url().optional(),
-  pdfUpToDate: z.boolean().default(false),
   approved: z.boolean().default(false),
   tags: z.object({
     location: z.nativeEnum(ELocation),

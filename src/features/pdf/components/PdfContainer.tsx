@@ -9,6 +9,7 @@ import { ProgramWithId } from '@/features/program/types/Program';
 import DownloadPdfButton from './DownloadPdfButton';
 import { PDFTemplate1 } from './PdfTemplate1';
 import { PDFTemplate2 } from './PdfTemplate2';
+import SavePdfButton from './SavePdfButton';
 
 interface Props {
   program: ProgramWithId;
@@ -30,7 +31,14 @@ function PdfContainer({ program }: Props): React.ReactElement {
           orientation='vertical'
           className='h-10 bg-accent-foreground'
         />
-        <DownloadPdfButton program={program} variation={variation} />
+        <DownloadPdfButton
+          program={program}
+          variation={variation}
+        />
+        <SavePdfButton
+          program={program}
+          variation={variation}
+        />
       </div>
       <div className='min-h-screen w-full flex justify-center py-8 bg-gray-100'>
         <div className='relative mx-auto'>

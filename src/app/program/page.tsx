@@ -12,7 +12,6 @@ import {
   Ban,
   CheckCircle,
   Edit,
-  ExternalLink,
   FileText,
   Trash,
 } from 'lucide-react';
@@ -278,21 +277,6 @@ function ProgramPage(): ReactNode {
                 </Button>
               </TooltipTrigger>
               <TooltipContent>Open PDF</TooltipContent>
-            </Tooltip>
-          )}
-
-          {row.original.canvaLink && (
-            <Tooltip>
-              <TooltipTrigger asChild>
-                <Button
-                  variant='ghost'
-                  size='icon'
-                  onClick={() => window.open(row.original.canvaLink, '_blank')}
-                >
-                  <ExternalLink className='size-4' />
-                </Button>
-              </TooltipTrigger>
-              <TooltipContent>Open in Canva</TooltipContent>
             </Tooltip>
           )}
 
@@ -650,7 +634,12 @@ function ProgramPage(): ReactNode {
       <TooltipProvider>
         <div className='container mx-auto p-4'>
           <div className='mb-4 flex justify-end'>
-            <Button onClick={handleCreateProgram} id='create-program-button'>Create Program</Button>
+            <Button
+              onClick={handleCreateProgram}
+              id='create-program-button'
+            >
+              Create Program
+            </Button>
           </div>
           <Card>
             <Filters />
@@ -660,7 +649,8 @@ function ProgramPage(): ReactNode {
             />
             <DataTablePagination table={table} />
             <div className='p-4 text-right text-sm text-muted-foreground'>
-              Filtered Programs: {programQuery.data?.programs?.length ?? 0} / Total Programs: {programQuery.data?.total ?? 0}
+              Filtered Programs: {programQuery.data?.programs?.length ?? 0} /
+              Total Programs: {programQuery.data?.total ?? 0}
             </div>
           </Card>
         </div>

@@ -1,10 +1,10 @@
-import { Program } from '@/features/program/types/Program';
+import { ProgramWithId } from '@/features/program/types/Program';
 
 export async function downloadPdf(
-  program: Program,
+  program: ProgramWithId,
   variation: number
 ): Promise<Response> {
-  const response = await fetch('/api/generate-pdf', {
+  const response = await fetch('/api/program/generate-pdf', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',

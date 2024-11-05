@@ -19,7 +19,7 @@
     "@operation-firefly/api-toolkit": "^1.4.5",
     "@operation-firefly/capitalize-string": "^2.0.1",
     "@operation-firefly/error-handling": "^2.0.0",
-    "@operation-firefly/s3-toolkit": "^1.1.0",
+    "@operation-firefly/s3-toolkit": "^1.1.1",
     "@radix-ui/react-accordion": "^1.2.1",
     "@radix-ui/react-alert-dialog": "^1.1.2",
     "@radix-ui/react-aspect-ratio": "^1.1.0",

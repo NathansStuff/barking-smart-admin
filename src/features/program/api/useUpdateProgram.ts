@@ -23,7 +23,7 @@ export const useUpdateProgram = (): UseMutationResult<
     mutationFn: async ({ id, data }) => {
       const response = await putRequest<ResponseType>(
         `${env.NEXT_PUBLIC_BASE_URL}/api/program/${id}`,
-        data,
+        data
       );
       return response.data;
     },
