@@ -5,6 +5,7 @@ import { useForm } from 'react-hook-form';
 
 import { zodResolver } from '@hookform/resolvers/zod';
 import Image from 'next/image';
+import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { toast } from 'sonner';
 
@@ -58,7 +59,7 @@ function DogForm({ dog }: Props): ReactNode {
       profileUrl: dog?.profileUrl || undefined,
       bio: dog?.bio || '',
       desexed: dog?.desexed || false,
-      healthIssues: dog?.healthIssues || EHealthIssues.NONE,
+      healthIssues: dog?.healthIssues || [],
       howActive: dog?.howActive || 5,
       weight: dog?.weight,
       foodOrientated: dog?.foodOrientated || false,
@@ -117,6 +118,11 @@ function DogForm({ dog }: Props): ReactNode {
               {dog ? 'Update' : 'Create'} Dog Profile
             </Button>
           </div>
+          <Button asChild>
+            <Link href={`/dog/${dog?._id}/generate-program`}>
+              Generate Program
+            </Link>
+          </Button>
         </div>
         {/* Basic Information */}
         <div className='grid grid-cols-2 gap-4'>
@@ -252,26 +258,25 @@ function DogForm({ dog }: Props): ReactNode {
             render={({ field }) => (
               <FormItem>
                 <FormLabel>Health Issues</FormLabel>
-                <Select
-                  value={field.value}
-                  onValueChange={field.onChange}
-                >
-                  <FormControl>
-                    <SelectTrigger>
-                      <SelectValue />
-                    </SelectTrigger>
-                  </FormControl>
-                  <SelectContent>
+                <FormControl>
+                  <div className='flex flex-wrap gap-2'>
                     {Object.values(EHealthIssues).map(issue => (
-                      <SelectItem
+                      <Button
                         key={issue}
-                        value={issue}
+                        type='button'
+                        variant={field.value.includes(issue) ? 'default' : 'outline'}
+                        onClick={() => {
+                          const newValue = field.value.includes(issue)
+                            ? field.value.filter(i => i !== issue)
+                            : [...field.value, issue];
+                          field.onChange(newValue);
+                        }}
                       >
                         {issue}
-                      </SelectItem>
+                      </Button>
                     ))}
-                  </SelectContent>
-                </Select>
+                  </div>
+                </FormControl>
                 <FormMessage />
               </FormItem>
             )}

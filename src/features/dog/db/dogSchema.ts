@@ -19,7 +19,7 @@ export const dogSchema = new Schema<Dog>(
     bio: { type: String, required: false },
     desexed: { type: Boolean, required: true },
     healthIssues: {
-      type: String,
+      type: [String],
       required: false,
       enum: Object.values(EHealthIssues),
     },

@@ -1,1 +1,0 @@
-export const PROGRAMS_GOAL = 1000;

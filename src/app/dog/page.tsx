@@ -38,8 +38,7 @@ import { EGender } from '@/features/dog/types/EGender';
 import { ELocation } from '@/features/program/types/ELocation';
 import UseConfirm from '@/hooks/UseConfirm';
 
-import DogLoadingPage from './DogLoadingPage';
-
+import DogPageSkeleton from './DogPageSkeleton';
 interface DogFilters {
   name: string;
   breed: string | 'all';
@@ -336,7 +335,7 @@ function DogPage(): ReactNode {
             </Button>
           </div>
           {dogQuery.isLoading ? (
-            <DogLoadingPage />
+            <DogPageSkeleton />
           ) : (
             <Card>
               <Filters />

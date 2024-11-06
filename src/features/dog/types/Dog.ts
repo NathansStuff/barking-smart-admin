@@ -21,7 +21,7 @@ export const Dog = z.object({
   // vaccinated: z.boolean(),
   // microchipped: z.boolean(),
   // microchipNumber: z.string().optional(),
-  healthIssues: z.nativeEnum(EHealthIssues).optional(),
+  healthIssues: z.array(z.nativeEnum(EHealthIssues)),
   howActive: z.number().min(1).max(10),
   weight: z.number().optional(),
   foodOrientated: z.boolean(),

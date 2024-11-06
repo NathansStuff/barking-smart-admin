@@ -3,7 +3,7 @@ import React from 'react';
 import { Card, CardContent } from '@/components/ui/card';
 import { Skeleton } from '@/components/ui/skeleton';
 
-function DogLoadingPage(): React.JSX.Element {
+function DogPageSkeleton(): React.JSX.Element {
   return (
     <div className='container mx-auto p-4'>
       <Card>
@@ -64,4 +64,4 @@ function DogLoadingPage(): React.JSX.Element {
   );
 }
 
-export default DogLoadingPage;
+export default DogPageSkeleton;

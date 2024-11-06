@@ -63,7 +63,8 @@ export async function updateDogHandler(
 ): Promise<NextResponse> {
   const id = getLastSegment(req.nextUrl.pathname);
   const data = await req.json();
-  const safeBody = DogPartial.parse(data);
+  const dateOfBirth = new Date(data.dateOfBirth);
+  const safeBody = DogPartial.parse({ ...data, dateOfBirth });
   const updatedDog = await updateDogByIdService(id, safeBody);
   if (!updatedDog) {
     return NextResponse.json(
