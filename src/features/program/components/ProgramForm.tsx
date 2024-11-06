@@ -21,9 +21,11 @@ import {
 import { Input } from '@/components/ui/input';
 import { Separator } from '@/components/ui/separator';
 import { Textarea } from '@/components/ui/textarea';
+import FileUploadZone from '@/features/s3/components/FileUploadZone';
 
 import { generateProgramContent } from '../api/generateProgramContent';
 import { generateProgramFieldname } from '../api/generateProgramFieldname';
+import { uploadFile } from '../api/uploadFile';
 import { useCreateProgram } from '../api/useCreateProgram';
 import { useUpdateProgram } from '../api/useUpdateProgram';
 import { EActivityType } from '../types/EActivityType';
@@ -278,7 +280,7 @@ function ProgramForm({ program, initialData }: Props): ReactNode {
             <Separator />
 
             {/* Links Section */}
-            <div className='space-y-4 flex gap-4 items-center'>
+            <div className='space-y-4'>
               <FormField
                 control={form.control}
                 name='pdfLink'
@@ -286,17 +288,40 @@ function ProgramForm({ program, initialData }: Props): ReactNode {
                   <FormItem className='w-full'>
                     <FormLabel>PDF Link</FormLabel>
                     <FormControl className='w-full'>
-                      <div className='flex gap-2 w-full'>
-                        <Input className='w-full' {...field} />
-                        <Button
-                          variant='ghost'
-                          size='icon'
-                          onClick={() =>
-                            window.open(form.getValues('pdfLink'), '_blank')
-                          }
-                        >
-                          <FileText className='size-4' />
-                        </Button>
+                      <div className='space-y-4'>
+                        <div className='flex gap-2 w-full'>
+                          <Input
+                            className='w-full'
+                            {...field}
+                          />
+                          <Button
+                            variant='ghost'
+                            size='icon'
+                            onClick={() =>
+                              window.open(form.getValues('pdfLink'), '_blank')
+                            }
+                          >
+                            <FileText className='size-4' />
+                          </Button>
+                        </div>
+                        <FileUploadZone
+                          onFileSelect={async file => {
+                            try {
+                              toast.loading('Uploading PDF...');
+                              const filename = `program_${Date.now()}.pdf`;
+                              const url = await uploadFile(file, filename);
+                              if (url) {
+                                field.onChange(url);
+                                toast.dismiss();
+                                toast.success('PDF uploaded successfully');
+                              }
+                            } catch (error) {
+                              toast.dismiss();
+                              toast.error('Failed to upload PDF');
+                              console.error('Upload error:', error);
+                            }
+                          }}
+                        />
                       </div>
                     </FormControl>
                     <FormMessage />
