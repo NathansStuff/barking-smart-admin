@@ -21,20 +21,9 @@ import {
   PROGRAM_DAYS,
 } from '@/constants/publicInfo';
 import { DogWithId } from '@/features/dog/types/Dog';
-import { calculateActivityTypeDistribution } from '@/features/dog/utils/activityTypeInfo';
-import {
-  calculateAgeDurationDistribution,
-  calculateAgeEnergy,
-} from '@/features/dog/utils/ageInfo';
-import { getBreedInfo } from '@/features/dog/utils/breedInfo';
-import { calculateChallengeDistribution } from '@/features/dog/utils/challengeInfo';
-import { getDayDistribution } from '@/features/dog/utils/energyInfo';
-import { getGenderEnergy } from '@/features/dog/utils/genderInfo';
-import { getHealthIssuesEnergy } from '@/features/dog/utils/healthInfo';
-import { calculateLocationDistribution } from '@/features/dog/utils/locationInfo';
 
 import { convertDistributionToPercentages } from '../utils/convertDistributionToPercentage';
-import { generateProgramRequirements } from '../utils/programRequirements';
+import { generateProgramData } from '../utils/generateProgramData';
 
 interface ProgramGenerationProps {
   dog: DogWithId;
@@ -45,39 +34,7 @@ export default function ProgramGeneration({
 }: ProgramGenerationProps): ReactNode {
   const [currentDay, setCurrentDay] = useState(1);
 
-  const breedOneInfo = getBreedInfo(dog.breedOne);
-  const breedTwoInfo = dog.breedTwo ? getBreedInfo(dog.breedTwo) : null;
-  const ageEnergy = calculateAgeEnergy(dog.dateOfBirth.toString());
-  const healthIssuesEnergy = getHealthIssuesEnergy(dog.healthIssues);
-  const genderEnergy = getGenderEnergy(dog.gender);
-  const calculatedEnergy =
-    breedOneInfo.energyLevel +
-    (breedTwoInfo?.energyLevel || 0) +
-    ageEnergy +
-    healthIssuesEnergy +
-    genderEnergy;
-
-  const adjustedEnergy = Math.min(
-    Math.max(calculatedEnergy, MINIMUM_ENERGY),
-    MAXIMUM_ENERGY
-  );
-
-  const energyDayDistribution = getDayDistribution(adjustedEnergy);
-  const durationDistribution = calculateAgeDurationDistribution(
-    dog.dateOfBirth.toString()
-  );
-  const challengeDistribution = calculateChallengeDistribution(adjustedEnergy);
-  const locationDistribution = calculateLocationDistribution(dog.location);
-  const activityTypeDistribution = calculateActivityTypeDistribution(dog);
-
-  const programRequirements = generateProgramRequirements(
-    energyDayDistribution,
-    durationDistribution,
-    challengeDistribution,
-    locationDistribution,
-    activityTypeDistribution,
-    PROGRAM_DAYS
-  );
+  const programData = generateProgramData(dog);
 
   return (
     <div className='container mx-auto p-4'>
@@ -106,30 +63,31 @@ export default function ProgramGeneration({
               <div className='grid grid-cols-2 gap-4'>
                 <div className='font-semibold'>Breed One:</div>
                 <div>
-                  {breedOneInfo.displayName} ({breedOneInfo.energyLevel})
+                  {programData.energyCalculation.breedOne.name} (
+                  {programData.energyCalculation.breedOne.energy})
                 </div>
                 <div className='font-semibold'>Breed Two:</div>
                 <div>
-                  {breedTwoInfo
-                    ? `${breedTwoInfo.displayName} (${breedTwoInfo.energyLevel})`
+                  {programData.energyCalculation.breedTwo
+                    ? `${programData.energyCalculation.breedTwo.name} (${programData.energyCalculation.breedTwo.energy})`
                     : 'None (0)'}
                 </div>
                 <div className='font-semibold'>Age Energy:</div>
-                <div>{ageEnergy}</div>
+                <div>{programData.energyCalculation.ageEnergy}</div>
                 <div className='font-semibold'>Health Issues Energy:</div>
-                <div>{healthIssuesEnergy}</div>
+                <div>{programData.energyCalculation.healthIssuesEnergy}</div>
                 <div className='font-semibold'>Gender Energy:</div>
-                <div>{genderEnergy}</div>
+                <div>{programData.energyCalculation.genderEnergy}</div>
                 <Separator className='col-span-2 my-2' />
                 <div className='font-semibold'>Calculated Energy:</div>
-                <div>{calculatedEnergy}</div>
+                <div>{programData.energyCalculation.calculatedEnergy}</div>
                 <div className='font-semibold'>Minimum Energy:</div>
                 <div>{MINIMUM_ENERGY}</div>
                 <div className='font-semibold'>Maximum Energy:</div>
                 <div>{MAXIMUM_ENERGY}</div>
                 <Separator className='col-span-2 my-2' />
                 <div className='font-semibold'>Adjusted Energy:</div>
-                <div>{adjustedEnergy}</div>
+                <div>{programData.energyCalculation.adjustedEnergy}</div>
               </div>
               <div className='mt-4'>
                 <div className='mb-2 font-semibold'>Energy Level:</div>
@@ -137,7 +95,7 @@ export default function ProgramGeneration({
                   <div
                     className='bg-primary h-2.5 rounded-full'
                     style={{
-                      width: `${(adjustedEnergy / MAXIMUM_ENERGY) * 100}%`,
+                      width: `${(programData.energyCalculation.adjustedEnergy / MAXIMUM_ENERGY) * 100}%`,
                     }}
                   ></div>
                 </div>
@@ -153,17 +111,25 @@ export default function ProgramGeneration({
         <TabsContent value='distributions'>
           <div className='grid grid-cols-1 md:grid-cols-2 gap-4'>
             {renderDistribution(
-              convertDistributionToPercentages(energyDayDistribution),
+              convertDistributionToPercentages(
+                programData.distributions.energyDayDistribution
+              ),
               'Energy Distribution'
             )}
-            {renderDistribution(durationDistribution, 'Duration Distribution')}
             {renderDistribution(
-              challengeDistribution,
+              programData.distributions.durationDistribution,
+              'Duration Distribution'
+            )}
+            {renderDistribution(
+              programData.distributions.challengeDistribution,
               'Challenge Distribution'
             )}
-            {renderDistribution(locationDistribution, 'Location Distribution')}
             {renderDistribution(
-              activityTypeDistribution,
+              programData.distributions.locationDistribution,
+              'Location Distribution'
+            )}
+            {renderDistribution(
+              programData.distributions.activityTypeDistribution,
               'Activity Type Distribution'
             )}
           </div>
@@ -203,24 +169,36 @@ export default function ProgramGeneration({
               <div className='grid grid-cols-2 gap-2'>
                 <div>Energy Level:</div>
                 <div>
-                  {programRequirements[currentDay - 1].requirements.energyLevel}
+                  {
+                    programData.programRequirements[currentDay - 1].requirements
+                      .energyLevel
+                  }
                 </div>
                 <div>Duration:</div>
                 <div>
-                  {programRequirements[currentDay - 1].requirements.duration}
+                  {
+                    programData.programRequirements[currentDay - 1].requirements
+                      .duration
+                  }
                 </div>
                 <div>Challenge:</div>
                 <div>
-                  {programRequirements[currentDay - 1].requirements.challenge}
+                  {
+                    programData.programRequirements[currentDay - 1].requirements
+                      .challenge
+                  }
                 </div>
                 <div>Location:</div>
                 <div>
-                  {programRequirements[currentDay - 1].requirements.location}
+                  {
+                    programData.programRequirements[currentDay - 1].requirements
+                      .location
+                  }
                 </div>
                 <div>Activity Type:</div>
                 <div>
                   {
-                    programRequirements[currentDay - 1].requirements
+                    programData.programRequirements[currentDay - 1].requirements
                       .activityType
                   }
                 </div>

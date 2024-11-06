@@ -58,20 +58,23 @@ export function generateProgramRequirements(
 }
 
 // Helper function to convert percentage distributions to arrays of values
-function flattenDistribution(
-  distribution: Record<string | number, number>,
+function flattenDistribution<T extends string | number>(
+  distribution: Record<T, number>,
   totalItems?: number
-): any[] {
-  const result: any[] = [];
-  Object.entries(distribution).forEach(([value, count]) => {
-    const numberOfItems = totalItems ? Math.round(count * totalItems) : count;
-    result.push(...Array(numberOfItems).fill(value));
-  });
+): T[] {
+  const result: T[] = [];
+  (Object.entries(distribution) as [string, number][]).forEach(
+    ([key, count]) => {
+      const value = key as T;
+      const numberOfItems = totalItems ? Math.round(count * totalItems) : count;
+      result.push(...Array(numberOfItems).fill(value));
+    }
+  );
   return result;
 }
 
 // Helper function to shuffle array
-function shuffleArray(array: any[]): void {
+function shuffleArray<T>(array: T[]): void {
   for (let i = array.length - 1; i > 0; i--) {
     const j = Math.floor(Math.random() * (i + 1));
     [array[i], array[j]] = [array[j], array[i]];
