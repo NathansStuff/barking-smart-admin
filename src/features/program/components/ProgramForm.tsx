@@ -20,8 +20,13 @@ import {
 } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
 import { Separator } from '@/components/ui/separator';
+import { Switch } from '@/components/ui/switch';
 import { Textarea } from '@/components/ui/textarea';
+import { useAppSelector } from '@/contexts/storeHooks';
+import { selectRole } from '@/contexts/userSlice';
+import SavePdfButton from '@/features/pdf/components/SavePdfButton';
 import FileUploadZone from '@/features/s3/components/FileUploadZone';
+import { EUserRole } from '@/features/user/types/EUserRole';
 
 import { generateProgramContent } from '../api/generateProgramContent';
 import { generateProgramFieldname } from '../api/generateProgramFieldname';
@@ -44,6 +49,7 @@ function ProgramForm({ program, initialData }: Props): ReactNode {
   const createMutation = useCreateProgram();
   const updateMutation = useUpdateProgram();
   const router = useRouter();
+  const role = useAppSelector(selectRole);
 
   const [isGenerating, setIsGenerating] = useState(false);
 
@@ -53,6 +59,7 @@ function ProgramForm({ program, initialData }: Props): ReactNode {
       title: program?.title || '',
       description: program?.description || '',
       materialsNeeded: program?.materialsNeeded || '',
+      approved: program?.approved || false,
       setup: program?.setup || '',
       instructions: program?.instructions || '',
       additionalTips: program?.additionalTips || '',
@@ -251,30 +258,62 @@ function ProgramForm({ program, initialData }: Props): ReactNode {
             onSubmit={form.handleSubmit(onSubmit)}
             className='space-y-6'
           >
-            <div className='flex gap-2'>
+            <div className='flex gap-2 items-center '>
               {/* Add AI generation button */}
               <Button
                 type='button'
                 onClick={generateContent}
-                className='mb-2'
               >
                 Generate Content with AI
               </Button>
+
+              <Button
+                asChild
+                type='button'
+              >
+                <Link href={`/program/${program?._id}/preview`}>
+                  Preview PDF
+                </Link>
+              </Button>
+              {program && (
+                <SavePdfButton
+                  program={program}
+                  variation={form.getValues('variation')}
+                  onSuccess={link => {
+                    form.setValue('pdfLink', link);
+                  }}
+                />
+              )}
+              {role === EUserRole.ADMIN && (
+                <FormField
+                  control={form.control}
+                  name='approved'
+                  render={({ field }) => (
+                    <FormItem className='flex items-center justify-center gap-2'>
+                      <FormLabel>Approved</FormLabel>
+                      <FormControl>
+                        <Switch
+                          checked={field.value}
+                          onCheckedChange={checked => {
+                            field.onChange(checked);
+                          }}
+                          className='!mt-0 data-[state=on]:bg-green-500'
+                          aria-label='Toggle program approval'
+                        >
+                          {field.value ? 'Approved' : 'Not Approved'}
+                        </Switch>
+                      </FormControl>
+                    </FormItem>
+                  )}
+                />
+              )}
+
               <Button
                 type='submit'
                 id='submit-program-button'
                 disabled={createMutation.isPending || updateMutation.isPending}
               >
                 {program ? 'Update' : 'Create'} Program
-              </Button>
-              <Button
-                asChild
-                type='button'
-                className='mb-2'
-              >
-                <Link href={`/program/${program?._id}/preview`}>
-                  Preview PDF
-                </Link>
               </Button>
             </div>
             <Separator />

@@ -13,9 +13,14 @@ import { savePdf } from '../api/savePdf';
 interface Props {
   program: ProgramWithId;
   variation: number;
+  onSuccess?: (link: string) => void;
 }
 
-function SavePdfButton({ program, variation }: Props): React.ReactElement {
+function SavePdfButton({
+  program,
+  variation,
+  onSuccess,
+}: Props): React.ReactElement {
   const updateMutation = useUpdateProgram();
   async function handleClick(): Promise<void> {
     try {
@@ -28,7 +33,7 @@ function SavePdfButton({ program, variation }: Props): React.ReactElement {
           variation,
         },
       });
-
+      onSuccess?.(url);
       toast.dismiss();
       toast.success('PDF saved successfully');
     } catch (error) {
