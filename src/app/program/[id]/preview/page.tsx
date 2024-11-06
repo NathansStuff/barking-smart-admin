@@ -1,32 +1,42 @@
+'use client';
+
 import React from 'react';
 
-import AdminOnly from '@/components/container/AdminOnly';
+import VerifedOnly from '@/components/container/VerifiedOnly';
 import PdfContainer from '@/features/pdf/components/PdfContainer';
-import { getProgramById } from '@/features/program/db/programDal';
+import { useGetProgramById } from '@/features/program/api/useGetProgramById';
 
+import ProgramLoadingPage from '../../ProgramLoadingPage';
 interface Props {
   params: {
     id: string;
   };
 }
 
-async function PreviewProgramPage({
-  params,
-}: Props): Promise<React.ReactElement> {
+function PreviewProgramPage({ params }: Props): React.ReactElement {
   const { id } = params;
 
-  const program = await getProgramById(id);
+  const programQuery = useGetProgramById(id);
 
-  if (!program) {
+  if (programQuery.isLoading) {
+    return (
+      <>
+        <VerifedOnly />
+        <ProgramLoadingPage />
+      </>
+    );
+  }
+
+  if (!programQuery.data) {
     return <div>Program not found</div>;
   }
 
   return (
     <>
-      <AdminOnly />
+      <VerifedOnly />
       <section className='overflow-hidden pb-10'>
         <div className='max-w-5xl mx-auto'>
-          <PdfContainer program={program} />
+          <PdfContainer program={programQuery.data.program} />
         </div>
       </section>
     </>

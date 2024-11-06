@@ -2,6 +2,8 @@
 
 import React, { useState } from 'react';
 
+import Link from 'next/link';
+
 import { Button } from '@/components/ui/button';
 import { Separator } from '@/components/ui/separator';
 import { ProgramWithId } from '@/features/program/types/Program';
@@ -24,21 +26,28 @@ function PdfContainer({ program }: Props): React.ReactElement {
 
   return (
     <>
-      <div className='flex gap-2 justify-center items-center py-10'>
-        <Button onClick={() => changeVariation(1)}>Variation 1</Button>
-        <Button onClick={() => changeVariation(2)}>Variation 2</Button>
-        <Separator
-          orientation='vertical'
-          className='h-10 bg-accent-foreground'
-        />
-        <DownloadPdfButton
-          program={program}
-          variation={variation}
-        />
-        <SavePdfButton
-          program={program}
-          variation={variation}
-        />
+      <div className='flex items-center'>
+        <div className='flex-none py-10'>
+          <Button asChild>
+            <Link href={`/program/${program._id}`}>Back to Program</Link>
+          </Button>
+        </div>
+        <div className='flex-1 flex gap-2 justify-center items-center'>
+          <Button onClick={() => changeVariation(1)}>Variation 1</Button>
+          <Button onClick={() => changeVariation(2)}>Variation 2</Button>
+          <Separator
+            orientation='vertical'
+            className='h-10 bg-accent-foreground'
+          />
+          <DownloadPdfButton
+            program={program}
+            variation={variation}
+          />
+          <SavePdfButton
+            program={program}
+            variation={variation}
+          />
+        </div>
       </div>
       <div className='min-h-screen w-full flex justify-center py-8 bg-gray-100'>
         <div className='relative mx-auto'>
