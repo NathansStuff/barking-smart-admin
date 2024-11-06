@@ -14,7 +14,7 @@ import {
   CardHeader,
   CardTitle,
 } from '@/components/ui/card';
-import { PROGRAMS_GOAL } from '@/constants/goals';
+import { PROGRAMS_GOAL } from '@/constants/publicInfo';
 import { useGetPrograms } from '@/features/program/api/useGetPrograms';
 
 function DashboardPage(): ReactNode {

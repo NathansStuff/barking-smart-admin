@@ -1,10 +1,10 @@
 import { useQuery, UseQueryResult } from '@tanstack/react-query';
 
+import { ELocation } from '@/features/program/types/ELocation';
 import { BaseApiClient } from '@/lib/BaseApiClient';
 
-import { EBreed } from '../types/EBreed';
 import { DogWithId } from '../types/Dog';
-import { ELocation } from '@/features/program/types/ELocation';
+import { EBreed } from '../types/EBreed';
 
 interface GetDogsParams {
   page?: number;
