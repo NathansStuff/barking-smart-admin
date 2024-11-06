@@ -30,7 +30,7 @@ function Header(): React.JSX.Element {
   const headerLinks = getHeaderLinks(isLoggedIn);
 
   return (
-    <header className='sticky top-0 z-20 backdrop-blur-sm'>
+    <header className='sticky top-0 z-20 backdrop-blur-sm shadow-lg'>
       <PageLayout>
         <div className='flex items-center justify-between'>
           {/* Left: Logo */}
