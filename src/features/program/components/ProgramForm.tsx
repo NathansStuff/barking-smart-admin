@@ -267,14 +267,16 @@ function ProgramForm({ program, initialData }: Props): ReactNode {
                 Generate Content with AI
               </Button>
 
-              <Button
-                asChild
-                type='button'
-              >
-                <Link href={`/program/${program?._id}/preview`}>
-                  Preview PDF
-                </Link>
-              </Button>
+              {program && (
+                <Button
+                  asChild
+                  type='button'
+                >
+                  <Link href={`/program/${program?._id}/preview`}>
+                    Preview PDF
+                  </Link>
+                </Button>
+              )}
               {program && (
                 <SavePdfButton
                   program={program}

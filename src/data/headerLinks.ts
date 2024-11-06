@@ -21,6 +21,10 @@ export const adminHeaderLinks: HeaderLink[] = [
     href: '/required-programs',
   },
   {
+    title: 'Dogs',
+    href: '/dog',
+  },
+  {
     title: 'Admin',
     href: '/admin',
   },
