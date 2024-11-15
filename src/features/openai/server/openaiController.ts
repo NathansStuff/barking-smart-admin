@@ -1,11 +1,10 @@
-import { ResponseCode } from '@operation-firefly/error-handling';
 import { NextRequest, NextResponse } from 'next/server';
+
+import { ResponseCode } from '@/types/ResponseCode';
 
 import { generateProgramContent, generateProgramField } from './openaiService';
 
-export async function generateProgramContentHandler(
-  req: NextRequest
-): Promise<NextResponse> {
+export async function generateProgramContentHandler(req: NextRequest): Promise<NextResponse> {
   try {
     const data = await req.json();
     const program = await generateProgramContent(data.prompt);
@@ -19,9 +18,7 @@ export async function generateProgramContentHandler(
   }
 }
 
-export async function generateProgramFieldHandler(
-  req: NextRequest
-): Promise<NextResponse> {
+export async function generateProgramFieldHandler(req: NextRequest): Promise<NextResponse> {
   try {
     const data = await req.json();
     const { fieldName, context } = data;

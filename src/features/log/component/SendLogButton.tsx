@@ -25,7 +25,10 @@ function SendLogButton(): ReactNode {
   }
 
   return (
-    <Button onClick={onClick} disabled={mutation.isPending}>
+    <Button
+      onClick={onClick}
+      disabled={mutation.isPending}
+    >
       Send Log
     </Button>
   );

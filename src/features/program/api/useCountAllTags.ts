@@ -1,7 +1,6 @@
 import { useQuery, UseQueryResult } from '@tanstack/react-query';
 
-import { env } from '@/constants';
-import { getRequest } from '@/lib/fetch';
+import { BaseApiClient } from '@/features/apiClient/lib/BaseApiClient';
 
 type ResponseType = { key: string; count: number }[];
 
@@ -9,9 +8,7 @@ export function useCountAllTags(): UseQueryResult<ResponseType, Error> {
   return useQuery({
     queryKey: ['allTagCounts'],
     queryFn: async () => {
-      const response = await getRequest<ResponseType>(
-        `${env.NEXT_PUBLIC_BASE_URL}/api/program/all-tags`
-      );
+      const response = await BaseApiClient.get<ResponseType>('/api/program/all-tags');
       return response.data;
     },
   });

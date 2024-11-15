@@ -1,15 +1,11 @@
-import { BaseApiClient } from '@/lib/BaseApiClient';
+import { BaseApiClient } from '@/features/apiClient/lib/BaseApiClient';
 
 import { ResetPasswordRequest } from '../types/ResetPasswordRequest';
 
-export async function postUserNewPassword(
-  form: ResetPasswordRequest,
-): Promise<boolean> {
+export async function postUserNewPassword(form: ResetPasswordRequest): Promise<boolean> {
   try {
-    const url = '/api/auth/new-password';
-    return await (
-      await BaseApiClient.post<boolean>(url, form)
-    ).data;
+    const res = await BaseApiClient.post<boolean>('/api/auth/new-password', form);
+    return res.data;
   } catch (error) {
     console.log('error', error);
     return false;

@@ -1,15 +1,13 @@
-import { TryCatchMiddleware } from '@operation-firefly/error-handling';
 import { NextRequest, NextResponse } from 'next/server';
 
-import {
-  createUserHandler,
-  getUsersHandler,
-} from '@/features/user/server/userController';
-
-export async function POST(req: NextRequest): Promise<NextResponse> {
+import { createUserHandler } from '@/features/user/server/userController';
+import { TryCatchMiddleware } from '@/middleware/tryCatchMiddleware';
+async function postHandler(req: NextRequest): Promise<NextResponse> {
   return await TryCatchMiddleware(() => createUserHandler(req));
 }
 
-export async function GET(): Promise<NextResponse> {
-  return await TryCatchMiddleware(() => getUsersHandler());
-}
+// async function getHandler(): Promise<NextResponse> {
+//   return await TryCatchMiddleware(() => getAllUsersHandler());
+// }
+
+export { postHandler as POST };

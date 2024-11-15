@@ -29,13 +29,13 @@ export default async function RootLayout({
       {/* Favicon */}
       <link
         rel='icon'
-        href='/logo/favicon.svg'
+        href='data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🎯</text></svg>'
       />
 
       <body className='flex h-screen w-screen flex-col'>
         <ClientProviders session={session}>
           <Header />
-          <main className='flex-grow overflow-auto bg-[url(/assets/bg_img.svg)] bg-cover bg-repeat dark:bg-[url(/assets/bg_img.svg)]'>
+          <main className='flex-grow overflow-auto bg-[url(/assets/light-bg.svg)] bg-cover bg-repeat dark:bg-[url(/assets/dark-bg.svg)]'>
             {children}
           </main>
         </ClientProviders>

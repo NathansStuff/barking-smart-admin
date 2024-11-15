@@ -1,7 +1,7 @@
 import { useQuery, UseQueryResult } from '@tanstack/react-query';
 
+import { BaseApiClient } from '@/features/apiClient/lib/BaseApiClient';
 import { ELocation } from '@/features/program/types/ELocation';
-import { BaseApiClient } from '@/lib/BaseApiClient';
 
 import { DogWithId } from '../types/Dog';
 import { EBreed } from '../types/EBreed';
@@ -32,15 +32,11 @@ async function getDogs(params: GetDogsParams = {}): Promise<GetDogsResponse> {
   if (params.filters?.breed) searchParams.append('breed', params.filters.breed);
   if (params.filters?.location) searchParams.append('location', params.filters.location);
 
-  const response = await BaseApiClient.get<GetDogsResponse>(
-    `/api/dog?${searchParams.toString()}`
-  );
+  const response = await BaseApiClient.get<GetDogsResponse>(`/api/dog?${searchParams.toString()}`);
   return response.data;
 }
 
-export function useGetDogs(
-  params: GetDogsParams = {}
-): UseQueryResult<GetDogsResponse> {
+export function useGetDogs(params: GetDogsParams = {}): UseQueryResult<GetDogsResponse> {
   return useQuery({
     queryKey: ['dogs', params],
     queryFn: () => getDogs(params),

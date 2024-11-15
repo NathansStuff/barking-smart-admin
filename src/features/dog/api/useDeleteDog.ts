@@ -1,6 +1,6 @@
 import { useMutation, UseMutationResult, useQueryClient } from '@tanstack/react-query';
 
-import { BaseApiClient } from '@/lib/BaseApiClient';
+import { BaseApiClient } from '@/features/apiClient/lib/BaseApiClient';
 
 async function deleteDog(id: string): Promise<void> {
   await BaseApiClient.delete(`/api/dog/${id}`);

@@ -12,5 +12,5 @@ export const accountSchema = new Schema<Account>(
     resetToken: { type: String, required: false },
     resetTokenExpiry: { type: Date, required: false },
   },
-  { timestamps: true },
+  { timestamps: true }
 );

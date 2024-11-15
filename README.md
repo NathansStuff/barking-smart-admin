@@ -1,20 +1,38 @@
-# Policies and Procedures
-To create new programs:
+TODO:
+- Users can go to the short URL and be redirected to the original URL
+- Make the shortURL unique and random
+- Track the number of clicks on the short URL
+- Users can see the number of clicks on the short URL and statistics
+- Statistics to be a premium feature
+- Users can manage their portfolio
+  - See billing
+  - Upgrade/downgrade
+  - Settings
+  - History
+  - Invoices
+  - Profile picture
+- Stripe billing management
 
-1. Determine what sort of programs you want to create
-   1. How many of each type of tags, etc.
+DONE:
+- Users can create Links
+- Users can see their created Links
+- Users can edit their Links
+- Users can delete their Links
 
+NOT MVP
+- Users can create QR Styles
 
-
-
-
-I am creating a dog activity website where users enter their dogs informtaion and can purchase programs with educatinal enrichment activities for their dog.
-
-To create a database of activities, I need, on ach program / activity:
-- title
-- short description
-- tags (indoors/outdoors, energy level 1-10, time quick/mid/long, challenge easy/md/hard, activity type (scent, agility, puizzle, etc)
-- link to pdf
-- activity content
-
-When user wants a activity, based on dog info, I can generate logicthat says I need x of various tags - one set of logic for each tag, eg 10x activity scent, 20x activity agility and 10x quick 20xlong time for a total of 30 activities.
+OTHER:
+- Admin
+- Action tracking page
+- Send / see / edit emails
+- Implement 2FA
+- Implement browser fingerprinting
+- Implement IP tracking
+- Implement location tracking
+- Implement device tracking
+- Implement user agent tracking
+- Implement mandatory password reset every X days
+- Implement password strength checker
+- Implement password expiration
+- Implement account deletion

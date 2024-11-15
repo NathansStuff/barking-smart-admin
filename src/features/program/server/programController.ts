@@ -1,6 +1,6 @@
-import { ResponseCode } from '@operation-firefly/error-handling';
 import { NextRequest, NextResponse } from 'next/server';
 
+import { ResponseCode } from '@/types/ResponseCode';
 import { getLastSegment } from '@/utils/getLastSegment';
 
 import { Program, ProgramPartial } from '../types/Program';
@@ -15,18 +15,14 @@ import {
   updateProgramService,
 } from './programService';
 
-export async function createProgramHandler(
-  req: NextRequest
-): Promise<NextResponse> {
+export async function createProgramHandler(req: NextRequest): Promise<NextResponse> {
   const data = await req.json();
   const safeBody = Program.parse(data);
   const program = await createProgramService(safeBody);
   return NextResponse.json(program, { status: ResponseCode.OK });
 }
 
-export async function getAllProgramsHandler(
-  req: NextRequest
-): Promise<NextResponse> {
+export async function getAllProgramsHandler(req: NextRequest): Promise<NextResponse> {
   const searchParams = req.nextUrl.searchParams;
   const page = parseInt(searchParams.get('page') || '1');
   const limit = parseInt(searchParams.get('limit') || '10');
@@ -39,15 +35,9 @@ export async function getAllProgramsHandler(
     challenge: searchParams.get('challenge') || undefined,
     space: searchParams.get('space') || undefined,
     type: searchParams.get('type') || undefined,
-    approved: searchParams.has('approved')
-      ? searchParams.get('approved') === 'true'
-      : undefined,
-    energyLevelMin: searchParams.has('energyLevelMin')
-      ? parseInt(searchParams.get('energyLevelMin')!)
-      : undefined,
-    energyLevelMax: searchParams.has('energyLevelMax')
-      ? parseInt(searchParams.get('energyLevelMax')!)
-      : undefined,
+    approved: searchParams.has('approved') ? searchParams.get('approved') === 'true' : undefined,
+    energyLevelMin: searchParams.has('energyLevelMin') ? parseInt(searchParams.get('energyLevelMin')!) : undefined,
+    energyLevelMax: searchParams.has('energyLevelMax') ? parseInt(searchParams.get('energyLevelMax')!) : undefined,
   };
 
   const result = await getAllProgramsService({
@@ -59,53 +49,36 @@ export async function getAllProgramsHandler(
   return NextResponse.json(result, { status: ResponseCode.OK });
 }
 
-export async function getProgramByIdHandler(
-  req: NextRequest
-): Promise<NextResponse> {
+export async function getProgramByIdHandler(req: NextRequest): Promise<NextResponse> {
   const id = getLastSegment(req.nextUrl.pathname);
   const program = await getProgramByIdService(id);
   if (!program) {
-    return NextResponse.json(
-      { error: 'Program not found' },
-      { status: ResponseCode.NOT_FOUND }
-    );
+    return NextResponse.json({ error: 'Program not found' }, { status: ResponseCode.NOT_FOUND });
   }
   return NextResponse.json({ program }, { status: ResponseCode.OK });
 }
 
-export async function updateProgramHandler(
-  req: NextRequest
-): Promise<NextResponse> {
+export async function updateProgramHandler(req: NextRequest): Promise<NextResponse> {
   const id = getLastSegment(req.nextUrl.pathname);
   const data = await req.json();
   const safeBody = Program.partial().parse(data);
   const program = await updateProgramService(id, safeBody);
   if (!program) {
-    return NextResponse.json(
-      { error: 'Program not found' },
-      { status: ResponseCode.NOT_FOUND }
-    );
+    return NextResponse.json({ error: 'Program not found' }, { status: ResponseCode.NOT_FOUND });
   }
   return NextResponse.json({ program }, { status: ResponseCode.OK });
 }
 
-export async function deleteProgramHandler(
-  req: NextRequest
-): Promise<NextResponse> {
+export async function deleteProgramHandler(req: NextRequest): Promise<NextResponse> {
   const id = getLastSegment(req.nextUrl.pathname);
   const program = await deleteProgramService(id);
   if (!program) {
-    return NextResponse.json(
-      { error: 'Program not found' },
-      { status: ResponseCode.NOT_FOUND }
-    );
+    return NextResponse.json({ error: 'Program not found' }, { status: ResponseCode.NOT_FOUND });
   }
   return NextResponse.json({ program }, { status: ResponseCode.OK });
 }
 
-export async function countProgramsByTagsHandler(
-  req: NextRequest
-): Promise<NextResponse> {
+export async function countProgramsByTagsHandler(req: NextRequest): Promise<NextResponse> {
   const data = await req.json();
   const tags = ProgramPartial.parse(data);
   const count = await countProgramsByTagsService(tags);

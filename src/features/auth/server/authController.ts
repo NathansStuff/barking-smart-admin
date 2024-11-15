@@ -9,9 +9,7 @@ import { SignupFormRequest } from '../types/SignupFormRequest';
 import { registerUserService } from './authService';
 
 // Handler to create a new Log
-export async function registerUserHandler(
-  req: NextRequest,
-): Promise<NextResponse<UserWithId>> {
+export async function registerUserHandler(req: NextRequest): Promise<NextResponse<UserWithId>> {
   const data = await req.json();
   const safeBody = SignupFormRequest.parse(data);
   const ipAddress = getIpAddress(req);

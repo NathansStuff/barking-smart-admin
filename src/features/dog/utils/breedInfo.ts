@@ -449,9 +449,12 @@ export const getBreedDisplayName = (breed: EBreed): string => {
 
 // Optional: Helper function to get all breeds with a specific energy level
 export const getBreedsWithEnergyLevel = (energyLevel: number): EBreed[] => {
-  return Object.entries(breedInfoMap)
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    .filter(([_, info]) => info.energyLevel === energyLevel)
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    .map(([breed, _]) => breed as EBreed);
+  return (
+    Object.entries(breedInfoMap)
+
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
+      .filter(([_, info]) => info.energyLevel === energyLevel)
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
+      .map(([breed, _]) => breed as EBreed)
+  );
 };

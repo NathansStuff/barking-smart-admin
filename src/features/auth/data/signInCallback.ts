@@ -1,3 +1,3 @@
 export const signInCallback = {
-  callbackUrl: '/',
+  callbackUrl: '/profile',
 };

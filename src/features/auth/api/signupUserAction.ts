@@ -5,9 +5,7 @@ import { SignupFormRequest } from '../types/SignupFormRequest';
 
 import { postUserSignupForm } from './postUserSignupForm';
 
-export async function signupUserAction(
-  form: SignupFormRequest,
-): Promise<boolean> {
+export async function signupUserAction(form: SignupFormRequest): Promise<boolean> {
   const loading = toast.loading('Creating account...');
   const user = await postUserSignupForm(form);
   if (user) {

@@ -34,6 +34,7 @@ const persistedReducer = persistReducer(persistConfig, rootReducer);
 
 // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
 export function setupStore() {
+
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const middleware: any[] = [];
   if (

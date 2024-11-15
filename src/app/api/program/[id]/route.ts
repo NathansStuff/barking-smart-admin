@@ -1,4 +1,3 @@
-import { TryCatchMiddleware } from '@operation-firefly/error-handling';
 import { NextRequest, NextResponse } from 'next/server';
 
 import {
@@ -6,6 +5,7 @@ import {
   getProgramByIdHandler,
   updateProgramHandler,
 } from '@/features/program/server/programController';
+import { TryCatchMiddleware } from '@/middleware/tryCatchMiddleware';
 export async function PUT(req: NextRequest): Promise<NextResponse> {
   return await TryCatchMiddleware(() => updateProgramHandler(req));
 }

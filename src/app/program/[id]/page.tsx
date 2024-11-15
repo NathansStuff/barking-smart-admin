@@ -1,22 +1,17 @@
 'use client';
 
-import { ReactNode } from 'react';
+import { ReactNode, use } from 'react';
 
 import VerifedOnly from '@/components/container/VerifiedOnly';
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from '@/components/ui/card';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { useGetProgramById } from '@/features/program/api/useGetProgramById';
 import ProgramForm from '@/features/program/components/ProgramForm';
 
 import ProgramLoadingPage from '../ProgramLoadingPage';
 
-function EditProgramPage({ params }: { params: { id: string } }): ReactNode {
-  const programQuery = useGetProgramById(params.id);
+function EditProgramPage({ params }: { params: Promise<{ id: string }> }): ReactNode {
+  const { id } = use(params);
+  const programQuery = useGetProgramById(id);
 
   if (programQuery.isLoading) {
     return (

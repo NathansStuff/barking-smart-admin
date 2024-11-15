@@ -9,9 +9,7 @@ import { CreateLogRequest } from '../types/CreateLogRequest';
 import { createLogService } from './logService';
 
 // Handler to create a new Log
-export async function createLogHandler(
-  req: NextRequest,
-): Promise<NextResponse<CreateLogResponse>> {
+export async function createLogHandler(req: NextRequest): Promise<NextResponse<CreateLogResponse>> {
   const data = await req.json();
   const safeBody = CreateLogRequest.parse(data);
   const ipAddress = getIpAddress(req);

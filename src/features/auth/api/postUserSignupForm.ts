@@ -1,14 +1,11 @@
+import { BaseApiClient } from '@/features/apiClient/lib/BaseApiClient';
 import { UserWithId } from '@/features/user/types/User';
-import { BaseApiClient } from '@/lib/BaseApiClient';
 
 import { SignupFormRequest } from '../types/SignupFormRequest';
 
-export async function postUserSignupForm(
-  form: SignupFormRequest,
-): Promise<UserWithId | null> {
+export async function postUserSignupForm(form: SignupFormRequest): Promise<UserWithId | null> {
   try {
-    const url = '/api/auth/register';
-    const response = await BaseApiClient.post<UserWithId>(url, form);
+    const response = await BaseApiClient.post<UserWithId>('/api/auth/register', form);
 
     return response.data;
   } catch (error) {

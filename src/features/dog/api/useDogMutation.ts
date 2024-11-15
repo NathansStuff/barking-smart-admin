@@ -1,6 +1,6 @@
 import { useMutation, UseMutationResult, useQueryClient } from '@tanstack/react-query';
 
-import { BaseApiClient } from '@/lib/BaseApiClient';
+import { BaseApiClient } from '@/features/apiClient/lib/BaseApiClient';
 
 import { Dog, DogWithId } from '../types/Dog';
 
@@ -14,10 +14,15 @@ async function updateDog(id: string, dog: Partial<Dog>): Promise<DogWithId> {
   return response.data;
 }
 
-export function useDogMutation(): UseMutationResult<DogWithId, Error, {
+export function useDogMutation(): UseMutationResult<
+  DogWithId,
+  Error,
+  {
     id?: string;
     data: Dog | Partial<Dog>;
-}, unknown> {
+  },
+  unknown
+> {
   const queryClient = useQueryClient();
 
   return useMutation({

@@ -1,20 +1,15 @@
 'use client';
 
-import React from 'react';
+import { ReactNode, use } from 'react';
 
 import VerifedOnly from '@/components/container/VerifiedOnly';
 import PdfContainer from '@/features/pdf/components/PdfContainer';
 import { useGetProgramById } from '@/features/program/api/useGetProgramById';
 
 import ProgramLoadingPage from '../../ProgramLoadingPage';
-interface Props {
-  params: {
-    id: string;
-  };
-}
 
-function PreviewProgramPage({ params }: Props): React.ReactElement {
-  const { id } = params;
+function PreviewProgramPage({ params }: { params: Promise<{ id: string }> }): ReactNode {
+  const { id } = use(params);
 
   const programQuery = useGetProgramById(id);
 
@@ -35,7 +30,7 @@ function PreviewProgramPage({ params }: Props): React.ReactElement {
     <>
       <VerifedOnly />
       <section className='overflow-hidden pb-10'>
-        <div className='max-w-5xl mx-auto'>
+        <div className='mx-auto max-w-5xl'>
           <PdfContainer program={programQuery.data.program} />
         </div>
       </section>

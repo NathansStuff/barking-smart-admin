@@ -1,14 +1,10 @@
 import { TOKEN_EXPIRY_TIME } from '@/constants';
-import {
-  Account,
-  AccountPartial,
-  AccountWithId,
-} from '@/features/account/types/Account';
+import { Account, AccountPartial, AccountWithId } from '@/features/account/types/Account';
+import connectMongo from '@/features/database/lib/mongodb';
 import { createServerLogService } from '@/features/log/server/logService';
 import { ELogStatus } from '@/features/log/types/ELogStatus';
 import { ELogType } from '@/features/log/types/ELogType';
 import { Log } from '@/features/log/types/Log';
-import connectMongo from '@/lib/mongodb';
 
 import { AccountModel } from './accountModel';
 
@@ -38,7 +34,7 @@ export async function getAllAccounts(): Promise<AccountWithId[]> {
 export async function updateAccountById(
   id: string,
   Account: AccountPartial,
-  ipAddress?: string | null,
+  ipAddress?: string | null
 ): Promise<AccountWithId> {
   await connectMongo();
   const result = await AccountModel.findByIdAndUpdate(id, Account, {
@@ -66,45 +62,33 @@ export async function deleteAccountById(id: string): Promise<void> {
 // Get an Account by Provider and Provider ID
 export async function getAccountByProviderAndProviderId(
   provider: string,
-  providerId: string,
+  providerId: string
 ): Promise<AccountWithId | null> {
   await connectMongo();
   const result = await AccountModel.findOne({ provider, providerId });
   return result ? result.toObject() : null;
 }
 
-export async function getAccountByEmail(
-  email: string,
-): Promise<AccountWithId | null> {
+export async function getAccountByEmail(email: string): Promise<AccountWithId | null> {
   await connectMongo();
   return await AccountModel.findOne({ email });
 }
 
-export async function getAccountsByUserId(
-  userId: string,
-): Promise<AccountWithId[]> {
+export async function getAccountsByUserId(userId: string): Promise<AccountWithId[]> {
   await connectMongo();
   return await AccountModel.find({ userId });
 }
 
 // Save a reset token to the Account
-export async function saveResetTokenToAccount(
-  email: string,
-  resetToken: string,
-): Promise<void> {
+export async function saveResetTokenToAccount(email: string, resetToken: string): Promise<void> {
   await connectMongo();
   const expirationTime = new Date(Date.now() + TOKEN_EXPIRY_TIME);
 
-  await AccountModel.updateOne(
-    { email },
-    { $set: { resetToken, resetTokenExpiry: expirationTime } },
-  );
+  await AccountModel.updateOne({ email }, { $set: { resetToken, resetTokenExpiry: expirationTime } });
 }
 
 // Check if a reset token is valid
-export async function getAccountByResetToken(
-  resetToken: string,
-): Promise<AccountWithId | null> {
+export async function getAccountByResetToken(resetToken: string): Promise<AccountWithId | null> {
   await connectMongo();
   const account = await AccountModel.findOne({ resetToken });
   return account;

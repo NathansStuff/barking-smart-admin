@@ -16,10 +16,7 @@ export async function generateProgramContent(prompt: string): Promise<Program> {
   });
 }
 
-export async function generateProgramField(
-  fieldName: string,
-  context: string
-): Promise<string> {
+export async function generateProgramField(fieldName: string, context: string): Promise<string> {
   const systemPrompt = `You are an expert in dog enrichment activities. Generate content for the ${fieldName} field of a dog enrichment activity. Keep the response concise and relevant to the specific field.`;
 
   console.log(context, '******');

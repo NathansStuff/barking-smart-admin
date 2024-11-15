@@ -1,4 +1,4 @@
-import { BaseApiClientWithMultipart } from '@/lib/BaseApiClient';
+import { BaseApiClientWithMultipart } from '@/features/apiClient/lib/BaseApiClient';
 
 export async function uploadFile(file: File, filename: string): Promise<string | null> {
   try {

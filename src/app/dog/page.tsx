@@ -17,19 +17,8 @@ import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from '@/components/ui/select';
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipProvider,
-  TooltipTrigger,
-} from '@/components/ui/tooltip';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
 import { useDeleteDog } from '@/features/dog/api/useDeleteDog';
 import { useGetDogs } from '@/features/dog/api/useGetDogs';
 import { DogWithId } from '@/features/dog/types/Dog';
@@ -62,10 +51,7 @@ function DogPage(): ReactNode {
     pageSize: 10,
   });
 
-  const [ConfirmDialog, confirm] = UseConfirm(
-    'Are you sure?',
-    'This action cannot be undone.'
-  );
+  const [ConfirmDialog, confirm] = UseConfirm('Are you sure?', 'This action cannot be undone.');
 
   const deleteMutation = useDeleteDog();
 
@@ -113,9 +99,7 @@ function DogPage(): ReactNode {
     {
       accessorKey: 'howActive',
       header: 'Activity Level',
-      cell: ({ row }) => (
-        <Badge variant='outline'>{row.original.howActive}/10</Badge>
-      ),
+      cell: ({ row }) => <Badge variant='outline'>{row.original.howActive}/10</Badge>,
     },
     {
       id: 'actions',
@@ -159,10 +143,7 @@ function DogPage(): ReactNode {
     filters: {
       name: filters.name,
       breed: filters.breed === 'all' ? undefined : (filters.breed as EBreed),
-      location:
-        filters.location === 'all'
-          ? undefined
-          : (filters.location as ELocation),
+      location: filters.location === 'all' ? undefined : (filters.location as ELocation),
     },
   });
 
@@ -227,18 +208,18 @@ function DogPage(): ReactNode {
           <Input
             placeholder='Filter by name...'
             value={filters.name}
-            onChange={e => handleFilterChange('name', e.target.value)}
+            onChange={(e) => handleFilterChange('name', e.target.value)}
           />
           <Select
             value={filters.breed}
-            onValueChange={value => handleFilterChange('breed', value)}
+            onValueChange={(value) => handleFilterChange('breed', value)}
           >
             <SelectTrigger>
               <SelectValue placeholder='Select breed' />
             </SelectTrigger>
             <SelectContent>
               <SelectItem value='all'>All Breeds</SelectItem>
-              {Object.values(EBreed).map(breed => (
+              {Object.values(EBreed).map((breed) => (
                 <SelectItem
                   key={breed}
                   value={breed}
@@ -250,14 +231,14 @@ function DogPage(): ReactNode {
           </Select>
           <Select
             value={filters.gender}
-            onValueChange={value => handleFilterChange('gender', value)}
+            onValueChange={(value) => handleFilterChange('gender', value)}
           >
             <SelectTrigger>
               <SelectValue placeholder='Select gender' />
             </SelectTrigger>
             <SelectContent>
               <SelectItem value='all'>All Genders</SelectItem>
-              {Object.values(EGender).map(gender => (
+              {Object.values(EGender).map((gender) => (
                 <SelectItem
                   key={gender}
                   value={gender}
@@ -269,14 +250,14 @@ function DogPage(): ReactNode {
           </Select>
           <Select
             value={filters.location}
-            onValueChange={value => handleFilterChange('location', value)}
+            onValueChange={(value) => handleFilterChange('location', value)}
           >
             <SelectTrigger>
               <SelectValue placeholder='Select location' />
             </SelectTrigger>
             <SelectContent>
               <SelectItem value='all'>All Locations</SelectItem>
-              {Object.values(ELocation).map(location => (
+              {Object.values(ELocation).map((location) => (
                 <SelectItem
                   key={location}
                   value={location}
@@ -321,8 +302,7 @@ function DogPage(): ReactNode {
   }, [filters, router]);
 
   return (
-    <>
-      <AdminOnly />
+    <AdminOnly>
       <ConfirmDialog />
       <TooltipProvider>
         <div className='container mx-auto p-4'>
@@ -351,7 +331,7 @@ function DogPage(): ReactNode {
           )}
         </div>
       </TooltipProvider>
-    </>
+    </AdminOnly>
   );
 }
 

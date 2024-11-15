@@ -1,7 +1,7 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 
+import { BaseApiClient } from '@/features/apiClient/lib/BaseApiClient';
 import { LogWithId } from '@/features/log/types/Log';
-import { BaseApiClient } from '@/lib/BaseApiClient';
 
 import { CreateLogRequest } from '../types/CreateLogRequest';
 

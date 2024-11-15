@@ -2,30 +2,34 @@ import { HeaderLink } from './types/HeaderLink';
 
 export const publicHeaderLinks: HeaderLink[] = [
   {
-    title: 'Programs',
-    href: '/program',
+    title: 'Activities',
+    href: '/#activities',
+  },
+  {
+    title: 'Calender',
+    href: '/#calender',
+  },
+  {
+    title: 'Pricing',
+    href: '/#pricing',
+  },
+  {
+    title: 'Testimonials',
+    href: '/#testimonials',
+  },
+  {
+    title: 'Contact',
+    href: '/contact',
   },
 ];
 
-export const privateHeaderLinks: HeaderLink[] = [];
-
-export const verifiedHeaderLinks: HeaderLink[] = [];
-
-export const adminHeaderLinks: HeaderLink[] = [
+export const privateHeaderLinks: HeaderLink[] = [
+  {
+    title: 'Profile',
+    href: '/settings/profile',
+  },
   {
     title: 'Dashboard',
-    href: '/dashboard',
-  },
-  {
-    title: 'Requirements',
-    href: '/required-programs',
-  },
-  {
-    title: 'Dogs',
-    href: '/dog',
-  },
-  {
-    title: 'Admin',
-    href: '/admin',
+    href: '#/dashboard',
   },
 ];

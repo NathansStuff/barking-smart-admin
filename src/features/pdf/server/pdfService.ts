@@ -1,19 +1,13 @@
 import { ProgramWithId } from '@/features/program/types/Program';
-import { s3Service } from '@/lib/s3';
+import { s3Service } from '@/features/s3/lib/s3';
 
 import { generatePdf } from '../utils/generatePdf';
 
-export async function generatePdfService(
-  program: ProgramWithId,
-  variation: number
-): Promise<Uint8Array> {
+export async function generatePdfService(program: ProgramWithId, variation: number): Promise<Uint8Array> {
   return generatePdf(program, variation);
 }
 
-export async function savePdfService(
-  program: ProgramWithId,
-  variation: number
-): Promise<string> {
+export async function savePdfService(program: ProgramWithId, variation: number): Promise<string> {
   const pdf = await generatePdf(program, variation);
   const filename = `${program._id}/${variation}.pdf`;
 

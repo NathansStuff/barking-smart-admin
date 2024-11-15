@@ -1,16 +1,10 @@
 import { ReactElement } from 'react';
 
-import { Metadata } from 'next';
 import Link from 'next/link';
 
 // If you're using Next.js
 import { Button } from '@/components/ui/button'; // Assuming you have a Button component for navigation
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-
-export const metadata: Metadata = {
-  title: 'Page Not Found | Barking Smart Admin',
-  description: 'The requested page could not be found',
-};
 
 function NotFound(): ReactElement {
   return (

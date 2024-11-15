@@ -3,11 +3,7 @@
 import React from 'react';
 
 // Since QueryClientProvider relies on useContext under the hood, we have to put 'use client' on top
-import {
-  isServer,
-  QueryClient,
-  QueryClientProvider,
-} from '@tanstack/react-query';
+import { isServer, QueryClient, QueryClientProvider } from '@tanstack/react-query';
 
 function makeQueryClient(): QueryClient {
   return new QueryClient({
@@ -48,7 +44,5 @@ export function QueryProvider({ children }: Props): React.JSX.Element {
   //       render if it suspends and there is no boundary
   const queryClient = getQueryClient();
 
-  return (
-    <QueryClientProvider client={queryClient}>{children}</QueryClientProvider>
-  );
+  return <QueryClientProvider client={queryClient}>{children}</QueryClientProvider>;
 }

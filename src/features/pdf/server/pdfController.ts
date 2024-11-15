@@ -1,11 +1,10 @@
-import { ResponseCode } from '@operation-firefly/error-handling';
 import { NextRequest, NextResponse } from 'next/server';
+
+import { ResponseCode } from '@/types/ResponseCode';
 
 import { generatePdfService, savePdfService } from './pdfService';
 
-export async function generatePdfController(
-  req: NextRequest
-): Promise<NextResponse> {
+export async function generatePdfController(req: NextRequest): Promise<NextResponse> {
   const { program, variation } = await req.json();
   const pdf = await generatePdfService(program, variation);
 
@@ -19,9 +18,7 @@ export async function generatePdfController(
   return response;
 }
 
-export async function savePdfController(
-  req: NextRequest
-): Promise<NextResponse> {
+export async function savePdfController(req: NextRequest): Promise<NextResponse> {
   const { program, variation } = await req.json();
   const s3Url = await savePdfService(program, variation);
   return NextResponse.json(s3Url);

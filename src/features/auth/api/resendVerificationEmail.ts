@@ -1,12 +1,11 @@
 import { toast } from 'sonner';
 
-import { BaseApiClient } from '@/lib/BaseApiClient';
+import { BaseApiClient } from '@/features/apiClient/lib/BaseApiClient';
 
 export async function resendVerificationEmail(id: string): Promise<void> {
   const loading = toast.loading('Resending verification email...');
   try {
-    const url = `/api/auth/resend-verification-email/${id}`;
-    await BaseApiClient.get<boolean>(url);
+    await BaseApiClient.get<boolean>(`/api/auth/resend-verification-email/${id}`);
 
     toast.dismiss(loading);
     toast.success('Verification email sent!');

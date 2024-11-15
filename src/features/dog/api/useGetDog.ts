@@ -1,6 +1,6 @@
 import { useQuery, UseQueryResult } from '@tanstack/react-query';
 
-import { BaseApiClient } from '@/lib/BaseApiClient';
+import { BaseApiClient } from '@/features/apiClient/lib/BaseApiClient';
 
 import { DogWithId } from '../types/Dog';
 

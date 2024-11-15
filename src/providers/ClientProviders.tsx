@@ -14,13 +14,7 @@ import { QueryProvider } from './QueryProvider';
 import SheetProvider from './SheetProvider';
 import { ThemeProvider } from './ThemeProvider';
 
-function ClientProviders({
-  children,
-  session,
-}: {
-  children: ReactNode;
-  session: Session | null;
-}): ReactNode {
+function ClientProviders({ children, session }: { children: ReactNode; session: Session | null }): ReactNode {
   return (
     <>
       <ThemeProvider

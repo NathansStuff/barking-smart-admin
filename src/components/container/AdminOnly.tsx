@@ -1,26 +1,30 @@
 'use client';
 
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 
 import { useRouter } from 'next/navigation';
+import { useSession } from 'next-auth/react';
 
-import { useAppSelector } from '@/contexts/storeHooks';
-import { selectUser } from '@/contexts/userSlice';
 import { EUserRole } from '@/features/user/types/EUserRole';
 
-function AdminOnly(): React.JSX.Element {
-  const user = useAppSelector(selectUser);
+function AdminOnly({ children }: { children: React.ReactNode }): React.JSX.Element | null {
   const router = useRouter();
-  const { role } = user;
-  // Accept if user and is admin
-  const isAllowed = user && role === EUserRole.ADMIN;
+  const { data: session, status } = useSession();
+  const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
-    if (!isAllowed) {
+    if (status === 'loading') {
+      setIsLoading(true);
+    } else if (session?.user?.role !== EUserRole.ADMIN) {
       router.push('/');
+    } else {
+      setIsLoading(false);
     }
-  }, [user, isAllowed, router]);
-  return <></>;
+  }, [session, status, router]);
+
+  if (isLoading) return <p>Loading...</p>; // Optionally add a loader component here
+
+  return <>{children}</>;
 }
 
 export default AdminOnly;

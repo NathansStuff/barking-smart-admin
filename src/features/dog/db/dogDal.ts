@@ -1,4 +1,4 @@
-import connectMongo from '@/lib/mongodb';
+import connectMongo from '@/features/database/lib/mongodb';
 
 import { Dog, DogPartial, DogWithId } from '../types/Dog';
 
@@ -26,10 +26,7 @@ export async function getAllDogs(): Promise<DogWithId[]> {
 }
 
 // Update a Dog
-export async function updateDogById(
-  id: string,
-  dog: DogPartial
-): Promise<DogWithId> {
+export async function updateDogById(id: string, dog: DogPartial): Promise<DogWithId> {
   await connectMongo();
   const result = await DogModel.findByIdAndUpdate(id, dog, { new: true });
   return result;

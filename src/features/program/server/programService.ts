@@ -1,19 +1,10 @@
-import { generateTagCombinations } from '@/features/requiredProgram/utils/generateTagCombinations';
-
-import {
-  createProgram,
-  deleteProgram,
-  getProgramById,
-  getProgramsByTags,
-  updateProgram,
-} from '../db/programDal';
+import { createProgram, deleteProgram, getProgramById, getProgramsByTags, updateProgram } from '../db/programDal';
 import { ProgramModel } from '../db/programModel';
 import { Program, ProgramWithId } from '../types/Program';
 import { determineEnergyLevelNumber } from '../utils/determineEnergyLevel';
+import { generateTagCombinations } from '../utils/generateTagCombinations';
 
-export async function createProgramService(
-  program: Program
-): Promise<ProgramWithId> {
+export async function createProgramService(program: Program): Promise<ProgramWithId> {
   const valid = Program.parse(program);
   console.log('valid', valid);
   return await createProgram(valid);
@@ -34,9 +25,7 @@ interface GetProgramsOptions {
   };
 }
 
-export async function getAllProgramsService(
-  options: GetProgramsOptions = {}
-): Promise<{
+export async function getAllProgramsService(options: GetProgramsOptions = {}): Promise<{
   programs: ProgramWithId[];
   total: number;
   page: number;
@@ -48,6 +37,7 @@ export async function getAllProgramsService(
   const skip = (page - 1) * limit;
 
   // Build filter query
+
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const filter: any = {};
   if (options.filters?.title) {
@@ -74,16 +64,13 @@ export async function getAllProgramsService(
   if (options.filters?.energyLevelMin !== undefined && options.filters?.energyLevelMax !== undefined) {
     filter['tags.energyLevel'] = {
       $gte: options.filters.energyLevelMin,
-      $lte: options.filters.energyLevelMax
+      $lte: options.filters.energyLevelMax,
     };
   }
   console.log('filter', filter);
 
   const total = await ProgramModel.countDocuments(filter);
-  const programs = await ProgramModel.find(filter)
-    .skip(skip)
-    .limit(limit)
-    .sort({ createdAt: -1 });
+  const programs = await ProgramModel.find(filter).skip(skip).limit(limit).sort({ createdAt: -1 });
 
   return {
     programs,
@@ -93,39 +80,28 @@ export async function getAllProgramsService(
   };
 }
 
-export async function getProgramByIdService(
-  id: string
-): Promise<ProgramWithId | null> {
+export async function getProgramByIdService(id: string): Promise<ProgramWithId | null> {
   return await getProgramById(id);
 }
 
-export async function updateProgramService(
-  id: string,
-  program: Partial<Program>
-): Promise<ProgramWithId | null> {
+export async function updateProgramService(id: string, program: Partial<Program>): Promise<ProgramWithId | null> {
   const valid = Program.partial().parse(program);
   return await updateProgram(id, valid);
 }
 
-export async function deleteProgramService(
-  id: string
-): Promise<ProgramWithId | null> {
+export async function deleteProgramService(id: string): Promise<ProgramWithId | null> {
   return await deleteProgram(id);
 }
 
-export function countProgramsByTagsService(
-  tags: Partial<Program>
-): Promise<number> {
+export function countProgramsByTagsService(tags: Partial<Program>): Promise<number> {
   return getProgramsByTags(tags);
 }
 
-export async function countAllProgramsByTagsService(): Promise<
-  { key: string; count: number }[]
-> {
+export async function countAllProgramsByTagsService(): Promise<{ key: string; count: number }[]> {
   const combinations = generateTagCombinations();
   console.log('combinations', combinations);
   const counts = await Promise.all(
-    combinations.map(async tags => {
+    combinations.map(async (tags) => {
       const energyLevel = determineEnergyLevelNumber(tags.energyLevel);
       const programTags: Partial<Program> = {
         tags: {

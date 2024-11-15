@@ -11,5 +11,5 @@ export const logSchema = new Schema<Log>(
     details: { type: String },
     additionalInfo: { type: Map },
   },
-  { timestamps: true },
+  { timestamps: true }
 );

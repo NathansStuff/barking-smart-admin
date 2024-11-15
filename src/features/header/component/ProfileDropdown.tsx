@@ -4,6 +4,7 @@ import React, { useState } from 'react';
 import { FaUserCircle } from 'react-icons/fa';
 
 import Image from 'next/image';
+import Link from 'next/link';
 import { signOut } from 'next-auth/react';
 
 import { Avatar, AvatarFallback } from '@/components/ui/avatar';
@@ -23,53 +24,72 @@ export function ProfileDropdown(): React.JSX.Element {
   const handleMouseEnter = (): void => setDropdownOpen(true);
   const handleMouseLeave = (): void => setDropdownOpen(false);
 
-  if (!isLoggedIn) return <></>;
-
   return (
     <div
       className='relative'
       onMouseLeave={handleMouseLeave}
     >
-      <div
-        onMouseEnter={handleMouseEnter}
-        className='flex h-full cursor-pointer items-center justify-center focus:outline-none'
-      >
-        <Avatar className='flex items-center justify-center'>
-          {image ? (
-            <Image
-              height={32}
-              width={32}
-              src={image}
-              alt='User Avatar'
-              className='h-8 w-8 rounded-full'
-            />
-          ) : (
-            <AvatarFallback>
-              <FaUserCircle className='h-8 w-8 text-gray-700 dark:text-gray-300' />
-            </AvatarFallback>
-          )}
-        </Avatar>
-      </div>
-      {dropdownOpen && (
+      {isLoggedIn ? (
         <>
-          <Card
+          <div
             onMouseEnter={handleMouseEnter}
-            onMouseLeave={handleMouseLeave}
-            className={cn('absolute right-0 w-48 rounded-lg border-none')}
+            className='flex h-full cursor-pointer items-center justify-center focus:outline-none'
           >
-            <Button
-              variant={'ghost'}
-              onClick={() =>
-                signOut({
-                  callbackUrl: '/',
-                })
-              }
-              className='block w-full rounded-b-lg px-4 py-2 text-left hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground'
-            >
-              Logout
-            </Button>
-          </Card>
+            <Avatar className='flex items-center justify-center'>
+              {image ? (
+                <Image
+                  height={32}
+                  width={32}
+                  src={image}
+                  alt='User Avatar'
+                  className='h-8 w-8 rounded-full'
+                />
+              ) : (
+                <AvatarFallback>
+                  <FaUserCircle className='h-8 w-8 text-gray-700 dark:text-gray-300' />
+                </AvatarFallback>
+              )}
+            </Avatar>
+          </div>
+          {dropdownOpen && (
+            <>
+              <Card
+                onMouseEnter={handleMouseEnter}
+                onMouseLeave={handleMouseLeave}
+                className={cn('absolute right-0 w-48 rounded-lg border-none')}
+              >
+                <Button
+                  variant={'ghost'}
+                  asChild
+                  className='block w-full rounded-b-lg px-4 py-2 text-left hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground'
+                >
+                  <Link href='/settings/profile'>Profile</Link>
+                </Button>
+                <Button
+                  variant={'ghost'}
+                  onClick={() =>
+                    signOut({
+                      callbackUrl: '/',
+                    })
+                  }
+                  className='block w-full rounded-b-lg px-4 py-2 text-left hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground'
+                >
+                  Logout
+                </Button>
+              </Card>
+            </>
+          )}
         </>
+      ) : (
+        <Button variant='accent'>
+          <Link
+            href='/login'
+            passHref
+            legacyBehavior
+          >
+            Login
+          </Link>
+        </Button>
       )}
     </div>
   );

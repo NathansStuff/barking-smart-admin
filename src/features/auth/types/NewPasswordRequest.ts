@@ -21,9 +21,7 @@ export const NewPasswordRequest = z
       .refine((password) => /[a-z]/.test(password), {
         message: lowercaseErrorMessage,
       })
-      .refine((password) => /[0-9]/.test(password), {
-        message: numberErrorMessage,
-      })
+      .refine((password) => /[0-9]/.test(password), { message: numberErrorMessage })
       .refine((password) => /[!@#$%^&*]/.test(password), {
         message: specialCharacterErrorMessage,
       }),

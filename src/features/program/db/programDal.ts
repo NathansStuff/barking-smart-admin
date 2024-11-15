@@ -1,4 +1,4 @@
-import connectMongo from '@/lib/mongodb';
+import { connectMongo } from '@/features/database/lib/mongodb';
 
 import { Program, ProgramWithId } from '../types/Program';
 
@@ -20,19 +20,14 @@ export async function getAllPrograms(): Promise<ProgramWithId[]> {
 }
 
 // Get Program by ID
-export async function getProgramById(
-  id: string
-): Promise<ProgramWithId | null> {
+export async function getProgramById(id: string): Promise<ProgramWithId | null> {
   await connectMongo();
   const result = await ProgramModel.findById(id);
   return result;
 }
 
 // Update Program
-export async function updateProgram(
-  id: string,
-  program: Partial<Program>
-): Promise<ProgramWithId | null> {
+export async function updateProgram(id: string, program: Partial<Program>): Promise<ProgramWithId | null> {
   await connectMongo();
   const result = await ProgramModel.findByIdAndUpdate(id, program, {
     new: true,
@@ -48,9 +43,7 @@ export async function deleteProgram(id: string): Promise<ProgramWithId | null> {
 }
 
 // Get Programs Count by tags
-export async function getProgramsByTags(
-  tags: Partial<Program>
-): Promise<number> {
+export async function getProgramsByTags(tags: Partial<Program>): Promise<number> {
   await connectMongo();
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any

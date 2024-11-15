@@ -10,13 +10,7 @@ import { z } from 'zod';
 
 import { LabeledInput } from '@/components/form/LabeledInput';
 import { Button } from '@/components/ui/button';
-import {
-  Form,
-  FormControl,
-  FormDescription,
-  FormField,
-  FormItem,
-} from '@/components/ui/form';
+import { Form, FormControl, FormDescription, FormField, FormItem } from '@/components/ui/form';
 
 import { signinUserAction } from '../api/signinUserAction';
 import { signupUserAction } from '../api/signupUserAction';
@@ -29,9 +23,7 @@ interface AuthFormProps {
   formType: 'signup' | 'login';
 }
 
-export default function AuthForm({
-  formType,
-}: AuthFormProps): React.JSX.Element {
+export default function AuthForm({ formType }: AuthFormProps): React.JSX.Element {
   const isSignup = formType === 'signup';
   const router = useRouter();
 
@@ -50,7 +42,7 @@ export default function AuthForm({
       const success = await signupUserAction(values);
       if (success) {
         await getSession();
-        router.push('/');
+        router.push('/settings/profile');
       }
     } else {
       await signinUserAction(values);
@@ -78,9 +70,7 @@ export default function AuthForm({
                     onChange={field.onChange}
                   />
                 </FormControl>
-                <FormDescription>
-                  {form.formState.errors.email?.message}
-                </FormDescription>
+                <FormDescription>{form.formState.errors.email?.message}</FormDescription>
               </FormItem>
             )}
           />
@@ -98,9 +88,7 @@ export default function AuthForm({
                     onChange={field.onChange}
                   />
                 </FormControl>
-                <FormDescription>
-                  {form.formState.errors.password?.message}
-                </FormDescription>
+                <FormDescription>{form.formState.errors.password?.message}</FormDescription>
               </FormItem>
             )}
           />

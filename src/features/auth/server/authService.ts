@@ -1,19 +1,13 @@
-import { BadRequestError } from '@/exceptions';
-import {
-  createAccountService,
-  getAccountByEmailService,
-} from '@/features/account/server/accountService';
+import { createAccountService, getAccountByEmailService } from '@/features/account/server/accountService';
 import { createUserService } from '@/features/user/server/userService';
 import { EUserRole } from '@/features/user/types/EUserRole';
 import { UserWithId } from '@/features/user/types/User';
+import { BadRequestError } from '@/middleware/errors/BadRequestError';
 
 import { SignupFormRequest } from '../types/SignupFormRequest';
 import { hashPassword } from '../utils/auth';
 
-export async function registerUserService(
-  request: SignupFormRequest,
-  ipAddress: string
-): Promise<UserWithId> {
+export async function registerUserService(request: SignupFormRequest, ipAddress: string): Promise<UserWithId> {
   const { email, password } = request;
   const existingAccount = await getAccountByEmailService(email);
 
@@ -27,7 +21,18 @@ export async function registerUserService(
     {
       email,
       name: username,
-      role: EUserRole.PENDING,
+      activeSubscription: false,
+      isEmailVerified: false,
+      oneTimePurchases: [],
+      currentPlan: null,
+      preferredName: username,
+      role: EUserRole.USER,
+      preferences: {
+        //todo
+        emailNotifications: true,
+        activityReminders: true,
+        personalizedSuggestions: true,
+      },
     },
     ipAddress
   );

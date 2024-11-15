@@ -7,7 +7,9 @@ import { env } from '@/constants';
 import { getAccountByEmailService } from '@/features/account/server/accountService';
 import { LoginRequest } from '@/features/auth/types/LoginRequest';
 import { verifyPassword } from '@/features/auth/utils/auth';
-import { getUserByEmailService } from '@/features/user/server/userService';
+import { getUserByEmailService, updateUserByIdService } from '@/features/user/server/userService';
+
+import { createStripeCustomer } from './serverStripe';
 
 declare module 'next-auth' {
   interface Session {
@@ -15,7 +17,10 @@ declare module 'next-auth' {
       id: string;
       name?: string | null;
       email?: string | null;
-      imageUrl?: string | null;
+      image?: string | null;
+      accountActive?: boolean;
+      accountTier?: string;
+      role?: string;
     };
   }
 
@@ -28,6 +33,7 @@ interface Account {
   provider: string;
   id?: string;
   userId?: string;
+  sub?: string;
   providerAccountId?: string;
 }
 
@@ -57,10 +63,7 @@ export const authOptions = {
           throw new Error('Account is not a credentials account');
         }
 
-        const isValid = await verifyPassword(
-          credentials.password,
-          account.passwordHash
-        );
+        const isValid = await verifyPassword(credentials.password, account.passwordHash);
         if (!isValid) {
           throw new Error('Password is incorrect');
         }
@@ -74,20 +77,14 @@ export const authOptions = {
           id: account.userId.toString(),
           name: user.name,
           email: account.email,
-          image: user.imageUrl, // Change this line
         };
       },
     }),
   ],
   callbacks: {
-    async signIn({
-      user,
-      account,
-    }: {
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      user: any;
-      account: Account | null;
-    }): Promise<boolean> {
+
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    async signIn({ user, account }: { user: any; account: Account | null }): Promise<boolean> {
       console.log('signIn callback initiated');
 
       if (!account || !user.name || !user.email || !account.provider) {
@@ -96,8 +93,7 @@ export const authOptions = {
       }
 
       // Determine the provider ID
-      const providerId =
-        account.id || account.userId || account.providerAccountId;
+      const providerId = account.id || account.userId || account.sub || account.providerAccountId;
       if (!providerId) {
         console.error('Provider ID is missing', { account });
         return false;
@@ -110,35 +106,39 @@ export const authOptions = {
         email: user.email,
         provider: account.provider,
         providerId: providerId, // Correctly using the appropriate field
-        imageUrl: user.image || null, // Change this line
+        imageUrl: user.image || null,
       };
 
       try {
         console.log('Calling login API', body);
-        const response = await fetch(
-          `${env.NEXT_PUBLIC_BASE_URL}/api/account/login`,
-          {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json',
-            },
-            body: JSON.stringify(body),
-          }
-        );
+        const response = await fetch(`${env.NEXT_PUBLIC_BASE_URL}/api/account/login`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(body),
+        });
 
         if (!response.ok) {
-          console.error(
-            'Login API responded with an error',
-            response.status,
-            response.statusText
-          );
+          console.error('Login API responded with an error', response.status, response.statusText);
           return false;
         }
 
         const userData = await response.json();
         user.id = userData._id;
-
+        user.role = userData.role;
         console.log('Login successful', userData);
+
+        // Create Stripe customer if not exists
+        if (!userData.stripeCustomerId) {
+          const stripeCustomer = await createStripeCustomer(user.email, user.name);
+          if (!stripeCustomer) {
+            throw new Error('Stripe customer creation failed');
+          }
+          await updateUserByIdService(user.id, {
+            stripeCustomerId: stripeCustomer.id,
+          });
+        }
 
         return true;
       } catch (error) {
@@ -146,25 +146,25 @@ export const authOptions = {
         return false;
       }
     },
-    async session({
-      session,
-      token,
-    }: {
-      session: Session;
-      token: JWT;
-    }): Promise<Session> {
+    async session({ session, token }: { session: Session; token: JWT }): Promise<Session> {
       console.log('Session callback initiated');
       if (session.user) {
         session.user.id = token.id as string;
+        session.user.accountActive = token.accountActive as boolean;
+        session.user.accountTier = token.accountTier as string;
+        session.user.role = token.role as string;
       }
       return session;
     },
+
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     async jwt({ token, user }: { token: JWT; user: any }): Promise<JWT> {
+      console.log('JWT callback initiated');
       if (user) {
         token.id = user.id;
         token.accountActive = user.accountActive;
         token.accountTier = user.accountTier;
+        token.role = user.role;
       }
       return token;
     },

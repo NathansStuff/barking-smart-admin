@@ -27,7 +27,7 @@ function Redirect({ message, href }: Props): React.JSX.Element {
       router.push(href);
     }, 3000);
 
-    return () => {
+    return (): void => {
       clearInterval(interval);
       clearTimeout(timeout);
     };

@@ -1,6 +1,6 @@
 'use client';
 
-import React from 'react';
+import { ReactNode } from 'react';
 
 import Link from 'next/link';
 import { signOut } from 'next-auth/react';
@@ -20,7 +20,7 @@ import { useMobileNavigation } from '@/features/header/hooks/useMobileNavigation
 
 import { getHeaderLinks } from '../utils/getHeaderLinks';
 
-function MobileNavigationSheet(): React.JSX.Element {
+function MobileNavigationSheet(): ReactNode {
   const { isOpen, onClose } = useMobileNavigation();
   const isLoggedIn = useAppSelector(selectIsAuthenticated);
   const headerLinks = getHeaderLinks(isLoggedIn);
@@ -57,14 +57,14 @@ function MobileNavigationSheet(): React.JSX.Element {
           </div>
           <Separator className='w-full' />
           {/* Conditional rendering based on login state */}
-          {isLoggedIn && (
+          {isLoggedIn ? (
             <>
               <Button
                 asChild
                 className='w-full'
                 variant={'secondary'}
               >
-                <Link href='/'>Profile</Link>
+                <Link href='/settings/profile'>Profile</Link>
               </Button>
               <Button
                 className='w-full'
@@ -77,6 +77,13 @@ function MobileNavigationSheet(): React.JSX.Element {
                 Logout
               </Button>
             </>
+          ) : (
+            <Button
+              asChild
+              className='w-full'
+            >
+              <Link href='/login'>Login</Link>
+            </Button>
           )}
         </div>
       </DrawerContent>

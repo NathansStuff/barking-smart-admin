@@ -1,7 +1,6 @@
 import { useQuery, UseQueryResult } from '@tanstack/react-query';
 
-import { env } from '@/constants';
-import { getRequest } from '@/lib/fetch';
+import { BaseApiClient } from '@/features/apiClient/lib/BaseApiClient';
 
 import { EEnergyLevel } from '../types/EEnergyLevel';
 import { ProgramWithId } from '../types/Program';
@@ -30,9 +29,7 @@ interface GetProgramsResponse {
   totalPages: number;
 }
 
-export function useGetPrograms(
-  params: GetProgramsParams = {}
-): UseQueryResult<GetProgramsResponse, Error> {
+export function useGetPrograms(params: GetProgramsParams = {}): UseQueryResult<GetProgramsResponse, Error> {
   const searchParams = new URLSearchParams();
 
   if (params.page) searchParams.append('page', params.page.toString());
@@ -48,19 +45,14 @@ export function useGetPrograms(
     searchParams.append('duration', params.filters.duration);
   if (params.filters?.challenge && params.filters.challenge !== 'all')
     searchParams.append('challenge', params.filters.challenge);
-  if (params.filters?.space && params.filters.space !== 'all')
-    searchParams.append('space', params.filters.space);
-  if (params.filters?.type && params.filters.type !== 'all')
-    searchParams.append('type', params.filters.type);
-  if (params.filters?.approved !== undefined)
-    searchParams.append('approved', params.filters.approved.toString());
+  if (params.filters?.space && params.filters.space !== 'all') searchParams.append('space', params.filters.space);
+  if (params.filters?.type && params.filters.type !== 'all') searchParams.append('type', params.filters.type);
+  if (params.filters?.approved !== undefined) searchParams.append('approved', params.filters.approved.toString());
 
   return useQuery({
     queryKey: ['programs', params],
     queryFn: async () => {
-      const response = await getRequest<GetProgramsResponse>(
-        `${env.NEXT_PUBLIC_BASE_URL}/api/program?${searchParams.toString()}`
-      );
+      const response = await BaseApiClient.get<GetProgramsResponse>(`/api/program?${searchParams.toString()}`);
       return response.data;
     },
   });

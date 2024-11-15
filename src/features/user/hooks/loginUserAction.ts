@@ -1,11 +1,12 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 //todo
 
 import { store } from '@/contexts/store';
 import { setUser } from '@/contexts/userSlice';
+import { BaseApiClient } from '@/features/apiClient/lib/BaseApiClient';
 import { UserWithId } from '@/features/user/types/User';
-import { BaseApiClient } from '@/lib/BaseApiClient';
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
+
 export async function getUser(id: string): Promise<any> {
   try {
     const url = `/api/user/${id}`;
@@ -19,7 +20,7 @@ export async function getUser(id: string): Promise<any> {
 }
 
 // todo
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
+
 export async function loginUserAction(id: string): Promise<any> {
   try {
     const fetchedUser = await getUser(id);
@@ -31,7 +32,7 @@ export async function loginUserAction(id: string): Promise<any> {
         primaryId: fetchedUser.email,
         profilePicture: fetchedUser.imageUrl,
         _id: fetchedUser._id.toString(),
-      }),
+      })
     );
 
     return fetchedUser;

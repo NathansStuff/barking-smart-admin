@@ -1,17 +1,14 @@
 import { ObjectId } from 'mongodb';
 
-import { createLog, getAllLogs } from '@/features/log/db/logDal';
 import { Log, LogWithId } from '@/features/log/types/Log';
 
+import { LogDal } from '../db/logDal';
 import { CreateLogRequest } from '../types/CreateLogRequest';
 import { ELogStatus } from '../types/ELogStatus';
 
 // ***** Basic CRUD *****
 // Service to create a Log
-export async function createLogService(
-  request: CreateLogRequest,
-  ipAddress: string,
-): Promise<LogWithId> {
+export async function createLogService(request: CreateLogRequest, ipAddress: string): Promise<LogWithId> {
   const log: Log = {
     userId: new ObjectId(request.userId),
     details: request.details,
@@ -21,14 +18,14 @@ export async function createLogService(
     ipAddress,
   };
   const validLog = Log.parse(log);
-  return await createLog(validLog);
+  return await LogDal.create(validLog);
 }
 
 export async function createServerLogService(log: Log): Promise<LogWithId> {
-  return await createLog(log);
+  return await LogDal.create(log);
 }
 
 // Service to get all Logs
 export async function getAllLogsService(): Promise<LogWithId[]> {
-  return await getAllLogs();
+  return await LogDal.getAll();
 }

@@ -32,9 +32,7 @@ DialogOverlay.displayName = DialogPrimitive.Overlay.displayName;
 
 const DialogContent = React.forwardRef<
   React.ElementRef<typeof DialogPrimitive.Content>,
-  React.ComponentPropsWithoutRef<typeof DialogPrimitive.Content> & {
-    onClose?: () => void;
-  }
+  React.ComponentPropsWithoutRef<typeof DialogPrimitive.Content> & { onClose?: () => void }
 >(({ className, children, onClose, ...props }, ref) => (
   <DialogPortal>
     <DialogOverlay />
@@ -59,10 +57,7 @@ const DialogContent = React.forwardRef<
 ));
 DialogContent.displayName = DialogPrimitive.Content.displayName;
 
-const DialogHeader = ({
-  className,
-  ...props
-}: React.HTMLAttributes<HTMLDivElement>): React.JSX.Element => (
+const DialogHeader = ({ className, ...props }: React.HTMLAttributes<HTMLDivElement>): React.JSX.Element => (
   <div
     className={cn('flex flex-col space-y-1.5 text-center', className)}
     {...props}
@@ -70,10 +65,7 @@ const DialogHeader = ({
 );
 DialogHeader.displayName = 'DialogHeader';
 
-const DialogFooter = ({
-  className,
-  ...props
-}: React.HTMLAttributes<HTMLDivElement>): React.JSX.Element => (
+const DialogFooter = ({ className, ...props }: React.HTMLAttributes<HTMLDivElement>): React.JSX.Element => (
   <div
     className={cn('flex flex-col-reverse', className)}
     {...props}
@@ -87,10 +79,7 @@ const DialogTitle = React.forwardRef<
 >(({ className, ...props }, ref) => (
   <DialogPrimitive.Title
     ref={ref}
-    className={cn(
-      'text-lg font-semibold leading-none tracking-tight',
-      className
-    )}
+    className={cn('text-lg font-semibold leading-none tracking-tight', className)}
     {...props}
   />
 ));

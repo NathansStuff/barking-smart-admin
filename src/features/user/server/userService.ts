@@ -1,7 +1,11 @@
-import {
-  deleteAccountByIdService,
-  getAccountsByUserIdService,
-} from '@/features/account/server/accountService';
+import { env } from '@/constants';
+import { products } from '@/data/products';
+import { deleteAccountByIdService, getAccountsByUserIdService } from '@/features/account/server/accountService';
+import { purchaseConfirmationEmailTemplate } from '@/features/email/templates/purchaseConfirmationEmailTemplate';
+import { resendEmailVerificationTemplate } from '@/features/email/templates/resendEmailVerificationTemplate';
+import { verifyEmailTemplate } from '@/features/email/templates/verifyEmailTemplate';
+import { Email } from '@/features/email/types/Email';
+import { sendEmail } from '@/features/email/utils/sendEmail';
 import {
   createUser,
   deleteUserById,
@@ -11,87 +15,35 @@ import {
   updateUserById,
 } from '@/features/user/db/userDal';
 import { User, UserPartial, UserWithId } from '@/features/user/types/User';
-import connectMongo from '@/lib/mongodb';
-
-import { UserModel } from '../db/userModel';
 
 // ***** Basic CRUD *****
 // Service to create a user
-export async function createUserService(
-  user: User,
-  ipAddress: string
-): Promise<UserWithId> {
+export async function createUserService(user: User, ipAddress: string): Promise<UserWithId> {
   const newUser = await createUser(user);
   console.log(ipAddress);
+  if (!user.isEmailVerified) {
+    // Send verification email
+    const { subject, body } = verifyEmailTemplate(user.name, `${env.NEXT_PUBLIC_BASE_URL}/verify-email/${newUser._id}`);
+    const emailTemplate: Email = {
+      to: user.email,
+      subject,
+      body,
+      userId: newUser._id,
+      ipAddress,
+    };
+    await sendEmail(emailTemplate);
+  }
+
   return newUser;
 }
 
-// Service to get all users
-interface GetUsersOptions {
-  page?: number;
-  limit?: number;
-  filters?: {
-    name?: string;
-    email?: string;
-    role?: string;
-  };
-}
-
-export async function getAllUsersService(
-  options: GetUsersOptions = {}
-): Promise<{
-  users: UserWithId[];
-  total: number;
-  page: number;
-  totalPages: number;
-}> {
-  await connectMongo();
-
-  const page = options.page || 1;
-  const limit = options.limit || 10;
-  const skip = (page - 1) * limit;
-
-  // Build filter query
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const filter: any = {};
-  if (options.filters?.name) {
-    filter.name = { $regex: options.filters.name, $options: 'i' };
-  }
-  if (options.filters?.email) {
-    filter.email = { $regex: options.filters.email, $options: 'i' };
-  }
-  if (options.filters?.role) {
-    filter.role = options.filters.role;
-  }
-
-  // Get total count for pagination
-  const total = await UserModel.countDocuments(filter);
-
-  // Get paginated results
-  const users = await UserModel.find(filter)
-    .skip(skip)
-    .limit(limit)
-    .sort({ createdAt: -1 });
-
-  return {
-    users,
-    total,
-    page,
-    totalPages: Math.ceil(total / limit),
-  };
-}
-
 // Service to get a user by ID
-export async function getUserByIdService(
-  id: string
-): Promise<UserWithId | null> {
+export async function getUserByIdService(id: string): Promise<UserWithId | null> {
   return await getUserById(id);
 }
 
 // Service to get a user by Stripe Customer ID
-export async function getUserByStripeCustomerIdService(
-  stripeCustomerId: string
-): Promise<UserWithId | null> {
+export async function getUserByStripeCustomerIdService(stripeCustomerId: string): Promise<UserWithId | null> {
   return await getUserByStripeCustomerId(stripeCustomerId);
 }
 
@@ -106,7 +58,32 @@ export async function updateUserByIdService(
     return null;
   }
 
+  // Check if there are new one-time purchases
+  const newPurchases = user.oneTimePurchases?.filter((purchase) => !existingUser.oneTimePurchases.includes(purchase));
+
   const updatedUser = await updateUserById(id, user, ipAddress);
+
+  // If there are new purchases, send the confirmation email
+  if (newPurchases && newPurchases.length > 0) {
+    for (const purchase of newPurchases) {
+      const product = products.find((prod) => prod.productId === purchase);
+      if (product) {
+        const { subject, body } = purchaseConfirmationEmailTemplate(
+          existingUser.name,
+          product.name,
+          `${env.NEXT_PUBLIC_BASE_URL}/view-product/${product.productId}`
+        );
+        const emailTemplate: Email = {
+          to: existingUser.email,
+          subject,
+          body,
+          userId: updatedUser._id,
+          ipAddress: ipAddress ?? null,
+        };
+        await sendEmail(emailTemplate);
+      }
+    }
+  }
 
   return updatedUser;
 }
@@ -117,11 +94,7 @@ export async function deleteUserByIdService(id: string): Promise<void> {
 
 // ***** Additional Functions *****
 // Service to find or create a user by email
-export async function findOrCreateUserByEmail(
-  email: string,
-  user: User,
-  ipAddress: string
-): Promise<UserWithId> {
+export async function findOrCreateUserByEmail(email: string, user: User, ipAddress: string): Promise<UserWithId> {
   let existingUser = await getUserByEmail(email);
   if (!existingUser) {
     existingUser = await createUserService(user, ipAddress);
@@ -130,9 +103,7 @@ export async function findOrCreateUserByEmail(
 }
 
 // Service to get a user by Email
-export async function getUserByEmailService(
-  email: string
-): Promise<UserWithId | null> {
+export async function getUserByEmailService(email: string): Promise<UserWithId | null> {
   return await getUserByEmail(email);
 }
 
@@ -148,4 +119,37 @@ export async function deleteUserAndAccounts(userId: string): Promise<void> {
 
   // Delete the user
   await deleteUserById(userId);
+}
+
+// Service to validate a user's email
+export async function validateUserEmailService(userId: string, ipAddress: string | null): Promise<boolean> {
+  const user = await getUserByIdService(userId);
+  if (!user) {
+    return false;
+  }
+
+  const updatedUser = await updateUserByIdService(userId, { isEmailVerified: true }, ipAddress);
+
+  return !!updatedUser;
+}
+
+// Service to resend email verification
+export async function resendEmailVerificationService(userId: string, ipAddress: string): Promise<void> {
+  const user = await getUserByIdService(userId);
+  if (!user) {
+    return;
+  }
+
+  const { subject, body } = resendEmailVerificationTemplate(
+    user.name,
+    `${env.NEXT_PUBLIC_BASE_URL}/verify-email/${userId}`
+  );
+  const emailTemplate: Email = {
+    to: user.email,
+    subject,
+    body,
+    userId: user._id,
+    ipAddress,
+  };
+  await sendEmail(emailTemplate);
 }

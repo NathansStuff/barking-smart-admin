@@ -1,12 +1,14 @@
 'use client';
 
-import React from 'react';
+import { ReactNode, useEffect, useState } from 'react';
 
 import { MenuIcon } from 'lucide-react';
+import Image from 'next/image';
 import Link from 'next/link';
 
+import Logo from '@/assets/logosaas.png';
 import PageLayout from '@/components/container/PageLayout';
-import Logo from '@/components/general/Logo';
+import { Button } from '@/components/ui/button';
 import { Skeleton } from '@/components/ui/skeleton';
 import { selectIsLoaded } from '@/contexts/displaySlice';
 import { useAppSelector } from '@/contexts/storeHooks';
@@ -15,29 +17,40 @@ import { selectIsAuthenticated } from '@/contexts/userSlice';
 import { useMobileNavigation } from '../hooks/useMobileNavigation';
 import { getHeaderLinks } from '../utils/getHeaderLinks';
 
+import Banner from './Banner';
 import { ProfileDropdown } from './ProfileDropdown';
 import ThemeButton from './ThemeButton';
 
-function HeaderSkeleton(): React.JSX.Element {
+function HeaderSkeleton(): ReactNode {
   return <Skeleton className='h-8 w-[90%]' />;
 }
 
-function Header(): React.JSX.Element {
+function Header(): ReactNode {
+  const [isClient, setIsClient] = useState(false);
   const { onOpen } = useMobileNavigation();
   const isLoggedIn = useAppSelector(selectIsAuthenticated);
   const isLoaded = useAppSelector(selectIsLoaded);
 
   const headerLinks = getHeaderLinks(isLoggedIn);
 
+  useEffect(() => {
+    setIsClient(true);
+  }, []);
+
+  if (!isClient) {
+    return <HeaderSkeleton />;
+  }
   return (
-    <header className='sticky top-0 z-20 backdrop-blur-sm shadow-lg'>
+    <header className='sticky top-0 z-20 shadow-md backdrop-blur-sm'>
+      <Banner />
       <PageLayout>
         <div className='flex items-center justify-between'>
           {/* Left: Logo */}
           <div className='flex items-center'>
             <Link href='/'>
-              <Logo
-                variant='dog_og'
+              <Image
+                src={Logo.src}
+                alt='logo'
                 height={40}
                 width={40}
               />
@@ -59,6 +72,17 @@ function Header(): React.JSX.Element {
                       {link.title}
                     </Link>
                   ))}
+                  <Button
+                    asChild
+                    className='btn btn-primary hidden lg:block'
+                  >
+                    <Link
+                      href={isLoggedIn ? '/' : '/'}
+                      passHref
+                    >
+                      {isLoggedIn ? 'Create Now' : 'Get Started for free'}
+                    </Link>
+                  </Button>
                 </div>
               </nav>
               {/* Right: Get Started Button + Theme Button */}
