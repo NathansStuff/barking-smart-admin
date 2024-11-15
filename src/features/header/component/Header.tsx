@@ -13,6 +13,7 @@ import { Skeleton } from '@/components/ui/skeleton';
 import { selectIsLoaded } from '@/contexts/displaySlice';
 import { useAppSelector } from '@/contexts/storeHooks';
 import { selectIsAuthenticated } from '@/contexts/userSlice';
+import { isUserAdmin } from '@/features/user/utils/isUserAdmin';
 
 import { useMobileNavigation } from '../hooks/useMobileNavigation';
 import { getHeaderLinks } from '../utils/getHeaderLinks';
@@ -30,8 +31,9 @@ function Header(): ReactNode {
   const { onOpen } = useMobileNavigation();
   const isLoggedIn = useAppSelector(selectIsAuthenticated);
   const isLoaded = useAppSelector(selectIsLoaded);
+  const isAdmin = isUserAdmin();
 
-  const headerLinks = getHeaderLinks(isLoggedIn);
+  const headerLinks = getHeaderLinks(isLoggedIn, isAdmin);
 
   useEffect(() => {
     setIsClient(true);

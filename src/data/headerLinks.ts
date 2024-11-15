@@ -33,3 +33,10 @@ export const privateHeaderLinks: HeaderLink[] = [
     href: '#/dashboard',
   },
 ];
+
+export const adminHeaderLinks: HeaderLink[] = [
+  {
+    title: 'Admin',
+    href: '/admin',
+  },
+];

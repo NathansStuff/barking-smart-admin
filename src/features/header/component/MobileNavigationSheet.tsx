@@ -17,13 +17,15 @@ import { Separator } from '@/components/ui/separator';
 import { useAppSelector } from '@/contexts/storeHooks';
 import { selectIsAuthenticated } from '@/contexts/userSlice';
 import { useMobileNavigation } from '@/features/header/hooks/useMobileNavigation';
+import { isUserAdmin } from '@/features/user/utils/isUserAdmin';
 
 import { getHeaderLinks } from '../utils/getHeaderLinks';
 
 function MobileNavigationSheet(): ReactNode {
   const { isOpen, onClose } = useMobileNavigation();
   const isLoggedIn = useAppSelector(selectIsAuthenticated);
-  const headerLinks = getHeaderLinks(isLoggedIn);
+  const isAdmin = isUserAdmin();
+  const headerLinks = getHeaderLinks(isLoggedIn, isAdmin);
 
   return (
     <Drawer
