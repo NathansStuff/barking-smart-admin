@@ -19,13 +19,14 @@ import { SidebarMenu, SidebarMenuButton, SidebarMenuItem, useSidebar } from '@/c
 import { useAppSelector } from '@/contexts/storeHooks';
 import { selectUser } from '@/contexts/userSlice';
 import { ADMIN_USER_NAVIGATION } from '@/data/sidebarInfo';
+import { capitalizeString } from '@/utils/capitalizeString';
 
 export function SidebarUser(): ReactElement {
   const user = useAppSelector(selectUser);
   const image = user?.profilePicture;
   const { name } = user;
-  const firstName = name?.split(' ')[0].toUpperCase();
-  const lastName = name?.split(' ')[1].toUpperCase();
+  const firstName = capitalizeString(name?.split(' ')[0]);
+  const lastName = capitalizeString(name?.split(' ')[1]);
   const initials = `${firstName?.[0]}${lastName?.[0]}`;
 
   const { isMobile } = useSidebar();
