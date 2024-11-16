@@ -5,16 +5,7 @@ import { useSelector } from 'react-redux';
 
 import { Column, ColumnDef, Row, SortingState } from '@tanstack/react-table';
 import debounce from 'lodash/debounce';
-import {
-  ArrowDown,
-  ArrowUp,
-  ArrowUpDown,
-  Ban,
-  CheckCircle,
-  Edit,
-  FileText,
-  Trash,
-} from 'lucide-react';
+import { ArrowDown, ArrowUp, ArrowUpDown, Ban, CheckCircle, Edit, FileText, Trash } from 'lucide-react';
 import { Route } from 'next';
 import { useSearchParams } from 'next/navigation';
 import { useRouter } from 'next/navigation';
@@ -26,19 +17,8 @@ import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from '@/components/ui/select';
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipProvider,
-  TooltipTrigger,
-} from '@/components/ui/tooltip';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
 import { selectRole } from '@/contexts/userSlice';
 import { useDeleteProgram } from '@/features/program/api/useDeleteProgram';
 import { useGetPrograms } from '@/features/program/api/useGetPrograms';
@@ -69,10 +49,7 @@ interface ProgramFilters {
 
 // Helper function to validate energy level value
 function isValidEnergyLevel(value: string | null): value is EEnergyLevel {
-  return (
-    value !== null &&
-    Object.values(EEnergyLevel).includes(value as EEnergyLevel)
-  );
+  return value !== null && Object.values(EEnergyLevel).includes(value as EEnergyLevel);
 }
 
 function ProgramPage(): ReactNode {
@@ -90,9 +67,7 @@ function ProgramPage(): ReactNode {
     challenge: (searchParams.get('challenge') as EChallenge) || 'all',
     space: (searchParams.get('space') as ESpace) || 'all',
     type: (searchParams.get('type') as EActivityType) || 'all',
-    approved: searchParams.has('approved')
-      ? searchParams.get('approved') === 'true'
-      : undefined,
+    approved: searchParams.has('approved') ? searchParams.get('approved') === 'true' : undefined,
   });
 
   const [pagination, setPagination] = useState({
@@ -100,10 +75,7 @@ function ProgramPage(): ReactNode {
     pageSize: 10,
   });
 
-  const [ConfirmDialog, confirm] = UseConfirm(
-    'Are you sure?',
-    'This action cannot be undone.'
-  );
+  const [ConfirmDialog, confirm] = UseConfirm('Are you sure?', 'This action cannot be undone.');
 
   const deleteMutation = useDeleteProgram();
   const updateMutation = useUpdateProgram();
@@ -118,17 +90,11 @@ function ProgramPage(): ReactNode {
       ? [
           {
             accessorKey: 'approved',
-            header: ({
-              column,
-            }: {
-              column: Column<ProgramWithId>;
-            }): ReactNode => {
+            header: ({ column }: { column: Column<ProgramWithId> }): ReactNode => {
               return (
                 <Button
                   variant='ghost'
-                  onClick={() =>
-                    column.toggleSorting(column.getIsSorted() === 'asc')
-                  }
+                  onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
                   className='flex items-center gap-1'
                 >
                   Status
@@ -144,9 +110,7 @@ function ProgramPage(): ReactNode {
             },
             cell: ({ row }: { row: Row<ProgramWithId> }): ReactNode => (
               <div className='w-[80px]'>
-                <Badge
-                  variant={row.original.approved ? 'default' : 'secondary'}
-                >
+                <Badge variant={row.original.approved ? 'default' : 'secondary'}>
                   {row.original.approved ? 'Approved' : 'Pending'}
                 </Badge>
               </div>
@@ -162,7 +126,7 @@ function ProgramPage(): ReactNode {
           <Button
             variant='ghost'
             onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
-            className='flex items-center gap-1 justify-start w-full'
+            className='flex w-full items-center justify-start gap-1'
           >
             Title
             {column.getIsSorted() === 'asc' ? (
@@ -237,18 +201,10 @@ function ProgramPage(): ReactNode {
                   disabled={updateMutation.isPending}
                   className={`h-8 w-8 ${row.original.approved ? 'hover:bg-destructive/90' : 'hover:bg-green-600'}`}
                 >
-                  {row.original.approved ? (
-                    <Ban className='h-4 w-4' />
-                  ) : (
-                    <CheckCircle className='h-4 w-4' />
-                  )}
+                  {row.original.approved ? <Ban className='h-4 w-4' /> : <CheckCircle className='h-4 w-4' />}
                 </Button>
               </TooltipTrigger>
-              <TooltipContent>
-                {row.original.approved
-                  ? 'Unapprove program'
-                  : 'Approve program'}
-              </TooltipContent>
+              <TooltipContent>{row.original.approved ? 'Unapprove program' : 'Approve program'}</TooltipContent>
             </Tooltip>
           )}
 
@@ -257,7 +213,7 @@ function ProgramPage(): ReactNode {
               <Button
                 variant='ghost'
                 size='icon'
-                onClick={() => router.push(`/program/${row.original._id}`)}
+                onClick={() => router.push(`/admin/program/${row.original._id}`)}
               >
                 <Edit className='size-4' />
               </Button>
@@ -310,12 +266,8 @@ function ProgramPage(): ReactNode {
       type: filters.type === 'all' ? undefined : filters.type,
       approved: filters.approved,
       ...(filters.energyLevel !== 'all' && {
-        energyLevelMin: energyLevelToNumeric(
-          filters.energyLevel as EEnergyLevel
-        )[0],
-        energyLevelMax: energyLevelToNumeric(
-          filters.energyLevel as EEnergyLevel
-        )[1],
+        energyLevelMin: energyLevelToNumeric(filters.energyLevel as EEnergyLevel)[0],
+        energyLevelMax: energyLevelToNumeric(filters.energyLevel as EEnergyLevel)[1],
       }),
     },
   });
@@ -375,18 +327,10 @@ function ProgramPage(): ReactNode {
     [setColumnFilters]
   );
 
-  const handleFilterChange = (
-    key: keyof ProgramFilters,
-    value: string | boolean | undefined
-  ): void => {
+  const handleFilterChange = (key: keyof ProgramFilters, value: string | boolean | undefined): void => {
     const newFilters = {
       ...filters,
-      [key]:
-        key === 'energyLevel'
-          ? isValidEnergyLevel(value as string)
-            ? value
-            : 'all'
-          : value,
+      [key]: key === 'energyLevel' ? (isValidEnergyLevel(value as string) ? value : 'all') : value,
     } as ProgramFilters;
 
     setFilters(newFilters);
@@ -418,18 +362,18 @@ function ProgramPage(): ReactNode {
           <Input
             placeholder='Filter by title...'
             value={filters.title}
-            onChange={e => handleFilterChange('title', e.target.value)}
+            onChange={(e) => handleFilterChange('title', e.target.value)}
           />
           <Select
             value={filters.location}
-            onValueChange={value => handleFilterChange('location', value)}
+            onValueChange={(value) => handleFilterChange('location', value)}
           >
             <SelectTrigger>
               <SelectValue placeholder='Select location' />
             </SelectTrigger>
             <SelectContent>
               <SelectItem value='all'>All Locations</SelectItem>
-              {Object.values(ELocation).map(location => (
+              {Object.values(ELocation).map((location) => (
                 <SelectItem
                   key={location}
                   value={location}
@@ -441,14 +385,14 @@ function ProgramPage(): ReactNode {
           </Select>
           <Select
             value={filters.duration}
-            onValueChange={value => handleFilterChange('duration', value)}
+            onValueChange={(value) => handleFilterChange('duration', value)}
           >
             <SelectTrigger>
               <SelectValue placeholder='Select duration' />
             </SelectTrigger>
             <SelectContent>
               <SelectItem value='all'>All Durations</SelectItem>
-              {Object.values(EDuration).map(duration => (
+              {Object.values(EDuration).map((duration) => (
                 <SelectItem
                   key={duration}
                   value={duration}
@@ -460,14 +404,14 @@ function ProgramPage(): ReactNode {
           </Select>
           <Select
             value={filters.challenge}
-            onValueChange={value => handleFilterChange('challenge', value)}
+            onValueChange={(value) => handleFilterChange('challenge', value)}
           >
             <SelectTrigger>
               <SelectValue placeholder='Select challenge' />
             </SelectTrigger>
             <SelectContent>
               <SelectItem value='all'>All Challenges</SelectItem>
-              {Object.values(EChallenge).map(challenge => (
+              {Object.values(EChallenge).map((challenge) => (
                 <SelectItem
                   key={challenge}
                   value={challenge}
@@ -479,14 +423,14 @@ function ProgramPage(): ReactNode {
           </Select>
           <Select
             value={filters.space}
-            onValueChange={value => handleFilterChange('space', value)}
+            onValueChange={(value) => handleFilterChange('space', value)}
           >
             <SelectTrigger>
               <SelectValue placeholder='Select space' />
             </SelectTrigger>
             <SelectContent>
               <SelectItem value='all'>All Spaces</SelectItem>
-              {Object.values(ESpace).map(space => (
+              {Object.values(ESpace).map((space) => (
                 <SelectItem
                   key={space}
                   value={space}
@@ -498,14 +442,14 @@ function ProgramPage(): ReactNode {
           </Select>
           <Select
             value={filters.type}
-            onValueChange={value => handleFilterChange('type', value)}
+            onValueChange={(value) => handleFilterChange('type', value)}
           >
             <SelectTrigger>
               <SelectValue placeholder='Select activity type' />
             </SelectTrigger>
             <SelectContent>
               <SelectItem value='all'>All Types</SelectItem>
-              {Object.values(EActivityType).map(type => (
+              {Object.values(EActivityType).map((type) => (
                 <SelectItem
                   key={type}
                   value={type}
@@ -517,17 +461,8 @@ function ProgramPage(): ReactNode {
           </Select>
           {isAdmin && (
             <Select
-              value={
-                filters.approved === undefined
-                  ? 'all'
-                  : filters.approved.toString()
-              }
-              onValueChange={value =>
-                handleFilterChange(
-                  'approved',
-                  value === 'all' ? undefined : value === 'true'
-                )
-              }
+              value={filters.approved === undefined ? 'all' : filters.approved.toString()}
+              onValueChange={(value) => handleFilterChange('approved', value === 'all' ? undefined : value === 'true')}
             >
               <SelectTrigger>
                 <SelectValue placeholder='Filter by status' />
@@ -541,14 +476,14 @@ function ProgramPage(): ReactNode {
           )}
           <Select
             value={filters.energyLevel}
-            onValueChange={value => handleFilterChange('energyLevel', value)}
+            onValueChange={(value) => handleFilterChange('energyLevel', value)}
           >
             <SelectTrigger>
               <SelectValue placeholder='Select energy level' />
             </SelectTrigger>
             <SelectContent>
               <SelectItem value='all'>All Energy Levels</SelectItem>
-              {Object.values(EEnergyLevel).map(level => (
+              {Object.values(EEnergyLevel).map((level) => (
                 <SelectItem
                   key={level}
                   value={level}
@@ -578,7 +513,7 @@ function ProgramPage(): ReactNode {
     });
 
     if (!hasActiveFilters) {
-      router.replace('/program', { scroll: false });
+      router.replace('/admin/program', { scroll: false });
       return;
     }
 
@@ -586,9 +521,7 @@ function ProgramPage(): ReactNode {
     if (filters.title) params.set('title', filters.title);
     if (filters.location !== 'all') params.set('location', filters.location);
     if (filters.energyLevel !== 'all') {
-      const [minLevel, maxLevel] = energyLevelToNumeric(
-        filters.energyLevel as EEnergyLevel
-      );
+      const [minLevel, maxLevel] = energyLevelToNumeric(filters.energyLevel as EEnergyLevel);
       params.set('energyLevel', filters.energyLevel);
       params.set('energyLevelMin', minLevel.toString());
       params.set('energyLevelMax', maxLevel.toString());
@@ -597,11 +530,10 @@ function ProgramPage(): ReactNode {
     if (filters.challenge !== 'all') params.set('challenge', filters.challenge);
     if (filters.space !== 'all') params.set('space', filters.space);
     if (filters.type !== 'all') params.set('type', filters.type);
-    if (filters.approved !== undefined)
-      params.set('approved', filters.approved.toString());
+    if (filters.approved !== undefined) params.set('approved', filters.approved.toString());
     const queryString = params.toString();
 
-    const path: Route = `/program?${queryString ? `${queryString}` : ''}`;
+    const path: Route = `/admin/program?${queryString ? `${queryString}` : ''}`;
     router.replace(path, { scroll: false });
   }, [filters, router]);
 
@@ -615,7 +547,7 @@ function ProgramPage(): ReactNode {
       type: filters.type,
     });
 
-    router.push(`/program/create?${params.toString()}`);
+    router.push(`/admin/program/create?${params.toString()}`);
   };
 
   if (programQuery.isLoading) {
@@ -649,8 +581,8 @@ function ProgramPage(): ReactNode {
             />
             <DataTablePagination table={table} />
             <div className='p-4 text-right text-sm text-muted-foreground'>
-              Filtered Programs: {programQuery.data?.programs?.length ?? 0} /
-              Total Programs: {programQuery.data?.total ?? 0}
+              Filtered Programs: {programQuery.data?.programs?.length ?? 0} / Total Programs:{' '}
+              {programQuery.data?.total ?? 0}
             </div>
           </Card>
         </div>

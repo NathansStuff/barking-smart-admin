@@ -5,6 +5,7 @@ import { ELocation } from '@/features/program/types/ELocation';
 
 import { DogWithId } from '../types/Dog';
 import { EBreed } from '../types/EBreed';
+import { EGender } from '../types/EGender';
 
 interface GetDogsParams {
   page?: number;
@@ -13,6 +14,7 @@ interface GetDogsParams {
     name?: string;
     breed?: EBreed;
     location?: ELocation;
+    gender?: EGender;
   };
 }
 
@@ -31,7 +33,7 @@ async function getDogs(params: GetDogsParams = {}): Promise<GetDogsResponse> {
   if (params.filters?.name) searchParams.append('name', params.filters.name);
   if (params.filters?.breed) searchParams.append('breed', params.filters.breed);
   if (params.filters?.location) searchParams.append('location', params.filters.location);
-
+  if (params.filters?.gender) searchParams.append('gender', params.filters.gender);
   const response = await BaseApiClient.get<GetDogsResponse>(`/api/dog?${searchParams.toString()}`);
   return response.data;
 }

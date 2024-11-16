@@ -27,18 +27,14 @@ import DogPageSkeleton from './DogPageSkeleton';
 
 function DogPage(): ReactNode {
   const router = useRouter();
-  const { updateUrlParams, getUrlParam } = UseUrlParams<{
+  const { updateUrlParams, getUrlParam, pagination, setPagination } = UseUrlParams<{
     breed: string;
     gender: string;
     location: string;
     name: string;
+    page: number;
+    pageSize: number;
   }>();
-
-  // todo: This should be moved into urlparams too
-  const [pagination, setPagination] = useState({
-    pageIndex: 0,
-    pageSize: 10,
-  });
 
   const [ConfirmDialog, confirm] = UseConfirm('Are you sure?', 'This action cannot be undone.');
 
@@ -93,6 +89,7 @@ function DogPage(): ReactNode {
       name: debouncedFilters.name,
       breed: filters.immediate.breed === 'all' ? undefined : (filters.immediate.breed as EBreed),
       location: filters.immediate.location === 'all' ? undefined : (filters.immediate.location as ELocation),
+      gender: filters.immediate.gender === 'all' ? undefined : (filters.immediate.gender as EGender),
     },
   });
 
@@ -112,24 +109,40 @@ function DogPage(): ReactNode {
     onSortingChange: setSorting,
   });
 
-  // Replace the url params effect with this simplified version
+  // Separate effect for URL updates
   useEffect(() => {
     const hasActiveFilters =
       Object.entries(filters.immediate).some(([_, value]) => value !== 'all') ||
       Object.entries(filters.debounced).some(([_, value]) => value !== '');
 
-    if (!hasActiveFilters) {
-      updateUrlParams({});
-      return;
-    }
+    const currentParams: Record<string, string | number> = {};
 
-    updateUrlParams({
-      name: filters.debounced.name,
-      breed: filters.immediate.breed,
-      gender: filters.immediate.gender,
-      location: filters.immediate.location,
-    });
-  }, [filters, updateUrlParams]);
+    // Only add non-default values to URL
+    if (filters.debounced.name) currentParams.name = filters.debounced.name;
+    if (filters.immediate.breed !== 'all') currentParams.breed = filters.immediate.breed;
+    if (filters.immediate.gender !== 'all') currentParams.gender = filters.immediate.gender;
+    if (filters.immediate.location !== 'all') currentParams.location = filters.immediate.location;
+
+    // Only add pagination if it's not at default values
+    if (pagination.pageIndex > 0) currentParams.page = pagination.pageIndex + 1;
+    if (pagination.pageSize !== 10) currentParams.pageSize = pagination.pageSize;
+
+    if (!hasActiveFilters && Object.keys(currentParams).length === 0) {
+      updateUrlParams({});
+    } else {
+      updateUrlParams(currentParams as Partial<typeof currentParams>);
+    }
+  }, [
+    filters.immediate.breed,
+    filters.immediate.gender,
+    filters.immediate.location,
+    filters.debounced.name,
+    pagination.pageIndex,
+    pagination.pageSize,
+    updateUrlParams,
+    filters.immediate,
+    filters.debounced,
+  ]);
 
   // How the debounced filters are applied to the table
   useEffect(() => {

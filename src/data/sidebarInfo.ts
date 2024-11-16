@@ -32,8 +32,8 @@ export const ADMIN_NAV_MAIN: AdminNavMain = {
           url: '/admin/dog',
         },
         {
-          title: 'Starred',
-          url: '#',
+          title: 'Programs',
+          url: '/admin/program',
         },
         {
           title: 'Settings',
