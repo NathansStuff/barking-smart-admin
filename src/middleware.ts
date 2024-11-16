@@ -8,12 +8,12 @@ export async function middleware(request: NextRequest): Promise<NextResponse> {
   const token = await getToken({ req: request });
 
   // Protect any route that starts with /admin
-  if (request.nextUrl.pathname.startsWith('/admin')) {
-    console.log(token);
-    if (!token || token.role !== EUserRole.ADMIN) {
-      return NextResponse.redirect(new URL('/', request.url));
-    }
-  }
+  // if (request.nextUrl.pathname.startsWith('/admin')) {
+  //   console.log(token);
+  //   if (!token || token.role !== EUserRole.ADMIN) {
+  //     return NextResponse.redirect(new URL('/', request.url));
+  //   }
+  // }
 
   return NextResponse.next();
 }

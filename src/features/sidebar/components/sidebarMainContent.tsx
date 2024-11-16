@@ -2,7 +2,8 @@
 
 import { ReactElement } from 'react';
 
-import { ChevronRight, type LucideIcon } from 'lucide-react';
+import { ChevronRight } from 'lucide-react';
+import { usePathname } from 'next/navigation';
 
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '@/components/ui/collapsible';
 import {
@@ -15,31 +16,22 @@ import {
   SidebarMenuSubButton,
   SidebarMenuSubItem,
 } from '@/components/ui/sidebar';
+import { ADMIN_NAV_MAIN } from '@/data/sidebarInfo';
 
-export function NavMain({
-  items,
-}: {
-  items: {
-    title: string;
-    url: string;
-    icon?: LucideIcon;
-    isActive?: boolean;
-    items?: {
-      title: string;
-      url: string;
-    }[];
-  }[];
-}): ReactElement {
+export function SidebarMainContent(): ReactElement {
+  const pathname = usePathname();
+  console.log(pathname, 'pathname');
+
   return (
     <SidebarGroup>
-      <SidebarGroupLabel>Platform</SidebarGroupLabel>
+      <SidebarGroupLabel>{ADMIN_NAV_MAIN.heading}</SidebarGroupLabel>
       <SidebarMenu>
-        {items.map((item) => (
+        {ADMIN_NAV_MAIN.items.map((item) => (
           <Collapsible
             key={item.title}
             asChild
-            defaultOpen={item.isActive}
             className='group/collapsible'
+            defaultOpen={item.items?.some((subItem) => pathname === subItem.url)}
           >
             <SidebarMenuItem>
               <CollapsibleTrigger asChild>

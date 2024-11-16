@@ -5,21 +5,11 @@ import { ReactNode, useState } from 'react';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 
 import { Button } from '@/components/ui/button';
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from '@/components/ui/card';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Progress } from '@/components/ui/progress';
 import { Separator } from '@/components/ui/separator';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import {
-  MAXIMUM_ENERGY,
-  MINIMUM_ENERGY,
-  PROGRAM_DAYS,
-} from '@/constants/publicInfo';
+import { MAXIMUM_ENERGY, MINIMUM_ENERGY, PROGRAM_DAYS } from '@/data/publicInfo';
 import { DogWithId } from '@/features/dog/types/Dog';
 
 import { convertDistributionToPercentages } from '../utils/convertDistributionToPercentage';
@@ -29,16 +19,14 @@ interface ProgramGenerationProps {
   dog: DogWithId;
 }
 
-export default function ProgramGeneration({
-  dog,
-}: ProgramGenerationProps): ReactNode {
+export default function ProgramGeneration({ dog }: ProgramGenerationProps): ReactNode {
   const [currentDay, setCurrentDay] = useState(1);
 
   const programData = generateProgramData(dog);
 
   return (
     <div className='container mx-auto p-4'>
-      <h1 className='text-3xl font-bold mb-6'>Dog Program Generation</h1>
+      <h1 className='mb-6 text-3xl font-bold'>Dog Program Generation</h1>
 
       <Tabs
         defaultValue='energy'
@@ -55,16 +43,14 @@ export default function ProgramGeneration({
             <CardHeader>
               <CardTitle>Energy Level Calculation</CardTitle>
               <CardDescription>
-                Formula: Energy = Breed Energy + Age Energy + Health Energy +
-                Gender Energy
+                Formula: Energy = Breed Energy + Age Energy + Health Energy + Gender Energy
               </CardDescription>
             </CardHeader>
             <CardContent>
               <div className='grid grid-cols-2 gap-4'>
                 <div className='font-semibold'>Breed One:</div>
                 <div>
-                  {programData.energyCalculation.breedOne.name} (
-                  {programData.energyCalculation.breedOne.energy})
+                  {programData.energyCalculation.breedOne.name} ({programData.energyCalculation.breedOne.energy})
                 </div>
                 <div className='font-semibold'>Breed Two:</div>
                 <div>
@@ -91,15 +77,15 @@ export default function ProgramGeneration({
               </div>
               <div className='mt-4'>
                 <div className='mb-2 font-semibold'>Energy Level:</div>
-                <div className='w-full bg-secondary rounded-full h-2.5'>
+                <div className='h-2.5 w-full rounded-full bg-secondary'>
                   <div
-                    className='bg-primary h-2.5 rounded-full'
+                    className='h-2.5 rounded-full bg-primary'
                     style={{
                       width: `${(programData.energyCalculation.adjustedEnergy / MAXIMUM_ENERGY) * 100}%`,
                     }}
                   ></div>
                 </div>
-                <div className='flex justify-between text-sm mt-1'>
+                <div className='mt-1 flex justify-between text-sm'>
                   <span>{MINIMUM_ENERGY}</span>
                   <span>{MAXIMUM_ENERGY}</span>
                 </div>
@@ -109,29 +95,15 @@ export default function ProgramGeneration({
         </TabsContent>
 
         <TabsContent value='distributions'>
-          <div className='grid grid-cols-1 md:grid-cols-2 gap-4'>
+          <div className='grid grid-cols-1 gap-4 md:grid-cols-2'>
             {renderDistribution(
-              convertDistributionToPercentages(
-                programData.distributions.energyDayDistribution
-              ),
+              convertDistributionToPercentages(programData.distributions.energyDayDistribution),
               'Energy Distribution'
             )}
-            {renderDistribution(
-              programData.distributions.durationDistribution,
-              'Duration Distribution'
-            )}
-            {renderDistribution(
-              programData.distributions.challengeDistribution,
-              'Challenge Distribution'
-            )}
-            {renderDistribution(
-              programData.distributions.locationDistribution,
-              'Location Distribution'
-            )}
-            {renderDistribution(
-              programData.distributions.activityTypeDistribution,
-              'Activity Type Distribution'
-            )}
+            {renderDistribution(programData.distributions.durationDistribution, 'Duration Distribution')}
+            {renderDistribution(programData.distributions.challengeDistribution, 'Challenge Distribution')}
+            {renderDistribution(programData.distributions.locationDistribution, 'Location Distribution')}
+            {renderDistribution(programData.distributions.activityTypeDistribution, 'Activity Type Distribution')}
           </div>
         </TabsContent>
 
@@ -145,17 +117,15 @@ export default function ProgramGeneration({
             </CardHeader>
             <CardContent>
               <div className='mb-4'>
-                <div className='flex justify-between mb-2'>
+                <div className='mb-2 flex justify-between'>
                   <Button
-                    onClick={() => setCurrentDay(prev => Math.max(1, prev - 1))}
+                    onClick={() => setCurrentDay((prev) => Math.max(1, prev - 1))}
                     disabled={currentDay === 1}
                   >
                     <ChevronLeft className='mr-2 h-4 w-4' /> Previous
                   </Button>
                   <Button
-                    onClick={() =>
-                      setCurrentDay(prev => Math.min(PROGRAM_DAYS, prev + 1))
-                    }
+                    onClick={() => setCurrentDay((prev) => Math.min(PROGRAM_DAYS, prev + 1))}
                     disabled={currentDay === PROGRAM_DAYS}
                   >
                     Next <ChevronRight className='ml-2 h-4 w-4' />
@@ -168,40 +138,15 @@ export default function ProgramGeneration({
               </div>
               <div className='grid grid-cols-2 gap-2'>
                 <div>Energy Level:</div>
-                <div>
-                  {
-                    programData.programRequirements[currentDay - 1].requirements
-                      .energyLevel
-                  }
-                </div>
+                <div>{programData.programRequirements[currentDay - 1].requirements.energyLevel}</div>
                 <div>Duration:</div>
-                <div>
-                  {
-                    programData.programRequirements[currentDay - 1].requirements
-                      .duration
-                  }
-                </div>
+                <div>{programData.programRequirements[currentDay - 1].requirements.duration}</div>
                 <div>Challenge:</div>
-                <div>
-                  {
-                    programData.programRequirements[currentDay - 1].requirements
-                      .challenge
-                  }
-                </div>
+                <div>{programData.programRequirements[currentDay - 1].requirements.challenge}</div>
                 <div>Location:</div>
-                <div>
-                  {
-                    programData.programRequirements[currentDay - 1].requirements
-                      .location
-                  }
-                </div>
+                <div>{programData.programRequirements[currentDay - 1].requirements.location}</div>
                 <div>Activity Type:</div>
-                <div>
-                  {
-                    programData.programRequirements[currentDay - 1].requirements
-                      .activityType
-                  }
-                </div>
+                <div>{programData.programRequirements[currentDay - 1].requirements.activityType}</div>
               </div>
             </CardContent>
           </Card>
@@ -211,10 +156,7 @@ export default function ProgramGeneration({
   );
 }
 
-const renderDistribution = (
-  distribution: Record<string, number>,
-  title: string
-): ReactNode => (
+const renderDistribution = (distribution: Record<string, number>, title: string): ReactNode => (
   <Card>
     <CardHeader>
       <CardTitle>{title}</CardTitle>
@@ -225,7 +167,7 @@ const renderDistribution = (
           key={key}
           className='mb-2'
         >
-          <div className='flex justify-between mb-1'>
+          <div className='mb-1 flex justify-between'>
             <span>{key}</span>
             <span>{(value * 100).toFixed(0)}%</span>
           </div>

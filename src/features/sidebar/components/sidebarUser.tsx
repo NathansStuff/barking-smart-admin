@@ -2,7 +2,8 @@
 
 import { ReactElement } from 'react';
 
-import { BadgeCheck, Bell, ChevronsUpDown, CreditCard, LogOut, Sparkles } from 'lucide-react';
+import { ChevronsUpDown, LogOut } from 'lucide-react';
+import { signOut } from 'next-auth/react';
 
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import {
@@ -15,16 +16,18 @@ import {
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
 import { SidebarMenu, SidebarMenuButton, SidebarMenuItem, useSidebar } from '@/components/ui/sidebar';
+import { useAppSelector } from '@/contexts/storeHooks';
+import { selectUser } from '@/contexts/userSlice';
+import { ADMIN_USER_NAVIGATION } from '@/data/sidebarInfo';
 
-export function NavUser({
-  user,
-}: {
-  user: {
-    name: string;
-    email: string;
-    avatar: string;
-  };
-}): ReactElement {
+export function SidebarUser(): ReactElement {
+  const user = useAppSelector(selectUser);
+  const image = user?.profilePicture;
+  const { name } = user;
+  const firstName = name?.split(' ')[0].toUpperCase();
+  const lastName = name?.split(' ')[1].toUpperCase();
+  const initials = `${firstName?.[0]}${lastName?.[0]}`;
+
   const { isMobile } = useSidebar();
 
   return (
@@ -38,10 +41,10 @@ export function NavUser({
             >
               <Avatar className='h-8 w-8 rounded-lg'>
                 <AvatarImage
-                  src={user.avatar}
+                  src={image}
                   alt={user.name}
                 />
-                <AvatarFallback className='rounded-lg'>CN</AvatarFallback>
+                <AvatarFallback className='rounded-lg'>{initials}</AvatarFallback>
               </Avatar>
               <div className='grid flex-1 text-left text-sm leading-tight'>
                 <span className='truncate font-semibold'>{user.name}</span>
@@ -60,10 +63,10 @@ export function NavUser({
               <div className='flex items-center gap-2 px-1 py-1.5 text-left text-sm'>
                 <Avatar className='h-8 w-8 rounded-lg'>
                   <AvatarImage
-                    src={user.avatar}
+                    src={image}
                     alt={user.name}
                   />
-                  <AvatarFallback className='rounded-lg'>CN</AvatarFallback>
+                  <AvatarFallback className='rounded-lg'>{initials}</AvatarFallback>
                 </Avatar>
                 <div className='grid flex-1 text-left text-sm leading-tight'>
                   <span className='truncate font-semibold'>{user.name}</span>
@@ -72,29 +75,30 @@ export function NavUser({
               </div>
             </DropdownMenuLabel>
             <DropdownMenuSeparator />
-            <DropdownMenuGroup>
-              <DropdownMenuItem>
-                <Sparkles />
-                Upgrade to Pro
-              </DropdownMenuItem>
-            </DropdownMenuGroup>
-            <DropdownMenuSeparator />
-            <DropdownMenuGroup>
-              <DropdownMenuItem>
-                <BadgeCheck />
-                Account
-              </DropdownMenuItem>
-              <DropdownMenuItem>
-                <CreditCard />
-                Billing
-              </DropdownMenuItem>
-              <DropdownMenuItem>
-                <Bell />
-                Notifications
-              </DropdownMenuItem>
-            </DropdownMenuGroup>
-            <DropdownMenuSeparator />
-            <DropdownMenuItem>
+            {ADMIN_USER_NAVIGATION.map((item, i) => (
+              <>
+                <DropdownMenuGroup key={i}>
+                  {item.map((subItem) => (
+                    <DropdownMenuItem
+                      className='cursor-pointer'
+                      key={subItem.name}
+                    >
+                      <subItem.icon />
+                      {subItem.name}
+                    </DropdownMenuItem>
+                  ))}
+                </DropdownMenuGroup>
+                <DropdownMenuSeparator />
+              </>
+            ))}
+            <DropdownMenuItem
+              className='cursor-pointer'
+              onClick={() =>
+                signOut({
+                  callbackUrl: '/',
+                })
+              }
+            >
               <LogOut />
               Log out
             </DropdownMenuItem>

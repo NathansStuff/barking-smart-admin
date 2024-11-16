@@ -7,7 +7,7 @@ import Logo from '@/components/general/Logo';
 import NumberCard from '@/components/general/NumberCard';
 import ProgressChart from '@/components/general/ProgressChart';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
-import { PROGRAMS_GOAL } from '@/constants/publicInfo';
+import { PROGRAMS_GOAL } from '@/data/publicInfo';
 import { useGetPrograms } from '@/features/program/api/useGetPrograms';
 
 function DashboardPage(): ReactNode {
@@ -32,7 +32,7 @@ function DashboardPage(): ReactNode {
 
   return (
     <>
-      <AdminOnly>
+      <>
         <section className='mx-4 overflow-hidden'>
           <Card className='mx-auto mt-10 max-w-2xl text-center'>
             <CardHeader>
@@ -61,7 +61,7 @@ function DashboardPage(): ReactNode {
             </CardFooter>
           </Card>
         </section>
-      </AdminOnly>
+      </>
     </>
   );
 }

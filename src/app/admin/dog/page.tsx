@@ -9,7 +9,6 @@ import { Route } from 'next';
 import { useSearchParams } from 'next/navigation';
 import { useRouter } from 'next/navigation';
 
-import AdminOnly from '@/components/container/AdminOnly';
 import { DataTable } from '@/components/general/DataTable/components/DataTable';
 import { DataTablePagination } from '@/components/general/DataTable/components/DataTablePagination';
 import { UseDataTable } from '@/components/general/DataTable/hooks/UseDataTable';
@@ -286,7 +285,7 @@ function DogPage(): ReactNode {
     });
 
     if (!hasActiveFilters) {
-      router.replace('/dog', { scroll: false });
+      router.replace('/admin/dog', { scroll: false });
       return;
     }
 
@@ -302,7 +301,7 @@ function DogPage(): ReactNode {
   }, [filters, router]);
 
   return (
-    <AdminOnly>
+    <>
       <ConfirmDialog />
       <TooltipProvider>
         <div className='container mx-auto p-4'>
@@ -331,7 +330,7 @@ function DogPage(): ReactNode {
           )}
         </div>
       </TooltipProvider>
-    </AdminOnly>
+    </>
   );
 }
 

@@ -1,14 +1,7 @@
-import {
-  MAXIMUM_ENERGY,
-  MINIMUM_ENERGY,
-  PROGRAM_DAYS,
-} from '@/constants/publicInfo';
+import { MAXIMUM_ENERGY, MINIMUM_ENERGY, PROGRAM_DAYS } from '@/data/publicInfo';
 import { DogWithId } from '@/features/dog/types/Dog';
 import { calculateActivityTypeDistribution } from '@/features/dog/utils/activityTypeInfo';
-import {
-  calculateAgeDurationDistribution,
-  calculateAgeEnergy,
-} from '@/features/dog/utils/ageInfo';
+import { calculateAgeDurationDistribution, calculateAgeEnergy } from '@/features/dog/utils/ageInfo';
 import { getBreedInfo } from '@/features/dog/utils/breedInfo';
 import { calculateChallengeDistribution } from '@/features/dog/utils/challengeInfo';
 import { getDayDistribution } from '@/features/dog/utils/energyInfo';
@@ -51,21 +44,12 @@ export function generateProgramData(dog: DogWithId): ProgramData {
   const genderEnergy = getGenderEnergy(dog.gender);
 
   const calculatedEnergy =
-    breedOneInfo.energyLevel +
-    (breedTwoInfo?.energyLevel || 0) +
-    ageEnergy +
-    healthIssuesEnergy +
-    genderEnergy;
+    breedOneInfo.energyLevel + (breedTwoInfo?.energyLevel || 0) + ageEnergy + healthIssuesEnergy + genderEnergy;
 
-  const adjustedEnergy = Math.min(
-    Math.max(calculatedEnergy, MINIMUM_ENERGY),
-    MAXIMUM_ENERGY
-  );
+  const adjustedEnergy = Math.min(Math.max(calculatedEnergy, MINIMUM_ENERGY), MAXIMUM_ENERGY);
 
   const energyDayDistribution = getDayDistribution(adjustedEnergy);
-  const durationDistribution = calculateAgeDurationDistribution(
-    dog.dateOfBirth.toString()
-  );
+  const durationDistribution = calculateAgeDurationDistribution(dog.dateOfBirth.toString());
   const challengeDistribution = calculateChallengeDistribution(adjustedEnergy);
   const locationDistribution = calculateLocationDistribution(dog.location);
   const activityTypeDistribution = calculateActivityTypeDistribution(dog);
@@ -85,9 +69,7 @@ export function generateProgramData(dog: DogWithId): ProgramData {
         name: breedOneInfo.displayName,
         energy: breedOneInfo.energyLevel,
       },
-      breedTwo: breedTwoInfo
-        ? { name: breedTwoInfo.displayName, energy: breedTwoInfo.energyLevel }
-        : null,
+      breedTwo: breedTwoInfo ? { name: breedTwoInfo.displayName, energy: breedTwoInfo.energyLevel } : null,
       ageEnergy,
       healthIssuesEnergy,
       genderEnergy,

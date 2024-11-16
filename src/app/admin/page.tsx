@@ -47,206 +47,142 @@ export default function AdminDashboard(): ReactElement {
   const [selectedPeriod, setSelectedPeriod] = useState('24h');
 
   return (
-    <div className='flex h-screen bg-gray-100'>
-      {/* Sidebar */}
-      <aside className='w-64 bg-white shadow-md'>
-        <div className='p-4'>
-          <h1 className='text-2xl font-bold text-blue-600'>SnapQR</h1>
-          <p className='text-sm text-gray-500'>Admin Dashboard</p>
-        </div>
-        <nav className='mt-4'>
-          <a
-            href='#'
-            className='flex items-center bg-gray-200 px-4 py-2 text-gray-700'
-          >
-            <BarChart className='mr-3 h-5 w-5' />
-            Dashboard
-          </a>
-          <a
-            href='#'
-            className='flex items-center px-4 py-2 text-gray-700 hover:bg-gray-200'
-          >
-            <Link className='mr-3 h-5 w-5' />
-            Links
-          </a>
-          <a
-            href='#'
-            className='flex items-center px-4 py-2 text-gray-700 hover:bg-gray-200'
-          >
-            <QrCode className='mr-3 h-5 w-5' />
-            QR Codes
-          </a>
-          <a
-            href='#'
-            className='flex items-center px-4 py-2 text-gray-700 hover:bg-gray-200'
-          >
-            <Users className='mr-3 h-5 w-5' />
-            Users
-          </a>
-          <a
-            href='#'
-            className='flex items-center px-4 py-2 text-gray-700 hover:bg-gray-200'
-          >
-            <Settings className='mr-3 h-5 w-5' />
-            Settings
-          </a>
-        </nav>
-        <div className='absolute bottom-0 w-64 p-4'>
-          <a
-            href='#'
-            className='flex items-center px-4 py-2 text-gray-700 hover:bg-gray-200'
-          >
-            <HelpCircle className='mr-3 h-5 w-5' />
-            Help & Support
-          </a>
-          <a
-            href='#'
-            className='flex items-center px-4 py-2 text-gray-700 hover:bg-gray-200'
-          >
-            <LogOut className='mr-3 h-5 w-5' />
-            Log Out
-          </a>
-        </div>
-      </aside>
+    <div className="p-8">
+      <h2 className='mb-6 text-3xl font-bold'>Dashboard Overview</h2>
 
-      {/* Main content */}
-      <main className='flex-1 overflow-y-auto p-8'>
-        <h2 className='mb-6 text-3xl font-bold'>Dashboard Overview</h2>
-
-        {/* Lifetime stats */}
-        <div className='mb-8 grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-4'>
-          <Card>
-            <CardHeader className='flex flex-row items-center justify-between space-y-0 pb-2'>
-              <CardTitle className='text-sm font-medium'>Total Visitors</CardTitle>
-              <Activity className='h-4 w-4 text-muted-foreground' />
-            </CardHeader>
-            <CardContent>
-              <div className='text-2xl font-bold'>{lifetimeStats.totalVisitors.toLocaleString()}</div>
-            </CardContent>
-          </Card>
-          <Card>
-            <CardHeader className='flex flex-row items-center justify-between space-y-0 pb-2'>
-              <CardTitle className='text-sm font-medium'>Total Users</CardTitle>
-              <Users className='h-4 w-4 text-muted-foreground' />
-            </CardHeader>
-            <CardContent>
-              <div className='text-2xl font-bold'>{lifetimeStats.totalUsers.toLocaleString()}</div>
-            </CardContent>
-          </Card>
-          <Card>
-            <CardHeader className='flex flex-row items-center justify-between space-y-0 pb-2'>
-              <CardTitle className='text-sm font-medium'>Paying Users</CardTitle>
-              <DollarSign className='h-4 w-4 text-muted-foreground' />
-            </CardHeader>
-            <CardContent>
-              <div className='text-2xl font-bold'>{lifetimeStats.totalPayingUsers.toLocaleString()}</div>
-            </CardContent>
-          </Card>
-          <Card>
-            <CardHeader className='flex flex-row items-center justify-between space-y-0 pb-2'>
-              <CardTitle className='text-sm font-medium'>Total Scans</CardTitle>
-              <QrCode className='h-4 w-4 text-muted-foreground' />
-            </CardHeader>
-            <CardContent>
-              <div className='text-2xl font-bold'>{lifetimeStats.totalScans.toLocaleString()}</div>
-            </CardContent>
-          </Card>
-        </div>
-
-        {/* Period stats */}
-        <Card className='mb-8'>
-          <CardHeader>
-            <CardTitle>Performance Metrics</CardTitle>
-            <CardDescription>View key metrics for different time periods</CardDescription>
-          </CardHeader>
-          <CardContent>
-            <Tabs
-              defaultValue='24h'
-              className='w-full'
-              onValueChange={setSelectedPeriod}
-            >
-              <TabsList>
-                <TabsTrigger value='24h'>24h</TabsTrigger>
-                <TabsTrigger value='7d'>7d</TabsTrigger>
-                <TabsTrigger value='1m'>1m</TabsTrigger>
-                <TabsTrigger value='6m'>6m</TabsTrigger>
-                <TabsTrigger value='1y'>1y</TabsTrigger>
-              </TabsList>
-              {Object.entries(periodStats).map(([period, stats]) => (
-                <TabsContent
-                  key={period}
-                  value={period}
-                >
-                  <div className='grid grid-cols-2 gap-4 md:grid-cols-3 lg:grid-cols-5'>
-                    <div>
-                      <h3 className='font-medium'>New Visitors</h3>
-                      <p className='text-2xl font-bold'>{stats.newVisitors.toLocaleString()}</p>
-                    </div>
-                    <div>
-                      <h3 className='font-medium'>New Users</h3>
-                      <p className='text-2xl font-bold'>{stats.newUsers.toLocaleString()}</p>
-                    </div>
-                    <div>
-                      <h3 className='font-medium'>Active Users</h3>
-                      <p className='text-2xl font-bold'>{stats.activeUsers.toLocaleString()}</p>
-                    </div>
-                    <div>
-                      <h3 className='font-medium'>Scans</h3>
-                      <p className='text-2xl font-bold'>{stats.scans.toLocaleString()}</p>
-                    </div>
-                    <div>
-                      <h3 className='font-medium'>New Codes</h3>
-                      <p className='text-2xl font-bold'>{stats.newCodes.toLocaleString()}</p>
-                    </div>
-                  </div>
-                </TabsContent>
-              ))}
-            </Tabs>
-          </CardContent>
-        </Card>
-
-        {/* Chart placeholder */}
-        <Card className='mb-8'>
-          <CardHeader>
-            <CardTitle>Performance Over Time</CardTitle>
-            <CardDescription>Visualizing key metrics for the selected period: {selectedPeriod}</CardDescription>
-          </CardHeader>
-          <CardContent>
-            <div className='flex h-[300px] items-center justify-center rounded-md bg-gray-100'>
-              <PieChart className='h-16 w-16 text-gray-400' />
-              <p className='ml-4 text-gray-500'>Chart visualization would go here</p>
-            </div>
-          </CardContent>
-        </Card>
-
-        {/* Recent activity */}
+      {/* Lifetime stats */}
+      <div className='mb-8 grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-4'>
         <Card>
-          <CardHeader>
-            <CardTitle>Recent Activity</CardTitle>
-            <CardDescription>Latest actions performed by users</CardDescription>
+          <CardHeader className='flex flex-row items-center justify-between space-y-0 pb-2'>
+            <CardTitle className='text-sm font-medium'>Total Visitors</CardTitle>
+            <Activity className='h-4 w-4 text-muted-foreground' />
           </CardHeader>
           <CardContent>
-            <Table>
-              <TableHeader>
-                <TableRow>
-                  <TableHead>User</TableHead>
-                  <TableHead>Action</TableHead>
-                  <TableHead>Timestamp</TableHead>
-                </TableRow>
-              </TableHeader>
-              <TableBody>
-                {recentActivity.map((activity) => (
-                  <TableRow key={activity.id}>
-                    <TableCell>{activity.user}</TableCell>
-                    <TableCell>{activity.action}</TableCell>
-                    <TableCell>{activity.timestamp}</TableCell>
-                  </TableRow>
-                ))}
-              </TableBody>
-            </Table>
+            <div className='text-2xl font-bold'>{lifetimeStats.totalVisitors.toLocaleString()}</div>
           </CardContent>
         </Card>
-      </main>
+        <Card>
+          <CardHeader className='flex flex-row items-center justify-between space-y-0 pb-2'>
+            <CardTitle className='text-sm font-medium'>Total Users</CardTitle>
+            <Users className='h-4 w-4 text-muted-foreground' />
+          </CardHeader>
+          <CardContent>
+            <div className='text-2xl font-bold'>{lifetimeStats.totalUsers.toLocaleString()}</div>
+          </CardContent>
+        </Card>
+        <Card>
+          <CardHeader className='flex flex-row items-center justify-between space-y-0 pb-2'>
+            <CardTitle className='text-sm font-medium'>Paying Users</CardTitle>
+            <DollarSign className='h-4 w-4 text-muted-foreground' />
+          </CardHeader>
+          <CardContent>
+            <div className='text-2xl font-bold'>{lifetimeStats.totalPayingUsers.toLocaleString()}</div>
+          </CardContent>
+        </Card>
+        <Card>
+          <CardHeader className='flex flex-row items-center justify-between space-y-0 pb-2'>
+            <CardTitle className='text-sm font-medium'>Total Scans</CardTitle>
+            <QrCode className='h-4 w-4 text-muted-foreground' />
+          </CardHeader>
+          <CardContent>
+            <div className='text-2xl font-bold'>{lifetimeStats.totalScans.toLocaleString()}</div>
+          </CardContent>
+        </Card>
+      </div>
+
+      {/* Period stats */}
+      <Card className='mb-8'>
+        <CardHeader>
+          <CardTitle>Performance Metrics</CardTitle>
+          <CardDescription>View key metrics for different time periods</CardDescription>
+        </CardHeader>
+        <CardContent>
+          <Tabs
+            defaultValue='24h'
+            className='w-full'
+            onValueChange={setSelectedPeriod}
+          >
+            <TabsList>
+              <TabsTrigger value='24h'>24h</TabsTrigger>
+              <TabsTrigger value='7d'>7d</TabsTrigger>
+              <TabsTrigger value='1m'>1m</TabsTrigger>
+              <TabsTrigger value='6m'>6m</TabsTrigger>
+              <TabsTrigger value='1y'>1y</TabsTrigger>
+            </TabsList>
+            {Object.entries(periodStats).map(([period, stats]) => (
+              <TabsContent
+                key={period}
+                value={period}
+              >
+                <div className='grid grid-cols-2 gap-4 md:grid-cols-3 lg:grid-cols-5'>
+                  <div>
+                    <h3 className='font-medium'>New Visitors</h3>
+                    <p className='text-2xl font-bold'>{stats.newVisitors.toLocaleString()}</p>
+                  </div>
+                  <div>
+                    <h3 className='font-medium'>New Users</h3>
+                    <p className='text-2xl font-bold'>{stats.newUsers.toLocaleString()}</p>
+                  </div>
+                  <div>
+                    <h3 className='font-medium'>Active Users</h3>
+                    <p className='text-2xl font-bold'>{stats.activeUsers.toLocaleString()}</p>
+                  </div>
+                  <div>
+                    <h3 className='font-medium'>Scans</h3>
+                    <p className='text-2xl font-bold'>{stats.scans.toLocaleString()}</p>
+                  </div>
+                  <div>
+                    <h3 className='font-medium'>New Codes</h3>
+                    <p className='text-2xl font-bold'>{stats.newCodes.toLocaleString()}</p>
+                  </div>
+                </div>
+              </TabsContent>
+            ))}
+          </Tabs>
+        </CardContent>
+      </Card>
+
+      {/* Chart placeholder */}
+      <Card className='mb-8'>
+        <CardHeader>
+          <CardTitle>Performance Over Time</CardTitle>
+          <CardDescription>Visualizing key metrics for the selected period: {selectedPeriod}</CardDescription>
+        </CardHeader>
+        <CardContent>
+          <div className='flex h-[300px] items-center justify-center rounded-md bg-gray-100'>
+            <PieChart className='h-16 w-16 text-gray-400' />
+            <p className='ml-4 text-gray-500'>Chart visualization would go here</p>
+          </div>
+        </CardContent>
+      </Card>
+
+      {/* Recent activity */}
+      <Card>
+        <CardHeader>
+          <CardTitle>Recent Activity</CardTitle>
+          <CardDescription>Latest actions performed by users</CardDescription>
+        </CardHeader>
+        <CardContent>
+          <Table>
+            <TableHeader>
+              <TableRow>
+                <TableHead>User</TableHead>
+                <TableHead>Action</TableHead>
+                <TableHead>Timestamp</TableHead>
+              </TableRow>
+            </TableHeader>
+            <TableBody>
+              {recentActivity.map((activity) => (
+                <TableRow key={activity.id}>
+                  <TableCell>{activity.user}</TableCell>
+                  <TableCell>{activity.action}</TableCell>
+                  <TableCell>{activity.timestamp}</TableCell>
+                </TableRow>
+              ))}
+            </TableBody>
+          </Table>
+        </CardContent>
+      </Card>
     </div>
   );
 }

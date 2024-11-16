@@ -1,6 +1,6 @@
 import { ReactElement } from 'react';
 
-import { AppSidebar } from '@/components/app-sidebar';
+import { AppSidebar } from '@/features/sidebar/components/adminSidebar';
 import {
   Breadcrumb,
   BreadcrumbItem,

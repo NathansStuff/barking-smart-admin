@@ -1,9 +1,4 @@
-import {
-  ENERGY_DISTRIBUTION,
-  MAXIMUM_ENERGY,
-  MINIMUM_ENERGY,
-  PROGRAM_DAYS,
-} from '@/constants/publicInfo';
+import { ENERGY_DISTRIBUTION, MAXIMUM_ENERGY, MINIMUM_ENERGY, PROGRAM_DAYS } from '@/data/publicInfo';
 
 export const getDayDistribution = (energy: number): Record<string, number> => {
   if (energy === MINIMUM_ENERGY) {
