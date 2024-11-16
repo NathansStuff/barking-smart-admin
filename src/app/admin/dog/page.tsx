@@ -2,36 +2,39 @@
 
 import { ReactNode, useEffect, useState } from 'react';
 
-import { ColumnDef, ColumnFiltersState, SortingState } from '@tanstack/react-table';
-import { ArrowDown, ArrowUp, ArrowUpDown, Edit, Trash } from 'lucide-react';
-import { Route } from 'next';
-import { useSearchParams } from 'next/navigation';
+import { ColumnFiltersState, SortingState } from '@tanstack/react-table';
 import { useRouter } from 'next/navigation';
 
 import { DataTable } from '@/components/general/DataTable/components/DataTable';
 import { DataTablePagination } from '@/components/general/DataTable/components/DataTablePagination';
 import { UseDataTable } from '@/components/general/DataTable/hooks/UseDataTable';
-import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
-import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
+import { TooltipProvider } from '@/components/ui/tooltip';
 import { useDeleteDog } from '@/features/dog/api/useDeleteDog';
 import { useGetDogs } from '@/features/dog/api/useGetDogs';
+import { DogTableColumns } from '@/features/dog/components/DogTableColumns';
 import DogTableFilters from '@/features/dog/components/DogTableFilters';
-import { DogWithId } from '@/features/dog/types/Dog';
 import { DogFilters } from '@/features/dog/types/DogFilters';
 import { EBreed } from '@/features/dog/types/EBreed';
 import { EGender } from '@/features/dog/types/EGender';
 import { ELocation } from '@/features/program/types/ELocation';
 import UseConfirm from '@/hooks/UseConfirm';
 import { useDebounce } from '@/hooks/useDebounce';
+import { UseUrlParams } from '@/hooks/UseUrlParams';
 
 import DogPageSkeleton from './DogPageSkeleton';
 
 function DogPage(): ReactNode {
   const router = useRouter();
-  const searchParams = useSearchParams();
+  const { updateUrlParams, getUrlParam } = UseUrlParams<{
+    breed: string;
+    gender: string;
+    location: string;
+    name: string;
+  }>();
 
+  // todo: This should be moved into urlparams too
   const [pagination, setPagination] = useState({
     pageIndex: 0,
     pageSize: 10,
@@ -43,94 +46,14 @@ function DogPage(): ReactNode {
 
   const [sorting, setSorting] = useState<SortingState>([]);
 
-  const columns: ColumnDef<DogWithId>[] = [
-    {
-      accessorKey: 'name',
-      header: ({ column }): ReactNode => {
-        return (
-          <Button
-            variant='ghost'
-            onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
-            className='flex items-center gap-1'
-          >
-            Name
-            {column.getIsSorted() === 'asc' ? (
-              <ArrowUp className='h-4 w-4' />
-            ) : column.getIsSorted() === 'desc' ? (
-              <ArrowDown className='h-4 w-4' />
-            ) : (
-              <ArrowUpDown className='h-4 w-4' />
-            )}
-          </Button>
-        );
-      },
-    },
-    {
-      accessorKey: 'breedOne',
-      header: 'Primary Breed',
-    },
-    {
-      accessorKey: 'breedTwo',
-      header: 'Secondary Breed',
-      cell: ({ row }) => row.original.breedTwo || '-',
-    },
-    {
-      accessorKey: 'gender',
-      header: 'Gender',
-    },
-    {
-      accessorKey: 'location',
-      header: 'Location',
-    },
-    {
-      accessorKey: 'howActive',
-      header: 'Activity Level',
-      cell: ({ row }) => <Badge variant='outline'>{row.original.howActive}/10</Badge>,
-    },
-    {
-      id: 'actions',
-      header: 'Actions',
-      cell: ({ row }) => (
-        <div className='flex space-x-2'>
-          <Tooltip>
-            <TooltipTrigger asChild>
-              <Button
-                variant='ghost'
-                size='icon'
-                onClick={() => router.push(`/admin/dog/${row.original._id}`)}
-              >
-                <Edit className='size-4' />
-              </Button>
-            </TooltipTrigger>
-            <TooltipContent>Edit dog</TooltipContent>
-          </Tooltip>
-
-          <Tooltip>
-            <TooltipTrigger asChild>
-              <Button
-                variant='ghost'
-                size='icon'
-                onClick={() => handleDelete(row.original._id.toString())}
-                disabled={deleteMutation.isPending}
-              >
-                <Trash className='size-4' />
-              </Button>
-            </TooltipTrigger>
-            <TooltipContent>Delete dog</TooltipContent>
-          </Tooltip>
-        </div>
-      ),
-    },
-  ];
-
   const [filters, setFilters] = useState<DogFilters>({
     immediate: {
-      breed: (searchParams.get('breed') as EBreed) || 'all',
-      gender: (searchParams.get('gender') as EGender) || 'all',
-      location: (searchParams.get('location') as ELocation) || 'all',
+      breed: (getUrlParam('breed') as EBreed) || 'all',
+      gender: (getUrlParam('gender') as EGender) || 'all',
+      location: (getUrlParam('location') as ELocation) || 'all',
     },
     debounced: {
-      name: searchParams.get('name') || '',
+      name: getUrlParam('name') || '',
     },
   });
 
@@ -173,9 +96,15 @@ function DogPage(): ReactNode {
     },
   });
 
+  const handleDelete = async (id: string): Promise<void> => {
+    const ok = await confirm();
+    if (!ok) return;
+    deleteMutation.mutate(id);
+  };
+
   const { table, setColumnFilters } = UseDataTable({
     data: dogQuery.data?.dogs ?? [],
-    columns,
+    columns: DogTableColumns(router, handleDelete, deleteMutation),
     pageCount: Math.ceil((dogQuery.data?.total ?? 0) / pagination.pageSize),
     initialPagination: pagination,
     onPaginationChange: setPagination,
@@ -183,34 +112,26 @@ function DogPage(): ReactNode {
     onSortingChange: setSorting,
   });
 
-  const handleDelete = async (id: string): Promise<void> => {
-    const ok = await confirm();
-    if (!ok) return;
-    deleteMutation.mutate(id);
-  };
-
+  // Replace the url params effect with this simplified version
   useEffect(() => {
     const hasActiveFilters =
-      // eslint-disable-next-line @typescript-eslint/no-unused-vars
-      Object.entries(filters.immediate).some(([key, value]) => value !== 'all') ||
-      // eslint-disable-next-line @typescript-eslint/no-unused-vars
-      Object.entries(filters.debounced).some(([key, value]) => value !== '');
+      Object.entries(filters.immediate).some(([_, value]) => value !== 'all') ||
+      Object.entries(filters.debounced).some(([_, value]) => value !== '');
 
     if (!hasActiveFilters) {
-      router.replace('/admin/dog', { scroll: false });
+      updateUrlParams({});
       return;
     }
 
-    const params = new URLSearchParams();
-    if (filters.debounced.name) params.set('name', filters.debounced.name);
-    if (filters.immediate.breed !== 'all') params.set('breed', filters.immediate.breed);
-    if (filters.immediate.gender !== 'all') params.set('gender', filters.immediate.gender);
-    if (filters.immediate.location !== 'all') params.set('location', filters.immediate.location);
+    updateUrlParams({
+      name: filters.debounced.name,
+      breed: filters.immediate.breed,
+      gender: filters.immediate.gender,
+      location: filters.immediate.location,
+    });
+  }, [filters, updateUrlParams]);
 
-    const path: Route = `/admin/dog?${params.toString()}`;
-    router.replace(path, { scroll: false });
-  }, [filters, router]);
-
+  // How the debounced filters are applied to the table
   useEffect(() => {
     const columnFilters: ColumnFiltersState = [];
 
@@ -254,7 +175,7 @@ function DogPage(): ReactNode {
               />
               <DataTable
                 table={table}
-                columns={columns}
+                columns={DogTableColumns(router, handleDelete, deleteMutation)}
               />
               <DataTablePagination table={table} />
               <div className='p-4 text-right text-sm text-muted-foreground'>

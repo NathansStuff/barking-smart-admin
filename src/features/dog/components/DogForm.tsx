@@ -91,7 +91,7 @@ function DogForm({ dog }: Props): ReactNode {
           onSuccess: response => {
             toast.dismiss();
             toast.success('Dog profile created successfully');
-            router.push(`/dog/${response._id}`);
+            router.push(`/admin/dog/${response._id}`);
           },
           onError: error => {
             toast.dismiss();
@@ -119,7 +119,7 @@ function DogForm({ dog }: Props): ReactNode {
             </Button>
           </div>
           <Button asChild>
-            <Link href={`/dog/${dog?._id}/generate-program`}>
+            <Link href={`/admin/dog/${dog?._id}/generate-program`}>
               Generate Program
             </Link>
           </Button>
