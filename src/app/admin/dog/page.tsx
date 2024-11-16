@@ -1,9 +1,8 @@
 'use client';
 
-import { ReactNode, useEffect, useMemo, useState } from 'react';
+import { ReactNode, useEffect, useState } from 'react';
 
-import { ColumnDef, SortingState } from '@tanstack/react-table';
-import debounce from 'lodash/debounce';
+import { ColumnDef, ColumnFiltersState, SortingState } from '@tanstack/react-table';
 import { ArrowDown, ArrowUp, ArrowUpDown, Edit, Trash } from 'lucide-react';
 import { Route } from 'next';
 import { useSearchParams } from 'next/navigation';
@@ -25,25 +24,114 @@ import { EBreed } from '@/features/dog/types/EBreed';
 import { EGender } from '@/features/dog/types/EGender';
 import { ELocation } from '@/features/program/types/ELocation';
 import UseConfirm from '@/hooks/UseConfirm';
+import { useDebounce } from '@/hooks/useDebounce';
 
 import DogPageSkeleton from './DogPageSkeleton';
+
 interface DogFilters {
-  name: string;
-  breed: string | 'all';
-  gender: string | 'all';
-  location: string | 'all';
+  immediate: {
+    breed: string | 'all';
+    gender: string | 'all';
+    location: string | 'all';
+  };
+  debounced: {
+    name: string;
+  };
+}
+
+interface FiltersProps {
+  filters: DogFilters;
+  onImmediateFilterChange: (key: keyof DogFilters['immediate'], value: string) => void;
+  onDebouncedFilterChange: (key: keyof DogFilters['debounced'], value: string) => void;
+  onClearFilters: () => void;
+}
+
+function Filters({
+  filters,
+  onImmediateFilterChange,
+  onDebouncedFilterChange,
+  onClearFilters,
+}: FiltersProps): ReactNode {
+  return (
+    <div className='space-y-4 p-4'>
+      <div className='grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-4'>
+        <Input
+          placeholder='Filter by name...'
+          value={filters.debounced.name}
+          onChange={(e) => onDebouncedFilterChange('name', e.target.value)}
+        />
+        <Select
+          value={filters.immediate.breed}
+          onValueChange={(value) => onImmediateFilterChange('breed', value)}
+        >
+          <SelectTrigger>
+            <SelectValue placeholder='Select breed' />
+          </SelectTrigger>
+          <SelectContent>
+            <SelectItem value='all'>All Breeds</SelectItem>
+            {Object.values(EBreed).map((breed) => (
+              <SelectItem
+                key={breed}
+                value={breed}
+              >
+                {breed.replace(/_/g, ' ')}
+              </SelectItem>
+            ))}
+          </SelectContent>
+        </Select>
+        <Select
+          value={filters.immediate.gender}
+          onValueChange={(value) => onImmediateFilterChange('gender', value)}
+        >
+          <SelectTrigger>
+            <SelectValue placeholder='Select gender' />
+          </SelectTrigger>
+          <SelectContent>
+            <SelectItem value='all'>All Genders</SelectItem>
+            {Object.values(EGender).map((gender) => (
+              <SelectItem
+                key={gender}
+                value={gender}
+              >
+                {gender}
+              </SelectItem>
+            ))}
+          </SelectContent>
+        </Select>
+        <Select
+          value={filters.immediate.location}
+          onValueChange={(value) => onImmediateFilterChange('location', value)}
+        >
+          <SelectTrigger>
+            <SelectValue placeholder='Select location' />
+          </SelectTrigger>
+          <SelectContent>
+            <SelectItem value='all'>All Locations</SelectItem>
+            {Object.values(ELocation).map((location) => (
+              <SelectItem
+                key={location}
+                value={location}
+              >
+                {location}
+              </SelectItem>
+            ))}
+          </SelectContent>
+        </Select>
+      </div>
+      <Button
+        variant='outline'
+        onClick={onClearFilters}
+        className='w-full'
+      >
+        Clear Filters
+      </Button>
+    </div>
+  );
 }
 
 function DogPage(): ReactNode {
   const router = useRouter();
   const searchParams = useSearchParams();
-
-  const [filters, setFilters] = useState<DogFilters>({
-    name: searchParams.get('name') || '',
-    breed: (searchParams.get('breed') as EBreed) || 'all',
-    gender: (searchParams.get('gender') as EGender) || 'all',
-    location: (searchParams.get('location') as ELocation) || 'all',
-  });
 
   const [pagination, setPagination] = useState({
     pageIndex: 0,
@@ -110,7 +198,7 @@ function DogPage(): ReactNode {
               <Button
                 variant='ghost'
                 size='icon'
-                onClick={() => router.push(`/dog/${row.original._id}`)}
+                onClick={() => router.push(`/admin/dog/${row.original._id}`)}
               >
                 <Edit className='size-4' />
               </Button>
@@ -136,13 +224,53 @@ function DogPage(): ReactNode {
     },
   ];
 
+  const [filters, setFilters] = useState<DogFilters>({
+    immediate: {
+      breed: (searchParams.get('breed') as EBreed) || 'all',
+      gender: (searchParams.get('gender') as EGender) || 'all',
+      location: (searchParams.get('location') as ELocation) || 'all',
+    },
+    debounced: {
+      name: searchParams.get('name') || '',
+    },
+  });
+
+  const debouncedFilters = useDebounce(filters.debounced, 500);
+
+  const handleImmediateFilterChange = (key: keyof DogFilters['immediate'], value: string): void => {
+    setFilters((prev) => ({
+      ...prev,
+      immediate: { ...prev.immediate, [key]: value },
+    }));
+  };
+
+  const handleDebouncedFilterChange = (key: keyof DogFilters['debounced'], value: string): void => {
+    setFilters((prev) => ({
+      ...prev,
+      debounced: { ...prev.debounced, [key]: value },
+    }));
+  };
+
+  const handleClearFilters = (): void => {
+    setFilters({
+      immediate: {
+        breed: 'all',
+        gender: 'all',
+        location: 'all',
+      },
+      debounced: {
+        name: '',
+      },
+    });
+  };
+
   const dogQuery = useGetDogs({
     page: pagination.pageIndex + 1,
     limit: pagination.pageSize,
     filters: {
-      name: filters.name,
-      breed: filters.breed === 'all' ? undefined : (filters.breed as EBreed),
-      location: filters.location === 'all' ? undefined : (filters.location as ELocation),
+      name: debouncedFilters.name,
+      breed: filters.immediate.breed === 'all' ? undefined : (filters.immediate.breed as EBreed),
+      location: filters.immediate.location === 'all' ? undefined : (filters.immediate.location as ELocation),
     },
   });
 
@@ -162,127 +290,12 @@ function DogPage(): ReactNode {
     deleteMutation.mutate(id);
   };
 
-  const debouncedUpdateFilters = useMemo(
-    () =>
-      debounce((newFilters: DogFilters) => {
-        const columnFilters = [];
-        if (newFilters.name) {
-          columnFilters.push({ id: 'name', value: newFilters.name });
-        }
-        if (newFilters.breed !== 'all') {
-          columnFilters.push({ id: 'breed', value: newFilters.breed });
-        }
-        if (newFilters.gender !== 'all') {
-          columnFilters.push({ id: 'gender', value: newFilters.gender });
-        }
-        if (newFilters.location !== 'all') {
-          columnFilters.push({ id: 'location', value: newFilters.location });
-        }
-        setColumnFilters(columnFilters);
-      }, 500),
-    [setColumnFilters]
-  );
-
-  const handleFilterChange = (key: keyof DogFilters, value: string): void => {
-    const newFilters = { ...filters, [key]: value };
-    setFilters(newFilters);
-    debouncedUpdateFilters(newFilters);
-  };
-
-  const handleClearFilters = (): void => {
-    const clearedFilters: DogFilters = {
-      name: '',
-      breed: 'all',
-      gender: 'all',
-      location: 'all',
-    };
-    setFilters(clearedFilters);
-    debouncedUpdateFilters(clearedFilters);
-  };
-
-  function Filters(): ReactNode {
-    return (
-      <div className='space-y-4 p-4'>
-        <div className='grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-4'>
-          <Input
-            placeholder='Filter by name...'
-            value={filters.name}
-            onChange={(e) => handleFilterChange('name', e.target.value)}
-          />
-          <Select
-            value={filters.breed}
-            onValueChange={(value) => handleFilterChange('breed', value)}
-          >
-            <SelectTrigger>
-              <SelectValue placeholder='Select breed' />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem value='all'>All Breeds</SelectItem>
-              {Object.values(EBreed).map((breed) => (
-                <SelectItem
-                  key={breed}
-                  value={breed}
-                >
-                  {breed.replace(/_/g, ' ')}
-                </SelectItem>
-              ))}
-            </SelectContent>
-          </Select>
-          <Select
-            value={filters.gender}
-            onValueChange={(value) => handleFilterChange('gender', value)}
-          >
-            <SelectTrigger>
-              <SelectValue placeholder='Select gender' />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem value='all'>All Genders</SelectItem>
-              {Object.values(EGender).map((gender) => (
-                <SelectItem
-                  key={gender}
-                  value={gender}
-                >
-                  {gender}
-                </SelectItem>
-              ))}
-            </SelectContent>
-          </Select>
-          <Select
-            value={filters.location}
-            onValueChange={(value) => handleFilterChange('location', value)}
-          >
-            <SelectTrigger>
-              <SelectValue placeholder='Select location' />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem value='all'>All Locations</SelectItem>
-              {Object.values(ELocation).map((location) => (
-                <SelectItem
-                  key={location}
-                  value={location}
-                >
-                  {location}
-                </SelectItem>
-              ))}
-            </SelectContent>
-          </Select>
-        </div>
-        <Button
-          variant='outline'
-          onClick={handleClearFilters}
-          className='w-full'
-        >
-          Clear Filters
-        </Button>
-      </div>
-    );
-  }
-
   useEffect(() => {
-    const hasActiveFilters = Object.entries(filters).some(([key, value]) => {
-      if (key === 'name') return value !== '';
-      return value !== 'all';
-    });
+    const hasActiveFilters =
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
+      Object.entries(filters.immediate).some(([key, value]) => value !== 'all') ||
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
+      Object.entries(filters.debounced).some(([key, value]) => value !== '');
 
     if (!hasActiveFilters) {
       router.replace('/admin/dog', { scroll: false });
@@ -290,15 +303,32 @@ function DogPage(): ReactNode {
     }
 
     const params = new URLSearchParams();
-    if (filters.name) params.set('name', filters.name);
-    if (filters.breed !== 'all') params.set('breed', filters.breed);
-    if (filters.gender !== 'all') params.set('gender', filters.gender);
-    if (filters.location !== 'all') params.set('location', filters.location);
-    const queryString = params.toString();
+    if (filters.debounced.name) params.set('name', filters.debounced.name);
+    if (filters.immediate.breed !== 'all') params.set('breed', filters.immediate.breed);
+    if (filters.immediate.gender !== 'all') params.set('gender', filters.immediate.gender);
+    if (filters.immediate.location !== 'all') params.set('location', filters.immediate.location);
 
-    const path: Route = `/dog?${queryString ? `${queryString}` : ''}`;
+    const path: Route = `/admin/dog?${params.toString()}`;
     router.replace(path, { scroll: false });
   }, [filters, router]);
+
+  useEffect(() => {
+    const columnFilters: ColumnFiltersState = [];
+
+    Object.entries(filters.immediate).forEach(([key, value]) => {
+      if (value !== 'all') {
+        columnFilters.push({ id: key, value });
+      }
+    });
+
+    Object.entries(debouncedFilters).forEach(([key, value]) => {
+      if (value) {
+        columnFilters.push({ id: key, value });
+      }
+    });
+
+    setColumnFilters(columnFilters);
+  }, [filters.immediate, debouncedFilters, setColumnFilters]);
 
   return (
     <>
@@ -307,7 +337,7 @@ function DogPage(): ReactNode {
         <div className='container mx-auto p-4'>
           <div className='mb-4 flex justify-end'>
             <Button
-              onClick={() => router.push('/dog/create')}
+              onClick={() => router.push('/admin/dog/create')}
               id='create-dog-button'
             >
               Add New Dog
@@ -317,7 +347,12 @@ function DogPage(): ReactNode {
             <DogPageSkeleton />
           ) : (
             <Card>
-              <Filters />
+              <Filters
+                filters={filters}
+                onImmediateFilterChange={handleImmediateFilterChange}
+                onDebouncedFilterChange={handleDebouncedFilterChange}
+                onClearFilters={handleClearFilters}
+              />
               <DataTable
                 table={table}
                 columns={columns}

@@ -77,8 +77,8 @@ export function SidebarUser(): ReactElement {
             </DropdownMenuLabel>
             <DropdownMenuSeparator />
             {ADMIN_USER_NAVIGATION.map((item, i) => (
-              <>
-                <DropdownMenuGroup key={i}>
+              <div key={i}>
+                <DropdownMenuGroup>
                   {item.map((subItem) => (
                     <DropdownMenuItem
                       className='cursor-pointer'
@@ -90,7 +90,7 @@ export function SidebarUser(): ReactElement {
                   ))}
                 </DropdownMenuGroup>
                 <DropdownMenuSeparator />
-              </>
+              </div>
             ))}
             <DropdownMenuItem
               className='cursor-pointer'
