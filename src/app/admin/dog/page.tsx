@@ -99,9 +99,11 @@ function DogPage(): ReactNode {
     deleteMutation.mutate(id);
   };
 
+  const tableColumns = DogTableColumns(router, handleDelete, deleteMutation);
+
   const { table, setColumnFilters } = UseDataTable({
     data: dogQuery.data?.dogs ?? [],
-    columns: DogTableColumns(router, handleDelete, deleteMutation),
+    columns: tableColumns,
     pageCount: Math.ceil((dogQuery.data?.total ?? 0) / pagination.pageSize),
     initialPagination: pagination,
     onPaginationChange: setPagination,
@@ -188,7 +190,7 @@ function DogPage(): ReactNode {
               />
               <DataTable
                 table={table}
-                columns={DogTableColumns(router, handleDelete, deleteMutation)}
+                columns={tableColumns}
               />
               <DataTablePagination table={table} />
               <div className='p-4 text-right text-sm text-muted-foreground'>
