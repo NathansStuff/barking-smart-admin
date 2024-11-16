@@ -1,6 +1,6 @@
 'use client';
 
-import { ReactNode, useEffect, useState } from 'react';
+import { ReactNode, useCallback, useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -98,7 +98,7 @@ function ProgramForm({ program, initialData }: Props): ReactNode {
         onSuccess: response => {
           toast.dismiss();
           toast.success('Program created successfully');
-          router.push(`/program/${response._id}`);
+          router.push(`/admin/program/${response._id}`);
         },
         onError: error => {
           toast.dismiss();
@@ -108,7 +108,7 @@ function ProgramForm({ program, initialData }: Props): ReactNode {
     }
   };
 
-  const generateContent = async (): Promise<void> => {
+  const generateContent = useCallback(async (): Promise<void> => {
     setIsGenerating(true);
     try {
       // Build prompt with existing form data
@@ -145,7 +145,7 @@ function ProgramForm({ program, initialData }: Props): ReactNode {
     } finally {
       setIsGenerating(false);
     }
-  };
+  }, [form]);
 
   // Add this function to handle individual field generation
   const handleGenerateField = async (fieldName: string): Promise<void> => {
@@ -243,7 +243,7 @@ function ProgramForm({ program, initialData }: Props): ReactNode {
     if (!program && !initialData?.title) {
       generateContent();
     }
-  }, []);
+  }, [program, initialData?.title, generateContent]);
 
   return (
     <>
@@ -272,7 +272,7 @@ function ProgramForm({ program, initialData }: Props): ReactNode {
                   asChild
                   type='button'
                 >
-                  <Link href={`/program/${program?._id}/preview`}>
+                  <Link href={`/admin/program/${program?._id}/preview`}>
                     Preview PDF
                   </Link>
                 </Button>

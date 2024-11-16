@@ -1,11 +1,7 @@
-import type { NextRequest } from 'next/server';
 import { NextResponse } from 'next/server';
-import { getToken } from 'next-auth/jwt';
 
-import { EUserRole } from '@/features/user/types/EUserRole';
-
-export async function middleware(request: NextRequest): Promise<NextResponse> {
-  const token = await getToken({ req: request });
+export async function middleware(): Promise<NextResponse> {
+  // const token = await getToken({ req: request });
 
   // Protect any route that starts with /admin
   // if (request.nextUrl.pathname.startsWith('/admin')) {

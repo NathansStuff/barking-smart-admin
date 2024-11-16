@@ -29,7 +29,7 @@ function PdfContainer({ program }: Props): React.ReactElement {
       <div className='flex items-center'>
         <div className='flex-none py-10'>
           <Button asChild>
-            <Link href={`/program/${program._id}`}>Back to Program</Link>
+            <Link href={`/admin/program/${program._id}`}>Back to Program</Link>
           </Button>
         </div>
         <div className='flex-1 flex gap-2 justify-center items-center'>

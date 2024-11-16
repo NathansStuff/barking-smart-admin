@@ -41,7 +41,7 @@ function GenerateProgramPage({ params }: { params: Promise<{ id: string }> }): R
           {!dogQuery.isLoading && !dogQuery.data && (
             <>
               <Redirect
-                href='/dog'
+                href='/admin/dog'
                 message='Dog not found'
               />
             </>

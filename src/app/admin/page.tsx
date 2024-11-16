@@ -2,18 +2,7 @@
 
 import { ReactElement, useState } from 'react';
 
-import {
-  Activity,
-  BarChart,
-  DollarSign,
-  HelpCircle,
-  Link,
-  LogOut,
-  PieChart,
-  QrCode,
-  Settings,
-  Users,
-} from 'lucide-react';
+import { Activity, DollarSign, PieChart, QrCode, Users } from 'lucide-react';
 
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
@@ -47,7 +36,7 @@ export default function AdminDashboard(): ReactElement {
   const [selectedPeriod, setSelectedPeriod] = useState('24h');
 
   return (
-    <div className="p-8">
+    <div className='p-8'>
       <h2 className='mb-6 text-3xl font-bold'>Dashboard Overview</h2>
 
       {/* Lifetime stats */}

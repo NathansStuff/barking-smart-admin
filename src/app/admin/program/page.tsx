@@ -148,7 +148,9 @@ function ProgramPage(): ReactNode {
   // Update URL params when filters change
   useEffect(() => {
     const hasActiveFilters =
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
       Object.entries(filters.immediate).some(([_, value]) => value !== 'all') ||
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
       Object.entries(filters.debounced).some(([_, value]) => value !== '');
 
     const currentParams: Record<string, string | number> = {};

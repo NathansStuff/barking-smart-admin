@@ -52,7 +52,7 @@ function DashboardPage(): ReactNode {
                 title='Pending Programs'
                 description='Programs awaiting approval'
                 count={pendingPrograms}
-                link='/program?approved=false'
+                link='/admin/program?approved=false'
                 loading={pendingProgramsQuery.isLoading}
               />
             </CardContent>
