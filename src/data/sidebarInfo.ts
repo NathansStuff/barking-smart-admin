@@ -1,16 +1,19 @@
 import {
   BadgeCheck,
   Bell,
-  BookOpen,
-  Bot,
+  ChartBar,
+  CloudCog,
+  CloudLightning,
   CreditCard,
-  Frame,
+  Database,
+  Figma,
+  FileText,
   GalleryVerticalEnd,
-  Map,
-  PieChart,
+  Layout,
+  ListTodo,
+  Mail,
   Settings2,
   Sparkles,
-  SquareTerminal,
 } from 'lucide-react';
 
 import { AdminNavMain, AdminNavSecondary, UserNavItem } from './types/AdminSidebarTypes';
@@ -20,89 +23,61 @@ export const ADMIN_SUBTITLE = 'Administrative Dashboard';
 export const ADMIN_LOGO = GalleryVerticalEnd;
 
 export const ADMIN_NAV_MAIN: AdminNavMain = {
-  heading: 'Platform',
+  heading: 'Platform Tools',
   items: [
     {
-      title: 'Playground',
-      url: '/admin/dog',
-      icon: SquareTerminal,
+      title: 'Dashboard',
+      url: '/admin',
+      icon: ChartBar,
+    },
+    {
+      title: 'Todo',
+      url: '/admin/dashboard',
+      icon: ListTodo,
+    },
+    {
+      title: 'Features',
+      icon: Database,
       items: [
-        {
-          title: 'Dog',
-          url: '/admin/dog',
-        },
         {
           title: 'Programs',
           url: '/admin/program',
         },
         {
-          title: 'Settings',
+          title: 'Dogs',
+          url: '/admin/dog',
+        },
+        {
+          title: 'Final Product',
           url: '#',
         },
       ],
     },
     {
-      title: 'Models',
-      url: '#',
-      icon: Bot,
+      title: 'EDMs',
+      icon: Mail,
       items: [
         {
-          title: 'Genesis',
+          title: 'Emails',
           url: '#',
         },
         {
-          title: 'Explorer',
-          url: '#',
-        },
-        {
-          title: 'Quantum',
+          title: 'SMS',
           url: '#',
         },
       ],
     },
     {
-      title: 'Documentation',
-      url: '#',
-      icon: BookOpen,
-      items: [
-        {
-          title: 'Introduction',
-          url: '#',
-        },
-        {
-          title: 'Get Started',
-          url: '#',
-        },
-        {
-          title: 'Tutorials',
-          url: '#',
-        },
-        {
-          title: 'Changelog',
-          url: '#',
-        },
-      ],
-    },
-    {
-      title: 'Settings',
-      url: '#',
+      title: 'User Audit',
       icon: Settings2,
       items: [
         {
-          title: 'General',
-          url: '#',
+          title: 'Users',
+          url: '/admin/users',
         },
         {
-          title: 'Team',
-          url: '#',
-        },
-        {
-          title: 'Billing',
-          url: '#',
-        },
-        {
-          title: 'Limits',
-          url: '#',
+          title: 'User Activity',
+          url: '/admin/user-activity',
         },
       ],
     },
@@ -110,22 +85,52 @@ export const ADMIN_NAV_MAIN: AdminNavMain = {
 };
 
 export const ADMIN_NAV_SECONDARY: AdminNavSecondary = {
-  heading: 'Projects',
+  heading: 'Links',
   items: [
     {
-      name: 'Design Engineering',
-      url: '#',
-      icon: Frame,
+      name: 'Figma',
+      url: 'https://www.figma.com/design/rF3N8usbAZEvUczdc0CzKx/www.puntstat.com?node-id=248-4488&node-type=canvas&t=n4AM2T1JJ7Q2hJ40-0',
+      icon: Figma,
     },
     {
-      name: 'Sales & Marketing',
-      url: '#',
-      icon: PieChart,
+      name: 'Email',
+      url: 'https://www.zoho.com/mail/zohomail-pricing.html',
+      icon: Mail,
     },
     {
-      name: 'Travel',
-      url: '#',
-      icon: Map,
+      name: 'Accounting Receipts',
+      url: 'https://drive.google.com/drive/folders/1Li0srqnqUpoDhZDmY6lqhfdFXBVJKZJQ',
+      icon: FileText,
+    },
+    {
+      name: 'Wireframes',
+      url: 'https://balsamiq.cloud/sarjd8t/p9dgjmg/rC0E6',
+      icon: Layout,
+    },
+    {
+      name: 'Google Cloud Console',
+      url: 'https://console.cloud.google.com/apis/credentials/oauthclient/997080468068-ps6i94c4pki940saoh8sffr9v7is5975.apps.googleusercontent.com?project=barking-smart',
+      icon: CloudCog,
+    },
+    {
+      name: 'AWS',
+      url: 'https://us-east-1.console.aws.amazon.com/console/home?region=us-east-1#',
+      icon: CloudLightning,
+    },
+    {
+      name: 'MongoDB',
+      url: 'https://cloud.mongodb.com/v2/6725d2e3077cc50840dbc913#/overview',
+      icon: Database,
+    },
+    {
+      name: 'Stripe',
+      url: 'https://dashboard.stripe.com/test/dashboard',
+      icon: CreditCard,
+    },
+    {
+      name: 'Google Analytics',
+      url: 'https://analytics.google.com/analytics/web/#/p415254259/reports/reportinghub',
+      icon: ChartBar,
     },
   ],
 };

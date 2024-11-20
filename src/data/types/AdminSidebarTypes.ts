@@ -30,8 +30,27 @@ interface UserNavItem {
 // Main navigation section
 interface AdminNavMain {
   heading: string;
-  items: MainNavItem[];
+  items: AdminNavMainItem[];
 }
+type BaseNavItem = {
+  title: string;
+  icon: LucideIcon;
+};
+
+type SingleNavItem = BaseNavItem & {
+  url: string;
+  items?: never;
+};
+
+type NestedNavItem = BaseNavItem & {
+  url?: never;
+  items: Array<{
+    title: string;
+    url: string;
+  }>;
+};
+
+type AdminNavMainItem = SingleNavItem | NestedNavItem;
 
 // Secondary navigation section
 interface AdminNavSecondary {

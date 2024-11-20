@@ -70,7 +70,7 @@ function DogPage(): ReactNode {
   };
 
   const handleClearFilters = (): void => {
-    setFilters({
+    const clearedFilters = {
       immediate: {
         breed: 'all',
         gender: 'all',
@@ -79,7 +79,11 @@ function DogPage(): ReactNode {
       debounced: {
         name: '',
       },
-    });
+    };
+    setFilters(clearedFilters);
+
+    // Immediately update URL when clearing filters
+    updateUrlParams({});
   };
 
   const dogQuery = useGetDogs({
@@ -113,11 +117,6 @@ function DogPage(): ReactNode {
 
   // Separate effect for URL updates
   useEffect(() => {
-    const hasActiveFilters =
-      // eslint-disable-next-line @typescript-eslint/no-unused-vars
-      Object.entries(filters.immediate).some(([_, value]) => value !== 'all') ||
-      // eslint-disable-next-line @typescript-eslint/no-unused-vars
-      Object.entries(filters.debounced).some(([_, value]) => value !== '');
 
     const currentParams: Record<string, string | number> = {};
 
@@ -131,11 +130,8 @@ function DogPage(): ReactNode {
     if (pagination.pageIndex > 0) currentParams.page = pagination.pageIndex + 1;
     if (pagination.pageSize !== 10) currentParams.pageSize = pagination.pageSize;
 
-    if (!hasActiveFilters && Object.keys(currentParams).length === 0) {
-      updateUrlParams({});
-    } else {
-      updateUrlParams(currentParams as Partial<typeof currentParams>);
-    }
+    // Always update URL params, whether there are active filters or not
+    updateUrlParams(currentParams as Partial<typeof currentParams>);
   }, [
     filters.immediate.breed,
     filters.immediate.gender,

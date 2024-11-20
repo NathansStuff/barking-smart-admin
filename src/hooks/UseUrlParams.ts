@@ -15,14 +15,25 @@ export function UseUrlParams<T extends Record<string, string | number>>(): {
 
   const updateUrlParams = useCallback(
     (params: Partial<T>) => {
+      // Get the current pathname without query parameters
+      const pathname = window.location.pathname;
+
+      // If params is empty, clear all URL parameters
+      if (Object.keys(params).length === 0) {
+        router.replace(pathname as Route, { scroll: false });
+        return;
+      }
+
       const urlParams = new URLSearchParams();
+
+      // Add new params
       Object.entries(params).forEach(([key, value]) => {
-        if (value !== undefined && value !== null && value !== 'all') {
+        if (value !== undefined && value !== null && value !== 'all' && value !== '') {
           urlParams.set(key, String(value));
         }
       });
 
-      const path = urlParams.toString() ? `?${urlParams.toString()}` : '';
+      const path = urlParams.toString() ? `${pathname}?${urlParams.toString()}` : pathname;
       router.replace(path as Route, { scroll: false });
     },
     [router]
@@ -44,7 +55,7 @@ export function UseUrlParams<T extends Record<string, string | number>>(): {
     (newPagination: typeof pagination) => {
       const params = {
         page: newPagination.pageIndex + 1,
-        pageSize: newPagination.pageSize
+        pageSize: newPagination.pageSize,
       } as unknown as Partial<T>;
 
       updateUrlParams(params);
