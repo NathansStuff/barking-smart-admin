@@ -1,3 +1,4 @@
+import { contactEmailNotification } from '../templates/contactEmailNotificationTemplate';
 import { passwordResetConfirmationEmail } from '../templates/passwordResetConfirmationEmailTemplate';
 import { purchaseConfirmationEmail } from '../templates/purchaseConfirmationEmailTemplate';
 import { resendEmailVerification } from '../templates/resendEmailVerificationTemplate';
@@ -11,4 +12,5 @@ export const emailTemplates: EmailTemplate[] = [
   resendEmailVerification,
   resetPasswordEmail,
   verifyEmail,
+  contactEmailNotification,
 ];

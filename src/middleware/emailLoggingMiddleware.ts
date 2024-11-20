@@ -6,7 +6,6 @@ import { ELogType } from '@/features/log/types/ELogType';
 import { Log } from '@/features/log/types/Log';
 
 export function emailLoggingMiddleware(emailService: EmailService): EmailService {
-  console.log('Initializing emailLoggingMiddleware');
   return {
     async sendEmail(email: Email): Promise<void> {
       const logType = email.test ? ELogType.EMAIL_TEST : ELogType.EMAIL_SENT;

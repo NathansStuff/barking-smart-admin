@@ -3,8 +3,14 @@ import { toast } from 'sonner';
 import { useGetUsers } from '../api/useGetUsers';
 import { useUpdateUserRole } from '../api/useUpdateUserRole';
 import { EUserRole } from '../types/EUserRole';
+import { UserWithId } from '../types/User';
 
-export function useUserMutations() {
+export function useUserMutations(): {
+  handleRoleUpdate: (id: string, role: EUserRole) => Promise<boolean>;
+  isMutating: boolean;
+  data: UserWithId[] | undefined;
+  isLoading: boolean;
+} {
   const updateRoleMutation = useUpdateUserRole();
   const { data: users, isLoading } = useGetUsers();
 
@@ -27,9 +33,7 @@ export function useUserMutations() {
     }
   };
 
-
-
-  const handleRoleUpdate = (id: string, role: EUserRole) =>
+  const handleRoleUpdate = (id: string, role: EUserRole): Promise<boolean> =>
     handleMutationWithToast(() => updateRoleMutation.mutateAsync({ id, role }), 'update');
 
   return {

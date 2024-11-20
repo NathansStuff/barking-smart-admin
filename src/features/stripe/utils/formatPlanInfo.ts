@@ -1,6 +1,6 @@
 import { SubscriptionPlan } from '@/features/user/types/SubscriptionPlan';
-import { capitalizeString } from '@/utils/stringManipulation/capitalizeString';
 import { convertToSubcurrency } from '@/utils/convertToSubcurrency';
+import { capitalizeString } from '@/utils/stringManipulation/capitalizeString';
 
 export function formatPlanInfo(plan: SubscriptionPlan | null): string {
   if (plan === null) return '';
