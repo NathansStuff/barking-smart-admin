@@ -59,11 +59,11 @@ export const ADMIN_NAV_MAIN: AdminNavMain = {
       items: [
         {
           title: 'Emails',
-          url: '#',
+          url: '/admin/email',
         },
         {
           title: 'SMS',
-          url: '#',
+          url: '/admin/sms',
         },
       ],
     },
