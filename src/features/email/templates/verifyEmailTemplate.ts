@@ -1,6 +1,8 @@
-export function verifyEmailTemplate(firstName: string, verificationLink: string): { body: string; subject: string } {
-  const subject = 'Verify Your Email Address';
-  const body = `
+import { EmailTemplate } from '../types/EmailTemplate';
+
+const subject = 'Verify Your Email Address';
+
+const emailBody = `
   <html>
     <head>
       <style>
@@ -53,9 +55,9 @@ export function verifyEmailTemplate(firstName: string, verificationLink: string)
           <h2>Email Verification</h2>
         </div>
         <div class="content">
-          <p>Hi ${firstName},</p>
+          <p>Hi {{firstName}},</p>
           <p>Thank you for registering with us. Please click the button below to verify your email address:</p>
-          <a href="${verificationLink}" class="btn">Verify Your Email</a>
+          <a href="{{verificationLink}}" class="btn">Verify Your Email</a>
           <p>If you did not create an account with us, please ignore this email.</p>
         </div>
         <div class="footer">
@@ -64,7 +66,22 @@ export function verifyEmailTemplate(firstName: string, verificationLink: string)
       </div>
     </body>
   </html>
-  `;
+`;
 
+export const verifyEmail: EmailTemplate = {
+  id: 'verify-email',
+  name: 'Email Verification',
+  subject,
+  body: emailBody,
+  variables: ['firstName', 'verificationLink']
+};
+
+export function verifyEmailTemplate(
+  firstName: string,
+  verificationLink: string
+): { body: string; subject: string } {
+  const body = emailBody
+    .replace('{{firstName}}', firstName)
+    .replace('{{verificationLink}}', verificationLink);
   return { body, subject };
 }

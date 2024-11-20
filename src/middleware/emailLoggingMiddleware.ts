@@ -1,4 +1,3 @@
-import nodemailerService from '@/features/email/server/nodemailerService';
 import { Email } from '@/features/email/types/Email';
 import { EmailService } from '@/features/email/types/EmailService';
 import { createServerLogService } from '@/features/log/server/logService';
@@ -7,22 +6,22 @@ import { ELogType } from '@/features/log/types/ELogType';
 import { Log } from '@/features/log/types/Log';
 
 export function emailLoggingMiddleware(emailService: EmailService): EmailService {
+  console.log('Initializing emailLoggingMiddleware');
   return {
     async sendEmail(email: Email): Promise<void> {
+      console.log('Starting emailLoggingMiddleware.sendEmail');
       const baseLog: Log = {
         userId: email.userId,
         action: ELogType.EMAIL_SENT,
         ipAddress: email.ipAddress,
-        additionalInfo: {
-          provider: emailService === nodemailerService ? 'nodemailer' : 'sendgrid',
-        },
         status: ELogStatus.IN_PROGRESS,
         details: `Sending email to ${email.to} with subject ${email.subject}`,
       };
 
       try {
-        // Call the original sendEmail method
+        console.log('Calling original emailService.sendEmail');
         await emailService.sendEmail(email);
+        console.log('Original emailService.sendEmail completed');
 
         // Log success
         await createServerLogService({
@@ -43,7 +42,6 @@ export function emailLoggingMiddleware(emailService: EmailService): EmailService
           status: ELogStatus.FAILURE,
           details: `Failed to send email to ${email.to} with subject ${email.subject}`,
           additionalInfo: {
-            ...baseLog.additionalInfo,
             error: errorDetails,
           },
         });

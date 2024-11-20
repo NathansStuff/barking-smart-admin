@@ -1,14 +1,11 @@
 import { TOKEN_EXPIRY_TIME } from '@/constants';
 
-// Convert TOKEN_EXPIRY_TIME to hours
-const expiryTimeInHours = TOKEN_EXPIRY_TIME / 3600000;
+import { EmailTemplate } from '../types/EmailTemplate';
 
-export function resetPasswordEmailTemplate(
-  firstName: string,
-  resetPasswordLink: string
-): { body: string; subject: string } {
-  const subject = 'Reset Your Password';
-  const body = `
+const expiryTimeInHours = TOKEN_EXPIRY_TIME / 3600000;
+const subject = 'Reset Your Password';
+
+const emailBody = `
   <html>
     <head>
       <style>
@@ -61,9 +58,9 @@ export function resetPasswordEmailTemplate(
           <h2>Password Reset Request</h2>
         </div>
         <div class="content">
-          <p>Hi ${firstName},</p>
+          <p>Hi {{firstName}},</p>
           <p>You recently requested to reset your password for your account. Click the button below to reset it:</p>
-          <a href="${resetPasswordLink}" class="btn">Reset Your Password</a>
+          <a href="{{resetPasswordLink}}" class="btn">Reset Your Password</a>
           <p>If you did not request a password reset, please ignore this email or reply to let us know.</p>
           <p>This password reset link is only valid for the next ${expiryTimeInHours} hour${expiryTimeInHours > 1 ? 's' : ''}.</p>
         </div>
@@ -75,5 +72,18 @@ export function resetPasswordEmailTemplate(
   </html>
   `;
 
+export const resetPasswordEmail: EmailTemplate = {
+  id: 'reset-password',
+  name: 'Reset Password',
+  subject,
+  body: emailBody,
+  variables: ['firstName', 'resetPasswordLink']
+};
+
+export function resetPasswordEmailTemplate(
+  firstName: string,
+  resetPasswordLink: string
+): { body: string; subject: string } {
+  const body = emailBody.replace('{{firstName}}', firstName).replace('{{resetPasswordLink}}', resetPasswordLink);
   return { body, subject };
 }

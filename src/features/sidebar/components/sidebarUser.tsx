@@ -19,7 +19,7 @@ import { SidebarMenu, SidebarMenuButton, SidebarMenuItem, useSidebar } from '@/c
 import { useAppSelector } from '@/contexts/storeHooks';
 import { selectUser } from '@/contexts/userSlice';
 import { ADMIN_USER_NAVIGATION } from '@/data/sidebarInfo';
-import { capitalizeString } from '@/utils/capitalizeString';
+import { capitalizeString } from '@/utils/stringManipulation/capitalizeString';
 
 export function SidebarUser(): ReactElement {
   const user = useAppSelector(selectUser);

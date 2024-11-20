@@ -1,9 +1,8 @@
-export function passwordResetConfirmationEmailTemplate(firstName: string): {
-  body: string;
-  subject: string;
-} {
-  const subject = 'Password Reset Confirmation';
-  const body = `
+import { EmailTemplate } from '../types/EmailTemplate';
+
+const subject = 'Password Reset Confirmation';
+
+const emailBody = `
   <html>
     <head>
       <style>
@@ -56,7 +55,7 @@ export function passwordResetConfirmationEmailTemplate(firstName: string): {
           <h2>Password Successfully Reset</h2>
         </div>
         <div class="content">
-          <p>Hi ${firstName},</p>
+          <p>Hi {{firstName}},</p>
           <p>We wanted to let you know that your password has been successfully reset.</p>
           <p>If you did not perform this action, please secure your account immediately by contacting our support team.</p>
         </div>
@@ -66,7 +65,20 @@ export function passwordResetConfirmationEmailTemplate(firstName: string): {
       </div>
     </body>
   </html>
-  `;
+`;
 
+export const passwordResetConfirmationEmail: EmailTemplate = {
+  id: 'password-reset-confirmation',
+  name: 'Password Reset Confirmation',
+  subject,
+  body: emailBody,
+  variables: ['firstName']
+};
+
+export function passwordResetConfirmationEmailTemplate(firstName: string): {
+  body: string;
+  subject: string;
+} {
+  const body = emailBody.replace('{{firstName}}', firstName);
   return { body, subject };
 }

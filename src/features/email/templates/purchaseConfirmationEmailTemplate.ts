@@ -1,10 +1,8 @@
-export function purchaseConfirmationEmailTemplate(
-  firstName: string,
-  productName: string,
-  viewProductLink: string
-): { body: string; subject: string } {
-  const subject = 'Your Purchase Confirmation';
-  const body = `
+import { EmailTemplate } from '../types/EmailTemplate';
+
+const subject = 'Your Purchase Confirmation';
+
+const emailBody = `
   <html>
     <head>
       <style>
@@ -57,10 +55,10 @@ export function purchaseConfirmationEmailTemplate(
           <h2>Thank You for Your Purchase!</h2>
         </div>
         <div class="content">
-          <p>Hi ${firstName},</p>
-          <p>We're excited to let you know that your purchase of <strong>${productName}</strong> has been confirmed.</p>
+          <p>Hi {{firstName}},</p>
+          <p>We're excited to let you know that your purchase of <strong>{{productName}}</strong> has been confirmed.</p>
           <p>You can view your product by clicking the button below:</p>
-          <a href="${viewProductLink}" class="btn">View Product</a>
+          <a href="{{viewProductLink}}" class="btn">View Product</a>
           <p>If you have any questions or need further assistance, please feel free to contact our support team.</p>
         </div>
         <div class="footer">
@@ -71,5 +69,22 @@ export function purchaseConfirmationEmailTemplate(
   </html>
   `;
 
+export const purchaseConfirmationEmail: EmailTemplate = {
+  id: 'purchase-confirmation',
+  name: 'Purchase Confirmation',
+  subject,
+  body: emailBody,
+  variables: ['firstName', 'productName', 'viewProductLink']
+};
+
+export function purchaseConfirmationEmailTemplate(
+  firstName: string,
+  productName: string,
+  viewProductLink: string
+): { body: string; subject: string } {
+  const body = emailBody
+    .replace('{{firstName}}', firstName)
+    .replace('{{productName}}', productName)
+    .replace('{{viewProductLink}}', viewProductLink);
   return { body, subject };
 }

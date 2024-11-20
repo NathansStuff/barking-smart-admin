@@ -22,7 +22,7 @@ export const metadata: Metadata = {
 
 export default function AdminLayout({ children }: { children: ReactNode }): ReactNode {
   return (
-    <div className='flex flex-1 overflow-hidden'>
+    <div className='flex flex-1 '>
       <SidebarProvider>
         <AdminSidebar />
         <SidebarInset>
