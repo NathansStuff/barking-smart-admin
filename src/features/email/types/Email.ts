@@ -6,4 +6,5 @@ export interface Email {
   body: string;
   userId: ObjectId | null;
   ipAddress: string | null;
+  test?: boolean;
 }

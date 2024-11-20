@@ -1,10 +1,11 @@
 import { emailLoggingMiddleware } from '@/middleware/emailLoggingMiddleware';
 
 import nodemailerService from '../server/nodemailerService';
-import { Email } from '../types/Email';
+import { EmailService } from '../types/EmailService';
 
-const emailService = emailLoggingMiddleware(nodemailerService);
+let emailService: EmailService;
 
-export async function sendEmail(emailData: Email): Promise<void> {
-  return await emailService.sendEmail(emailData);
-}
+// eslint-disable-next-line prefer-const
+emailService = emailLoggingMiddleware(nodemailerService);
+
+export const sendEmail = emailService.sendEmail;

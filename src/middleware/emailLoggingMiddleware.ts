@@ -9,10 +9,11 @@ export function emailLoggingMiddleware(emailService: EmailService): EmailService
   console.log('Initializing emailLoggingMiddleware');
   return {
     async sendEmail(email: Email): Promise<void> {
+      const logType = email.test ? ELogType.EMAIL_TEST : ELogType.EMAIL_SENT;
       console.log('Starting emailLoggingMiddleware.sendEmail');
       const baseLog: Log = {
         userId: email.userId,
-        action: ELogType.EMAIL_SENT,
+        action: logType,
         ipAddress: email.ipAddress,
         status: ELogStatus.IN_PROGRESS,
         details: `Sending email to ${email.to} with subject ${email.subject}`,

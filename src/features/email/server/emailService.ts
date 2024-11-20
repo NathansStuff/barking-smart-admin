@@ -28,7 +28,8 @@ export async function sendTestEmail(
     body,
     ipAddress,
     userId: user._id,
+    test: true,
   };
-
+  console.log(emailTemplate);
   await sendEmail(emailTemplate);
 }

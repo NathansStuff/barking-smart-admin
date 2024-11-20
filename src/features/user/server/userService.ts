@@ -151,5 +151,6 @@ export async function resendEmailVerificationService(userId: string, ipAddress: 
     userId: user._id,
     ipAddress,
   };
+  console.log(emailTemplate);
   await sendEmail(emailTemplate);
 }
