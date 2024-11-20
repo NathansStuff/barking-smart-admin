@@ -1,15 +1,19 @@
 import { NextRequest, NextResponse } from 'next/server';
+import { z } from 'zod';
 
 import { User, UserPartial } from '@/features/user/types/User';
 import { ResponseCode } from '@/types/ResponseCode';
 import { getIpAddress } from '@/utils/getIpAddress';
 import { getLastSegment } from '@/utils/getLastSegment';
 
+import { EUserRole } from '../types/EUserRole';
+
 import {
   createUserService,
   deleteUserAndAccounts,
   deleteUserByIdService,
   findOrCreateUserByEmail,
+  getAllUsersService,
   getUserByIdService,
   resendEmailVerificationService,
   updateUserByIdService,
@@ -89,4 +93,25 @@ export async function resendVerificationEmailHandler(req: NextRequest): Promise<
   const ipAddress = getIpAddress(req);
   await resendEmailVerificationService(userId, ipAddress);
   return NextResponse.json({ message: 'Verification email sent' }, { status: ResponseCode.OK });
+}
+
+export async function getUsersHandler(): Promise<NextResponse> {
+  const users = await getAllUsersService();
+  return NextResponse.json(users, { status: ResponseCode.OK });
+}
+
+export async function updateUserRoleHandler(req: NextRequest): Promise<NextResponse> {
+  const id = getLastSegment(req.nextUrl.pathname);
+  const data = await req.json();
+  const safeBody = z
+    .object({
+      role: z.nativeEnum(EUserRole),
+    })
+    .parse(data);
+
+  const updatedUser = await updateUserByIdService(id, { role: safeBody.role });
+  if (!updatedUser) {
+    return NextResponse.json({ message: 'User not found' }, { status: ResponseCode.NOT_FOUND });
+  }
+  return NextResponse.json(updatedUser, { status: ResponseCode.OK });
 }

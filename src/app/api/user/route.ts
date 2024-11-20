@@ -1,13 +1,12 @@
 import { NextRequest, NextResponse } from 'next/server';
 
-import { createUserHandler } from '@/features/user/server/userController';
+import { createUserHandler, getUsersHandler } from '@/features/user/server/userController';
 import { TryCatchMiddleware } from '@/middleware/tryCatchMiddleware';
-async function postHandler(req: NextRequest): Promise<NextResponse> {
+
+export async function POST(req: NextRequest): Promise<NextResponse> {
   return await TryCatchMiddleware(() => createUserHandler(req));
 }
 
-// async function getHandler(): Promise<NextResponse> {
-//   return await TryCatchMiddleware(() => getAllUsersHandler());
-// }
-
-export { postHandler as POST };
+export async function GET(): Promise<NextResponse> {
+  return await TryCatchMiddleware(() => getUsersHandler());
+}

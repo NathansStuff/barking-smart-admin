@@ -9,6 +9,7 @@ import { sendEmail } from '@/features/email/utils/sendEmail';
 import {
   createUser,
   deleteUserById,
+  getAllUsers,
   getUserByEmail,
   getUserById,
   getUserByStripeCustomerId,
@@ -153,4 +154,9 @@ export async function resendEmailVerificationService(userId: string, ipAddress: 
   };
   console.log(emailTemplate);
   await sendEmail(emailTemplate);
+}
+
+export async function getAllUsersService(): Promise<UserWithId[]> {
+  const users = await getAllUsers();
+  return users;
 }
