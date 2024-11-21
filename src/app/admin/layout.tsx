@@ -36,11 +36,11 @@ export default function AdminLayout({ children }: { children: ReactNode }): Reac
               <Breadcrumb>
                 <BreadcrumbList>
                   <BreadcrumbItem className='hidden md:block'>
-                    <BreadcrumbLink href='#'>Building Your Application</BreadcrumbLink>
+                    <BreadcrumbLink href='/'>Barkin Smart</BreadcrumbLink>
                   </BreadcrumbItem>
                   <BreadcrumbSeparator className='hidden md:block' />
                   <BreadcrumbItem>
-                    <BreadcrumbPage>Data Fetching</BreadcrumbPage>
+                    <BreadcrumbPage>Admin</BreadcrumbPage>
                   </BreadcrumbItem>
                 </BreadcrumbList>
               </Breadcrumb>

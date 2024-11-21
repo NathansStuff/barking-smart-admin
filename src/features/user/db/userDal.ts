@@ -30,6 +30,13 @@ export async function getAllUsers(): Promise<UserWithId[]> {
   return result;
 }
 
+// Get the total number of Users
+export async function getTotalUsers(): Promise<number> {
+  await connectMongo();
+  const result = await UserModel.countDocuments({ role: { $ne: 'ADMIN' } });
+  return result;
+}
+
 // Get a User by Stripe Customer ID
 export async function getUserByStripeCustomerId(stripeCustomerId: string): Promise<UserWithId | null> {
   await connectMongo();

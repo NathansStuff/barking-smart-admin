@@ -48,8 +48,12 @@ export const ADMIN_NAV_MAIN: AdminNavMain = {
           url: '/admin/dog',
         },
         {
-          title: 'Final Product',
-          url: '#',
+          title: 'Program Generator',
+          url: '/admin/program-generator',
+        },
+        {
+          title: 'Sold Programs',
+          url: '/admin/sold-programs',
         },
       ],
     },
