@@ -18,7 +18,6 @@ import {
 
 import { AdminNavMain, AdminNavSecondary, UserNavItem } from './types/AdminSidebarTypes';
 
-export const APP_NAME = 'Barking Smart';
 export const ADMIN_SUBTITLE = 'Administrative Dashboard';
 export const ADMIN_LOGO = GalleryVerticalEnd;
 

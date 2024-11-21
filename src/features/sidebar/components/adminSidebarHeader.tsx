@@ -1,7 +1,8 @@
 import React from 'react';
 
 import { SidebarMenu, SidebarMenuButton, SidebarMenuItem } from '@/components/ui/sidebar';
-import { ADMIN_LOGO, ADMIN_SUBTITLE, APP_NAME } from '@/data/sidebarInfo';
+import { PROJECT_NAME } from '@/constants';
+import { ADMIN_LOGO, ADMIN_SUBTITLE } from '@/data/sidebarInfo';
 
 export function AdminSidebarHeader(): React.ReactElement {
   return (
@@ -15,7 +16,7 @@ export function AdminSidebarHeader(): React.ReactElement {
             <ADMIN_LOGO className='size-4' />
           </div>
           <div className='grid flex-1 text-left text-sm leading-tight'>
-            <span className='truncate font-semibold'>{APP_NAME}</span>
+            <span className='truncate font-semibold'>{PROJECT_NAME}</span>
             <span className='truncate text-xs'>{ADMIN_SUBTITLE}</span>
           </div>
         </SidebarMenuButton>

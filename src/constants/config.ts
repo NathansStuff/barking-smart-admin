@@ -1,4 +1,4 @@
-export const PROJECT_NAME = 'Project Name';
+export const PROJECT_NAME = 'Barkin Smart';
 
 // Token expiry time in milliseconds (e.g., 1 hour = 3600000 ms)
 export const TOKEN_EXPIRY_TIME = 3600000;

@@ -2,9 +2,11 @@ import { ReactNode } from 'react';
 
 import { Metadata } from 'next';
 
+import { PROJECT_NAME } from '@/constants';
+
 export const metadata: Metadata = {
-  title: 'Dashboard - Barking Smart Admin',
-  description: 'Barking Smart Administrative dashboard',
+  title: `${PROJECT_NAME} - Admin`,
+  description: `${PROJECT_NAME} Administrative dashboard`,
 };
 
 export default function DashboardLayout({

@@ -13,16 +13,17 @@ import {
   BreadcrumbSeparator,
 } from '@/components/ui/breadcrumb';
 import { SidebarInset, SidebarProvider, SidebarTrigger } from '@/components/ui/sidebar';
+import { PROJECT_NAME } from '@/constants';
 import { AdminSidebar } from '@/features/sidebar/components/adminSidebar';
 
 export const metadata: Metadata = {
-  title: 'Dashboard - Barking Smart Admin',
-  description: 'Barking Smart Administrative dashboard',
+  title: `${PROJECT_NAME} - Admin`,
+  description: `${PROJECT_NAME} Administrative dashboard`,
 };
 
 export default function AdminLayout({ children }: { children: ReactNode }): ReactNode {
   return (
-    <div className='flex flex-1 '>
+    <div className='flex flex-1'>
       <SidebarProvider>
         <AdminSidebar />
         <SidebarInset>
