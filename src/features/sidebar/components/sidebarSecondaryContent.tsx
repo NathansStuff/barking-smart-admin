@@ -2,6 +2,9 @@
 
 import { ReactElement } from 'react';
 
+import { Route } from 'next';
+import Link from 'next/link';
+
 import {
   SidebarGroup,
   SidebarGroupLabel,
@@ -19,10 +22,13 @@ export function SidebarSecondaryContent(): ReactElement {
         {ADMIN_NAV_SECONDARY.items.map((item) => (
           <SidebarMenuItem key={item.name}>
             <SidebarMenuButton asChild>
-              <a href={item.url}>
+              <Link
+                href={item.url as Route}
+                target='_blank'
+              >
                 <item.icon />
                 <span>{item.name}</span>
-              </a>
+              </Link>
             </SidebarMenuButton>
           </SidebarMenuItem>
         ))}
