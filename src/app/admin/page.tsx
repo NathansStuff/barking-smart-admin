@@ -127,7 +127,7 @@ const performanceData: PerformanceDataType = {
 export default function AdminDashboard(): ReactElement {
   const [selectedPeriod, setSelectedPeriod] = useState<TimePeriod>('24h');
 
-  const handlePeriodChange = (value: string) => {
+  const handlePeriodChange = (value: string): void => {
     setSelectedPeriod(value as TimePeriod);
   };
 

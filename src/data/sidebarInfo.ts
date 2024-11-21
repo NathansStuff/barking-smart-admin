@@ -68,7 +68,7 @@ export const ADMIN_NAV_MAIN: AdminNavMain = {
       ],
     },
     {
-      title: 'User Audit',
+      title: 'User Management',
       icon: Settings2,
       items: [
         {
@@ -76,8 +76,8 @@ export const ADMIN_NAV_MAIN: AdminNavMain = {
           url: '/admin/users',
         },
         {
-          title: 'User Activity',
-          url: '/admin/user-activity',
+          title: 'Activity Logs',
+          url: '/admin/activity',
         },
       ],
     },

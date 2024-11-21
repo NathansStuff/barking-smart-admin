@@ -18,5 +18,16 @@ export const Log = z.object({
 export const LogPartial = Log.partial();
 
 export type Log = z.infer<typeof Log>;
-export type LogWithId = WithId<Log>;
+export type LogWithId = WithId<Log> & {
+  _id: ObjectId;
+  createdAt: Date;
+  updatedAt: Date;
+};
 export type LogPartial = z.infer<typeof LogPartial>;
+
+export type LogWithUserDetails = LogWithId & {
+  userId: {
+    email: string;
+    name: string;
+  };
+};
