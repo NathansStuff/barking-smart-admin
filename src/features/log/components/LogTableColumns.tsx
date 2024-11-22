@@ -1,4 +1,4 @@
-import { ReactNode } from 'react';
+import { JSX, ReactNode } from 'react';
 
 import { Column, ColumnDef } from '@tanstack/react-table';
 import { format } from 'date-fns';
@@ -52,7 +52,7 @@ export const LogTableColumns: ColumnDef<LogWithUserDetails>[] = [
   {
     accessorKey: 'status',
     header: ({ column }) => <SortButton column={column}>Status</SortButton>,
-    cell: ({ row }) => {
+    cell: ({ row }): JSX.Element => {
       const status = row.original.status;
       const variant = status === 'SUCCESS' ? 'default' : status === 'FAILURE' ? 'destructive' : 'secondary';
       return <Badge variant={variant}>{status}</Badge>;

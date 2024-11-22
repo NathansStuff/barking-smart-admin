@@ -5,7 +5,8 @@ import { ResponseCode } from '@/types/ResponseCode';
 import { getIpAddress } from '@/utils/getIpAddress';
 
 import { CreateLogRequest } from '../types/CreateLogRequest';
-import { getAllLogsService, createLogService } from './logService';
+
+import { createLogService, getAllLogsService } from './logService';
 
 // Handler to create a new Log
 export async function createLogHandler(req: NextRequest): Promise<NextResponse<CreateLogResponse>> {
