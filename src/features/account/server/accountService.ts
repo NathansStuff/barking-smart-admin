@@ -18,7 +18,7 @@ import { hashPassword } from '@/features/auth/utils/auth';
 import connectMongo from '@/features/database/lib/mongodb';
 import { passwordResetConfirmationEmailTemplate } from '@/features/email/templates/passwordResetConfirmationEmailTemplate';
 import { resetPasswordEmailTemplate } from '@/features/email/templates/resetPasswordEmailTemplate';
-import { Email } from '@/features/email/types/Email';
+import { EmailRequest } from '@/features/email/types/EmailRequest';
 import { sendEmail } from '@/features/email/utils/sendEmail';
 import { createUserService, getUserByEmailService, getUserByIdService } from '@/features/user/server/userService';
 import { EUserRole } from '@/features/user/types/EUserRole';
@@ -149,7 +149,7 @@ export async function resetPasswordRequestAction(email: string, ipAddress: strin
     user.name,
     `${env.NEXT_PUBLIC_BASE_URL}/reset-password/${token}`
   );
-  const emailTemplate: Email = {
+  const emailTemplate: EmailRequest = {
     to: email,
     subject,
     body,
@@ -207,7 +207,7 @@ export async function resetPasswordAction(token: string, password: string, ipAdd
 
   // Send email
   const { body, subject } = passwordResetConfirmationEmailTemplate(user.name);
-  const emailTemplate: Email = {
+  const emailTemplate: EmailRequest = {
     to: account.email,
     subject,
     body,

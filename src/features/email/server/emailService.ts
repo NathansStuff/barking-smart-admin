@@ -1,7 +1,7 @@
 import { BadRequestError } from '@/exceptions';
 import { getUserByEmailService } from '@/features/user/server/userService';
 
-import { Email } from '../types/Email';
+import { EmailRequest } from '../types/EmailRequest';
 import { generateEmailTemplate } from '../utils/getEmailTemplate';
 import { sendEmail } from '../utils/sendEmail';
 
@@ -22,7 +22,7 @@ export async function sendTestEmail(
     throw new BadRequestError(`Unknown user email: ${toEmail}`);
   }
 
-  const emailTemplate: Email = {
+  const emailTemplate: EmailRequest = {
     to: toEmail,
     subject,
     body,
