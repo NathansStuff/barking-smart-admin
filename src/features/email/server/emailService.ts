@@ -2,9 +2,9 @@ import { BadRequestError } from '@/exceptions';
 import { getUserByEmailService } from '@/features/user/server/userService';
 
 import { EmailTemplateDal } from '../db/emailTemplateDal';
-import { EmailTemplatePartial, EmailTemplateWithId } from '../types/Email';
-import { EmailTemplate } from '../types/Email';
 import { EmailRequest } from '../types/EmailRequest';
+import { EmailTemplatePartial, EmailTemplateWithId } from '../types/EmailTemplate';
+import { EmailTemplate } from '../types/EmailTemplate';
 import { generateEmailTemplate } from '../utils/getEmailTemplate';
 import { sendEmail } from '../utils/sendEmail';
 

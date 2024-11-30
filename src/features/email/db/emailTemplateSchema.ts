@@ -1,6 +1,6 @@
 import { Schema } from 'mongoose';
 
-import { EmailTemplate } from '@/features/email/types/Email';
+import { EmailTemplate } from '@/features/email/types/EmailTemplate';
 
 export const emailTemplateSchema = new Schema<EmailTemplate>(
   {
@@ -10,6 +10,7 @@ export const emailTemplateSchema = new Schema<EmailTemplate>(
     heroSection: { type: String, required: true },
     body: { type: String, required: true },
     type: { type: String, required: true },
+    variables: { type: [String], required: true },
   },
   { timestamps: true }
 );

@@ -5,14 +5,15 @@ import { ReactElement } from 'react';
 import { DataTable } from '@/components/general/DataTable/components/DataTable';
 import { UseDataTable } from '@/components/general/DataTable/hooks/UseDataTable';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { useGetEmailTemplates } from '@/features/email/api/useGetEmailTemplates';
 import { EmailTemplateColumns } from '@/features/email/components/EmailTemplateColumns';
-import { emailTemplates } from '@/features/email/data/emailTemplates';
 
 function EmailPage(): ReactElement {
   const tableColumns = EmailTemplateColumns();
+  const { data: emailTemplates } = useGetEmailTemplates();
 
   const { table } = UseDataTable({
-    data: emailTemplates,
+    data: emailTemplates?.emailTemplates || [],
     columns: tableColumns,
     pageCount: 1,
   });

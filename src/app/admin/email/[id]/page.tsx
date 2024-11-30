@@ -13,15 +13,16 @@ import { Label } from '@/components/ui/label';
 import { useAppSelector } from '@/contexts/storeHooks';
 import { selectEmail } from '@/contexts/userSlice';
 import { postTestEmail } from '@/features/email/api/postTestEmail';
+import { useGetEmailTemplate } from '@/features/email/api/useGetEmailTemplate';
 import { EmailPreview } from '@/features/email/components/EmailPreview';
-import { emailTemplates } from '@/features/email/data/emailTemplates';
 import { EmailTestRequest } from '@/features/email/types/EmailTestRequest';
 import { camelCaseToCapitals } from '@/utils/stringManipulation/camelCaseToCapitals';
 
 function EmailTemplatePage({ params }: { params: Promise<{ id: string }> }): ReactElement {
   const userEmail = useAppSelector(selectEmail);
   const { id } = use(params);
-  const template = emailTemplates.find((template) => template.id === id);
+  const { data: emailTemplate } = useGetEmailTemplate(id);
+  const template = emailTemplate;
   const [variables, setVariables] = useState<Record<string, string>>(() => {
     // Initialize with empty values for each variable
     return (
@@ -65,6 +66,8 @@ function EmailTemplatePage({ params }: { params: Promise<{ id: string }> }): Rea
       toast.error('Error sending email');
     }
   }
+
+  console.log(template);
 
   return (
     <div className='container mx-auto p-4'>

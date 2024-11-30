@@ -1,6 +1,6 @@
 import { model, models } from 'mongoose';
 
-import { EmailTemplate } from '@/features/email/types/Email';
+import { EmailTemplate } from '@/features/email/types/EmailTemplate';
 
 import { emailTemplateSchema } from './emailTemplateSchema';
 

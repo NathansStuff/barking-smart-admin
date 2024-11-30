@@ -1,3 +1,3 @@
 export enum EEmailTrigger {
-  USER_SIGNUP = 'user_signup',
+  USER_SIGNUP = 'USER_SIGNUP',
 }

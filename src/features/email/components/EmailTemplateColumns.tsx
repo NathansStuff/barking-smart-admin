@@ -3,9 +3,9 @@ import Link from 'next/link';
 
 import { Button } from '@/components/ui/button';
 
-import { EmailTemplate } from '../types/EmailTemplate';
+import { EmailTemplateWithId } from '../types/EmailTemplate';
 
-export const EmailTemplateColumns = (): ColumnDef<EmailTemplate>[] => [
+export const EmailTemplateColumns = (): ColumnDef<EmailTemplateWithId>[] => [
   {
     accessorKey: 'name',
     header: 'Name',
@@ -23,7 +23,7 @@ export const EmailTemplateColumns = (): ColumnDef<EmailTemplate>[] => [
           variant='outline'
           size='sm'
         >
-          <Link href={`/admin/email/${row.original.id}`}>View</Link>
+          <Link href={`/admin/email/${row.original._id}`}>View</Link>
         </Button>
       </div>
     ),

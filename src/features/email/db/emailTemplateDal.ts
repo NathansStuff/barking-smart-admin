@@ -1,6 +1,6 @@
-import { dbConnector } from '@/features/database/lib/mongodb';
+import connectMongo, { dbConnector } from '@/features/database/lib/mongodb';
 import { WrapWithConnection } from '@/features/database/service/WrapWithConnection';
-import { EmailTemplate, EmailTemplateWithId } from '@/features/email/types/Email';
+import { EmailTemplate, EmailTemplateWithId } from '@/features/email/types/EmailTemplate';
 
 import { EmailTemplateModel } from './emailTemplateModel';
 
@@ -18,10 +18,13 @@ const baseEmailTemplateDal = {
     emailTemplates: EmailTemplateWithId[];
     total: number;
   }> {
+    await connectMongo();
     const [emailTemplates, total] = await Promise.all([
       EmailTemplateModel.find(filter).sort({ createdAt: -1 }).skip(skip).limit(limit),
       EmailTemplateModel.countDocuments(filter),
     ]);
+    const total2 = await EmailTemplateModel.find();
+    console.log(total2);
     return { emailTemplates, total };
   },
 

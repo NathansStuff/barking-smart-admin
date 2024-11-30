@@ -4,7 +4,7 @@ import { ResponseCode } from '@/types/ResponseCode';
 import { getIpAddress } from '@/utils/getIpAddress';
 import { getLastSegment } from '@/utils/getLastSegment';
 
-import { EmailTemplate, EmailTemplatePartial } from '../types/Email';
+import { EmailTemplate, EmailTemplatePartial } from '../types/EmailTemplate';
 import { EmailTestRequest } from '../types/EmailTestRequest';
 
 import {
@@ -28,7 +28,7 @@ export async function sendTestEmailHandler(req: NextRequest): Promise<NextRespon
 
 export async function getAllEmailTemplatesHandler(): Promise<NextResponse> {
   const emailTemplates = await getAllEmailTemplatesService();
-  return NextResponse.json({ emailTemplates });
+  return NextResponse.json(emailTemplates);
 }
 
 export async function createEmailTemplateHandler(req: NextRequest): Promise<NextResponse> {
@@ -41,7 +41,7 @@ export async function createEmailTemplateHandler(req: NextRequest): Promise<Next
 export async function getEmailTemplateByIdHandler(req: NextRequest): Promise<NextResponse> {
   const id = getLastSegment(req.nextUrl.pathname);
   const emailTemplate = await getEmailTemplateByIdService(id);
-  return NextResponse.json({ emailTemplate });
+  return NextResponse.json(emailTemplate);
 }
 
 export async function updateEmailTemplateHandler(req: NextRequest): Promise<NextResponse> {
