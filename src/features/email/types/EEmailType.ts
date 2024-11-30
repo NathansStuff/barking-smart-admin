@@ -1,4 +1,0 @@
-export enum EEmailType {
-  TRANSACTIONAL = 'TRANSACTIONAL',
-  PROMOTIONAL = 'PROMOTIONAL',
-}
