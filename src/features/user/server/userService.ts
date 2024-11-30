@@ -4,7 +4,7 @@ import { deleteAccountByIdService, getAccountsByUserIdService } from '@/features
 import { purchaseConfirmationEmailTemplate } from '@/features/email/templates/purchaseConfirmationEmailTemplate';
 import { resendEmailVerificationTemplate } from '@/features/email/templates/resendEmailVerificationTemplate';
 import { verifyEmailTemplate } from '@/features/email/templates/verifyEmailTemplate';
-import { EmailRequest } from '@/features/email/types/EmailRequest';
+import { Email } from '@/features/email/types/Email';
 import { sendEmail } from '@/features/email/utils/sendEmail';
 import {
   createUser,
@@ -25,7 +25,7 @@ export async function createUserService(user: User, ipAddress: string): Promise<
   if (!user.isEmailVerified) {
     // Send verification email
     const { subject, body } = verifyEmailTemplate(user.name, `${env.NEXT_PUBLIC_BASE_URL}/verify-email/${newUser._id}`);
-    const emailTemplate: EmailRequest = {
+    const emailTemplate: Email = {
       to: user.email,
       subject,
       body,
@@ -74,7 +74,7 @@ export async function updateUserByIdService(
           product.name,
           `${env.NEXT_PUBLIC_BASE_URL}/view-product/${product.productId}`
         );
-        const emailTemplate: EmailRequest = {
+        const emailTemplate: Email = {
           to: existingUser.email,
           subject,
           body,
@@ -145,7 +145,7 @@ export async function resendEmailVerificationService(userId: string, ipAddress: 
     user.name,
     `${env.NEXT_PUBLIC_BASE_URL}/verify-email/${userId}`
   );
-  const emailTemplate: EmailRequest = {
+  const emailTemplate: Email = {
     to: user.email,
     subject,
     body,

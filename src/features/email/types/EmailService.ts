@@ -1,5 +1,5 @@
-import { EmailRequest } from './EmailRequest';
+import { Email } from './Email';
 
 export interface EmailService {
-  sendEmail({ to, subject, body }: EmailRequest): Promise<void>;
+  sendEmail({ to, subject, body }: Email): Promise<void>;
 }

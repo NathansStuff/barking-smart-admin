@@ -1,4 +1,4 @@
-import { EmailRequest } from '@/features/email/types/EmailRequest';
+import { Email } from '@/features/email/types/Email';
 import { EmailService } from '@/features/email/types/EmailService';
 import { createServerLogService } from '@/features/log/server/logService';
 import { ELogStatus } from '@/features/log/types/ELogStatus';
@@ -7,7 +7,7 @@ import { Log } from '@/features/log/types/Log';
 
 export function emailLoggingMiddleware(emailService: EmailService): EmailService {
   return {
-    async sendEmail(email: EmailRequest): Promise<void> {
+    async sendEmail(email: Email): Promise<void> {
       const logType = email.test ? ELogType.EMAIL_TEST : ELogType.EMAIL_SENT;
       console.log('Starting emailLoggingMiddleware.sendEmail');
       const baseLog: Log = {

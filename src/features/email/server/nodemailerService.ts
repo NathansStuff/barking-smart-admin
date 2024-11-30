@@ -2,11 +2,11 @@ import nodemailer from 'nodemailer';
 
 import { env } from '@/constants';
 
-import { EmailRequest } from '../types/EmailRequest';
+import { Email } from '../types/Email';
 import { EmailService } from '../types/EmailService';
 
 const nodemailerService: EmailService = {
-  sendEmail: async (email: EmailRequest): Promise<void> => {
+  sendEmail: async (email: Email): Promise<void> => {
     console.log('nodemailerService: Starting to send email');
     const { to, subject, body } = email;
 

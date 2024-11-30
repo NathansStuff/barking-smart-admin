@@ -2,7 +2,7 @@ import { ObjectId } from 'mongodb';
 
 import { env } from '@/constants';
 import { contactEmailNotificationTemplate } from '@/features/email/templates/contactEmailNotificationTemplate';
-import { EmailRequest } from '@/features/email/types/EmailRequest';
+import { Email } from '@/features/email/types/Email';
 import { sendEmail } from '@/features/email/utils/sendEmail';
 
 import { ContactEmailRequest } from '../types/ContactEmailRequest';
@@ -15,7 +15,7 @@ export function sendContactEmail(request: ContactEmailRequest, ipAddress: string
     userId = new ObjectId(request.userId);
   }
 
-  const email: EmailRequest = {
+  const email: Email = {
     to: toEmails,
     subject,
     body,

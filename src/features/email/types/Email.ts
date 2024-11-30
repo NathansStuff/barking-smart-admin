@@ -1,6 +1,6 @@
 import { ObjectId } from 'mongodb';
 
-export interface EmailRequest {
+export interface Email {
   to: string;
   subject: string;
   body: string;
