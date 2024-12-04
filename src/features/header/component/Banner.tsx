@@ -4,7 +4,7 @@ import { ArrowRight } from 'lucide-react';
 
 function Banner(): ReactNode {
   return (
-    <div className='flex items-center justify-center gap-3 bg-black py-3 text-sm text-white dark:bg-white/10 dark:text-black'>
+    <div className='flex items-center justify-center gap-3 bg-black py-3 text-sm text-white dark:bg-dark border-b dark:text-black'>
       <p className='hidden text-white/60 dark:text-white/60 md:block'>
         Craft stunning logos effortlessly and elevate your brand&apos;s identity.
       </p>

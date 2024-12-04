@@ -6,7 +6,7 @@ interface BackgroundContainerProps {
 
 function BackgroundContainer({ children }: BackgroundContainerProps): React.ReactNode {
   return (
-    <main className='flex-1 overflow-hidden bg-[url(/assets/light-bg.svg)] bg-cover bg-repeat dark:bg-[url(/assets/dark-bg.svg)]'>
+    <main className='flex-1 overflow-hidden bg-[url(/assets/bg_img.svg)] bg-cover bg-repeat dark:bg-[url(/assets/bg_img.svg)]'>
       {children}
     </main>
   );

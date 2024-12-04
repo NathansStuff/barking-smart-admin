@@ -43,7 +43,7 @@ function Header(): ReactNode {
     return <HeaderSkeleton />;
   }
   return (
-    <header className='sticky top-0 z-20 shadow-md backdrop-blur-sm'>
+    <header className='sticky top-0 z-20 shadow-md backdrop-blur-sm bg-white/70 dark:bg-black/90'>
       <Banner />
       <PageLayout>
         <div className='flex items-center justify-between'>

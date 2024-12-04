@@ -32,9 +32,9 @@ export default async function RootLayout({
       />
       <body className='flex h-screen w-screen flex-col'>
         <ClientProviders session={session}>
-          <main className='flex-grow overflow-auto bg-[url(/assets/bg_img.svg)] bg-cover bg-repeat dark:bg-[url(/assets/bg_img.svg)]'>
+          {/* <main className='flex-grow overflow-auto bg-[url(/assets/bg_img.svg)] bg-cover bg-repeat dark:bg-[url(/assets/bg_img.svg)]'> */}
             {children}
-          </main>
+          {/* </main> */}
         </ClientProviders>
       </body>
     </html>
