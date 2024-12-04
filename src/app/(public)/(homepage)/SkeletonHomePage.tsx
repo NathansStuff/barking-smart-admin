@@ -1,8 +1,8 @@
-import { ReactNode } from 'react';
+import React from 'react';
 
 import { Skeleton } from '@/components/ui/skeleton';
 
-function SkeletonHomePage(): ReactNode {
+function SkeletonHomePage(): React.JSX.Element {
   return (
     <div className='space-y-4'>
       <Skeleton className='h-12 w-full' />

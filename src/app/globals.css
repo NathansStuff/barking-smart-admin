@@ -76,6 +76,14 @@
 }
 
 @layer components {
+    .bg-fade {
+    @apply overflow-x-clip bg-gradient-to-b from-background to-primary/10 dark:from-background dark:to-primary/20;
+  }
+
+  .bg-gradient {
+    @apply overflow-x-clip bg-[radial-gradient(ellipse_200%_100%_at_bottom_left,hsl(var(--primary)),hsl(var(--background))_100%)]
+  }
+
   .btn {
     @apply px-4 py-2 rounded-lg font-medium inline-flex items-center justify-center tracking-tight;
   }

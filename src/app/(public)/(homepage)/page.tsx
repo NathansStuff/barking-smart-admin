@@ -1,30 +1,30 @@
-import { lazy, ReactNode, Suspense } from 'react';
+import React, { lazy, Suspense } from 'react';
 
 import Hero from './Hero';
 import SkeletonHomePage from './SkeletonHomePage';
 
 // Lazy load components
-const LogoTicker = lazy(() => import('./LogoTicker'));
-const ProductShowcase = lazy(() => import('./ProductShowcase'));
+const WeeklyActivities = lazy(() => import('./WeeklyActivities'));
+const FullScreenCalendar = lazy(() => import('./FullScreenCalender'));
 const Pricing = lazy(() => import('./Pricing'));
 const Testimonials = lazy(() => import('./Testimonials'));
 const CallToAction = lazy(() => import('./CallToAction'));
-const Footer = lazy(() => import('./Footer'));
+const FAQ = lazy(() => import('@/features/generic/components/FAQ'));
+const Footer = lazy(() => import('@/features/generic/components/Footer'));
 
-function HomePage(): ReactNode {
+export default function HomePage(): React.JSX.Element {
   return (
     <>
       <Hero />
       <Suspense fallback={<SkeletonHomePage />}>
-        <LogoTicker />
-        <ProductShowcase />
+        <WeeklyActivities />
+        <FullScreenCalendar />
         <Pricing />
         <Testimonials />
+        <FAQ />
         <CallToAction />
         <Footer />
       </Suspense>
     </>
   );
 }
-
-export default HomePage;

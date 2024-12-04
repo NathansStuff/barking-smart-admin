@@ -1,59 +1,36 @@
 'use client';
 
-import { ReactNode, useRef } from 'react';
+import { ReactNode } from 'react';
 
-import { ArrowRight } from 'lucide-react';
+import { motion } from 'framer-motion';
+import Link from 'next/link';
 
-import PageLayout from '@/components/container/PageLayout';
+import { Button } from '@/components/ui/button';
 
-function CallToAction(): ReactNode {
-  const sectionRef = useRef<HTMLElement>(null);
-  // const { scrollYProgress } = useScroll({
-  //   target: sectionRef as React.RefObject<HTMLElement>,
-  //   offset: ['start end', 'end start'],
-  // });
-  // const translateY = useTransform(scrollYProgress, [0, 1], [150, -150]);
+export default function CallToAction(): ReactNode {
   return (
-    <section
-      ref={sectionRef}
-      className='overflow-x-clip bg-sky-700 bg-gradient-to-b from-white to-[#D2DCFF] px-4 py-24 text-white'
-    >
-      <PageLayout>
-        <div className='section-heading relative'>
-          <h2 className='section-title'>Sign up for free today</h2>
-          <p className='section-description mt-5'>
-            Celebrate your creativity with an app designed to craft unique logos effortlessly and bring your brand to
-            life.
+    <section className='bg-background py-24 text-secondary-foreground'>
+      <div className='container mx-auto px-4 text-center'>
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6 }}
+        >
+          <h2 className='mb-6 text-4xl font-bold'>Start Enriching Your Dog&apos;s Life Today</h2>
+          <p className='mx-auto mb-8 max-w-2xl text-xl'>
+            Join thousands of happy dog owners who are providing their furry friends with engaging and stimulating
+            activities every day.
           </p>
-          {/* <motion.img
-            src={`${StarImage.src}`}
-            alt="Star"
-            width={360}
-            className="absolute -left-[350px] -top-[137px]"
-            style={{
-              translateY,
-            }}
-          />
-          <motion.img
-            src={SpringImage.src}
-            alt={'Star'}
-            width={360}
-            className='absolute -right-[331px] -top-[19px]'
-            style={{
-              translateY,
-            }}
-          /> */}
-        </div>
-        <div className='mt-10 flex justify-center gap-2'>
-          <button className='btn btn-primary'>Get for free</button>
-          <button className='btn btn-text'>
-            <span>Learn more</span>
-            <ArrowRight className='size-5' />
-          </button>
-        </div>
-      </PageLayout>
+          <div className='flex justify-center gap-4'>
+            <Button
+              className='bg-primary text-primary-foreground hover:bg-primary/90'
+              asChild
+            >
+              <Link href='/signup'>Get Started Now</Link>
+            </Button>
+          </div>
+        </motion.div>
+      </div>
     </section>
   );
 }
-
-export default CallToAction;
