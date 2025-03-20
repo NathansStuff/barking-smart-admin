@@ -3,6 +3,7 @@ import React from 'react';
 import Image from 'next/image';
 
 import Banner from '@/components/general/Banner';
+import { Button } from '@/components/ui/button';
 
 function Homepage(): React.JSX.Element {
   return (
@@ -29,10 +30,22 @@ function Homepage(): React.JSX.Element {
         </p>
 
         <div className='flex gap-4'>
-          <button className='flex items-center rounded-lg bg-teal-500 px-6 py-3 text-white'>
-            Get Started Now <span className='ml-2'>🐾</span>
-          </button>
-          <button className='rounded-lg bg-white px-6 py-3 text-black'>Get free sample</button>
+          <Button className='w-[250px] p-5 transition-all duration-300 hover:scale-105 hover:shadow-[0_0_30px_hsl(var(--primary))]'>
+            Get Started Now{' '}
+            <Image
+              src='/assets/pawprint.svg'
+              alt='Pawprint'
+              width={20}
+              height={20}
+              className='ml-2'
+            />
+          </Button>
+          <Button
+            className='w-[250px] border border-primary p-5 text-primary'
+            variant='secondary'
+          >
+            Get free sample
+          </Button>
         </div>
       </div>
 
