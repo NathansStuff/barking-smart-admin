@@ -1,12 +1,19 @@
 import React from 'react';
 
 import type { Metadata } from 'next';
+import { Poppins } from 'next/font/google';
 import { getServerSession } from 'next-auth';
 
 import { authOptions } from '@/lib/auth';
 import ClientProviders from '@/providers/ClientProviders';
 
 import './globals.css';
+
+const poppins = Poppins({
+  subsets: ['latin'],
+  weight: ['400', '500', '600', '700'],
+  variable: '--font-poppins',
+});
 
 export const metadata: Metadata = {
   title: 'Barkin Smart',
@@ -24,6 +31,7 @@ export default async function RootLayout({
     <html
       lang='en'
       suppressHydrationWarning
+      className={`${poppins.variable}`}
     >
       {/* Favicon */}
       <link
@@ -33,7 +41,7 @@ export default async function RootLayout({
       <body className='flex h-screen w-screen flex-col'>
         <ClientProviders session={session}>
           {/* <main className='flex-grow overflow-auto bg-[url(/assets/bg_img.svg)] bg-cover bg-repeat dark:bg-[url(/assets/bg_img.svg)]'> */}
-            {children}
+          {children}
           {/* </main> */}
         </ClientProviders>
       </body>

@@ -16,15 +16,16 @@ function Homepage(): React.JSX.Element {
       <div className='opacity-62 absolute bottom-20 right-20 h-[700px] w-[700px] rounded-full bg-[#E5DB78] blur-[100px]'></div>
 
       {/* Text Content */}
-      <div className='flex h-full flex-col items-start justify-center relative w-1/2 pl-20'>
-        <h1 className='mb-6 text-6xl font-bold'>
+      <div className='relative flex h-full w-1/2 flex-col items-start justify-center pl-40'>
+        <h1 className='font-fredoka mb-6 text-5xl font-bold'>
           UNLOCK YOUR
           <br />
           DOG&apos;S PAW-TENTIAL
         </h1>
 
         <p className='mb-8 max-w-lg text-xl'>
-          Tailored training and enriching activities – all designed to make your dog smarter, happier, and healthier.
+          Tailored training and enriching activities – all designed to make your dog smarter, happier,
+          <br /> and healthier.
         </p>
 
         <div className='flex gap-4'>
