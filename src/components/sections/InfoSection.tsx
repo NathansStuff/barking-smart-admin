@@ -15,15 +15,15 @@ interface InfoSectionProps {
 
 function InfoSection({ heading, items }: InfoSectionProps): React.JSX.Element {
   return (
-    <section className='flex justify-center items-center bg-[#F9FAFB] py-32'>
+    <section className='flex items-center justify-center bg-[#F9FAFB] py-32'>
       <div className='max-w-7xl px-16'>
-        <h2 className='mb-12 text-center text-3xl font-bold font-fredoka text-gray-800'>{heading}</h2>
+        <h2 className='mb-12 text-center font-fredoka text-3xl font-bold text-gray-800'>{heading}</h2>
 
         <div className='grid gap-6 md:grid-cols-3'>
           {items.map((item, index) => (
             <Card
               key={index}
-              className='border-none shadow-lg'
+              className='shadow-lg'
             >
               <CardContent className='px-6 pt-6 text-center'>
                 <div className='mb-4 flex justify-center'>
