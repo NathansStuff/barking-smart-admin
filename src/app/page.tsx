@@ -2,6 +2,7 @@ import React from 'react';
 
 import NewPuppy from '@/components/sections/NewPuppy';
 import PersonalisedProgram from '@/components/sections/PersonalisedProgram';
+import Testimonials from '@/components/sections/Testimonials';
 import WhyChooseUs from '@/components/sections/WhyChooseUs';
 
 function Homepage(): React.JSX.Element {
@@ -11,7 +12,7 @@ function Homepage(): React.JSX.Element {
       <PersonalisedProgram />
       <NewPuppy />
       <WhyChooseUs />
-      {/* Testimonials */}
+      <Testimonials />
       {/* Pricing */}
       {/* FAQ */}
     </>
