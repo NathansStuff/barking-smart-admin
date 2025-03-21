@@ -2,9 +2,7 @@ import React from 'react';
 
 import type { Metadata } from 'next';
 import { Poppins } from 'next/font/google';
-import { getServerSession } from 'next-auth';
 
-import { authOptions } from '@/lib/auth';
 import ClientProviders from '@/providers/ClientProviders';
 
 import './globals.css';
@@ -25,8 +23,6 @@ export default async function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>): Promise<React.ReactNode> {
-  const session = await getServerSession(authOptions);
-
   return (
     <html
       lang='en'
@@ -38,11 +34,11 @@ export default async function RootLayout({
         rel='icon'
         href='/logo/favicon.svg'
       />
-      <body className='flex h-screen w-screen flex-col'>
-        <ClientProviders session={session}>
-          {/* <main className='flex-grow overflow-auto bg-[url(/assets/bg_img.svg)] bg-cover bg-repeat dark:bg-[url(/assets/bg_img.svg)]'> */}
-          {children}
-          {/* </main> */}
+      <body className='flex min-h-screen w-full flex-col bg-[url(/assets/bg_img.svg)] bg-cover bg-repeat dark:bg-[url(/assets/bg_img.svg)]'>
+        <ClientProviders>
+          <main className='flex-grow overflow-auto'>
+            <div className='mx-auto w-full max-w-[2000px]'>{children}</div>
+          </main>
         </ClientProviders>
       </body>
     </html>

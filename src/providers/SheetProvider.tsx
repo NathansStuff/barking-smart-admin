@@ -3,8 +3,6 @@
 import { ReactNode } from 'react';
 import { useMountedState } from 'react-use';
 
-import MobileNavigationSheet from '@/features/header/component/MobileNavigationSheet';
-
 function SheetProvider(): ReactNode {
   const isMounted = useMountedState();
 
@@ -12,11 +10,7 @@ function SheetProvider(): ReactNode {
     return null;
   }
 
-  return (
-    <>
-      <MobileNavigationSheet />
-    </>
-  );
+  return <></>;
 }
 
 export default SheetProvider;
