@@ -19,11 +19,12 @@ function Footer(): React.ReactElement {
   ];
 
   return (
-    <footer className='relative bg-[#40B6B8] px-4 py-8'>
+    <footer className='relative bg-[#40B6B8] px-4 py-12'>
       <div className='relative z-10 mx-auto max-w-7xl'>
-        <div className='grid grid-cols-3 gap-8'>
-          {/* Logo */}
-          <div>
+        {/* Main Footer Content */}
+        <div className='flex justify-between'>
+          {/* Logo Section */}
+          <div className='w-1/3 flex justify-center'>
             <Link
               href='/'
               className='inline-block'
@@ -31,53 +32,55 @@ function Footer(): React.ReactElement {
               <Image
                 src='/logo/logo_lg.png'
                 alt='Barkin Smart'
-                width={150}
-                height={50}
+                width={180}
+                height={60}
                 className='h-auto'
               />
             </Link>
           </div>
 
-          {/* Corporate Links */}
-          <div>
-            <h3 className='mb-2 text-lg font-semibold text-gray-800'>Corporate</h3>
-            <ul className='space-y-1'>
-              {corporateLinks.map((link) => (
-                <li key={link.name}>
-                  <Link
-                    href={link.href}
-                    className='text-sm text-gray-700 transition-colors hover:text-gray-900'
-                  >
-                    {link.name}
-                  </Link>
-                </li>
-              ))}
-            </ul>
-          </div>
+          {/* Links Section */}
+          <div className='flex w-2/3 gap-16'>
+            {/* Corporate Links */}
+            <div>
+              <h3 className='mb-4 text-lg font-semibold text-black'>Corporate</h3>
+              <ul className='space-y-2'>
+                {corporateLinks.map((link) => (
+                  <li key={link.name}>
+                    <Link
+                      href={link.href}
+                      className='text-black transition-colors'
+                    >
+                      {link.name}
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+            </div>
 
-          {/* Legal Links */}
-          <div>
-            <h3 className='mb-2 text-lg font-semibold text-gray-800'>Legal</h3>
-            <ul className='space-y-1'>
-              {legalLinks.map((link) => (
-                <li key={link.name}>
-                  <Link
-                    href={link.href}
-                    className='text-sm text-gray-700 transition-colors hover:text-gray-900'
-                  >
-                    {link.name}
-                  </Link>
-                </li>
-              ))}
-            </ul>
+            {/* Legal Links */}
+            <div>
+              <h3 className='mb-4 text-lg font-semibold text-black'>Legal</h3>
+              <ul className='space-y-2'>
+                {legalLinks.map((link) => (
+                  <li key={link.name}>
+                    <Link
+                      href={link.href}
+                      className='text-black transition-colors'
+                    >
+                      {link.name}
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+            </div>
           </div>
-
         </div>
 
-        {/* Copyright and Payment Methods */}
-        <div className='mt-8 flex flex-col items-center space-y-4'>
+        {/* Payment Methods and Copyright */}
+        <div className='mt-12 grid grid-cols-3'>
           <p className='text-sm text-gray-700'>© Copyright Barkin Smart {new Date().getFullYear()}</p>
-          <div className='flex items-center justify-center gap-2'>
+          <div className='flex justify-center space-x-2'>
             <Image
               src='/images/payment/amex.svg'
               alt='Visa'
@@ -116,8 +119,17 @@ function Footer(): React.ReactElement {
         alt='happy dog'
         width={400}
         height={400}
-        className='absolute -bottom-0 right-0 h-[400px] w-auto'
+        className='absolute bottom-0 right-0 h-[400px] w-auto'
         priority
+      />
+
+      {/* Pawtrail */}
+      <Image
+        src='/assets/pawtrail2.svg'
+        alt='pawtrail'
+        width={500}
+        height={500}
+        className='absolute bottom-0 left-0 w-auto h-[100%] '
       />
     </footer>
   );
