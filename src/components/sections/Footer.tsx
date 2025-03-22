@@ -19,12 +19,12 @@ function Footer(): React.ReactElement {
   ];
 
   return (
-    <footer className='relative bg-[#40B6B8] px-4 py-12'>
+    <footer className='relative bg-[#40B6B8] px-10 py-8 md:px-4 md:py-12'>
       <div className='relative z-10 mx-auto max-w-7xl'>
         {/* Main Footer Content */}
-        <div className='flex justify-between'>
+        <div className='flex flex-col justify-between md:flex-row'>
           {/* Logo Section */}
-          <div className='w-1/3 flex justify-center'>
+          <div className='mb-8 flex w-full justify-center md:mb-0 md:w-1/3'>
             <Link
               href='/'
               className='inline-block'
@@ -34,13 +34,13 @@ function Footer(): React.ReactElement {
                 alt='Barkin Smart'
                 width={180}
                 height={60}
-                className='h-auto'
+                className='h-auto w-[140px] md:w-[180px]'
               />
             </Link>
           </div>
 
           {/* Links Section */}
-          <div className='flex w-2/3 gap-16'>
+          <div className='flex w-full flex-col justify-center gap-8 sm:flex-row sm:justify-around md:w-2/3 md:justify-start md:gap-16'>
             {/* Corporate Links */}
             <div>
               <h3 className='mb-4 text-lg font-semibold text-black'>Corporate</h3>
@@ -49,7 +49,7 @@ function Footer(): React.ReactElement {
                   <li key={link.name}>
                     <Link
                       href={link.href}
-                      className='text-black transition-colors'
+                      className='text-black transition-colors hover:text-gray-800'
                     >
                       {link.name}
                     </Link>
@@ -66,7 +66,7 @@ function Footer(): React.ReactElement {
                   <li key={link.name}>
                     <Link
                       href={link.href}
-                      className='text-black transition-colors'
+                      className='text-black transition-colors hover:text-gray-800'
                     >
                       {link.name}
                     </Link>
@@ -78,36 +78,38 @@ function Footer(): React.ReactElement {
         </div>
 
         {/* Payment Methods and Copyright */}
-        <div className='mt-12 grid grid-cols-3'>
-          <p className='text-sm text-gray-700'>© Copyright Barkin Smart {new Date().getFullYear()}</p>
+        <div className='mt-8 flex flex-col items-center gap-4 md:mt-12 md:grid md:grid-cols-3 md:gap-0'>
+          <p className='text-center text-sm text-gray-700 '>
+            © Copyright Barkin Smart {new Date().getFullYear()}
+          </p>
           <div className='flex justify-center space-x-2'>
             <Image
               src='/images/payment/amex.svg'
               alt='Visa'
               width={40}
               height={25}
-              className='h-6 w-auto'
+              className='h-5 w-auto md:h-6'
             />
             <Image
               src='/images/payment/amex.svg'
               alt='Mastercard'
               width={40}
               height={25}
-              className='h-6 w-auto'
+              className='h-5 w-auto md:h-6'
             />
             <Image
               src='/images/payment/amex.svg'
               alt='American Express'
               width={40}
               height={25}
-              className='h-6 w-auto'
+              className='h-5 w-auto md:h-6'
             />
             <Image
               src='/images/payment/amex.svg'
               alt='PayPal'
               width={40}
               height={25}
-              className='h-6 w-auto'
+              className='h-5 w-auto md:h-6'
             />
           </div>
         </div>
@@ -119,7 +121,7 @@ function Footer(): React.ReactElement {
         alt='happy dog'
         width={400}
         height={400}
-        className='absolute bottom-0 right-0 h-[400px] w-auto'
+        className='absolute bottom-0 right-0 h-[200px] w-auto lg:h-[400px]'
         priority
       />
 
@@ -129,7 +131,7 @@ function Footer(): React.ReactElement {
         alt='pawtrail'
         width={500}
         height={500}
-        className='absolute bottom-0 left-0 w-auto h-[100%] '
+        className='absolute bottom-0 left-0 h-[50%] w-auto sm:h-[100%]'
       />
     </footer>
   );
