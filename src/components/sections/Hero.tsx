@@ -7,7 +7,7 @@ import { Button } from '@/components/ui/button';
 
 function Hero(): React.JSX.Element {
   return (
-    <main className='relative h-screen w-full overflow-hidden'>
+    <main className='relative h-screen max-h-[900px] w-full overflow-hidden'>
       <Banner />
       {/* Base fill layer */}
       <div className='absolute inset-0 bg-[#EFCB68]'></div>
