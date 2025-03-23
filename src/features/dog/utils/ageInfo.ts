@@ -19,23 +19,23 @@ export function calculateAgeDurationDistribution(dateOfBirth: string): Record<ED
   if (age <= 2) {
     // Young dogs: Focus on quick exercises with some mid-length
     return {
-      [EDuration.QUICK]: 0.7,  // 70%
-      [EDuration.MID]: 0.3,    // 30%
-      [EDuration.LONG]: 0      // 0%
+      [EDuration.QUICK]: 0.7, // 70%
+      [EDuration.MID]: 0.3, // 30%
+      [EDuration.LONG]: 0, // 0%
     };
   } else if (age <= 7) {
     // Adult dogs: Balanced distribution
     return {
-      [EDuration.QUICK]: 0.3,  // 30%
-      [EDuration.MID]: 0.4,    // 40%
-      [EDuration.LONG]: 0.3    // 30%
+      [EDuration.QUICK]: 0.3, // 30%
+      [EDuration.MID]: 0.4, // 40%
+      [EDuration.LONG]: 0.3, // 30%
     };
   } else {
     // Senior dogs: Focus on shorter exercises
     return {
-      [EDuration.QUICK]: 0.6,  // 60%
-      [EDuration.MID]: 0.3,    // 30%
-      [EDuration.LONG]: 0.1    // 10%
+      [EDuration.QUICK]: 0.6, // 60%
+      [EDuration.MID]: 0.3, // 30%
+      [EDuration.LONG]: 0.1, // 10%
     };
   }
 }

@@ -105,9 +105,8 @@ export class S3Service {
     });
 
     const response = await this.s3Client.send(command);
-    const contents: (string | undefined)[] =
-      response.Contents?.map(file => file.Key) || [];
-    const returnValue: string[] = contents.filter(value => value !== undefined);
+    const contents: (string | undefined)[] = response.Contents?.map((file) => file.Key) || [];
+    const returnValue: string[] = contents.filter((value) => value !== undefined);
     return returnValue;
   }
 
@@ -118,11 +117,7 @@ export class S3Service {
    * @param {number} [expiresIn=3600] - The number of seconds until the presigned URL expires.
    * @returns {Promise<string>} A promise that resolves to the presigned URL.
    */
-  async getPresignedUploadUrl(
-    filepath: string,
-    contentType: string,
-    expiresIn: number = 3600
-  ): Promise<string> {
+  async getPresignedUploadUrl(filepath: string, contentType: string, expiresIn: number = 3600): Promise<string> {
     const command = new PutObjectCommand({
       Bucket: this.bucketName,
       Key: filepath,
@@ -138,10 +133,7 @@ export class S3Service {
    * @param {number} [expiresIn=3600] - The number of seconds until the presigned URL expires.
    * @returns {Promise<string>} A promise that resolves to the presigned URL.
    */
-  async getPresignedDownloadUrl(
-    filepath: string,
-    expiresIn: number = 3600
-  ): Promise<string> {
+  async getPresignedDownloadUrl(filepath: string, expiresIn: number = 3600): Promise<string> {
     const command = new GetObjectCommand({
       Bucket: this.bucketName,
       Key: filepath,
@@ -193,10 +185,7 @@ export class S3Service {
    * @param {string} destinationFilepath - The path where the file will be copied to in S3.
    * @returns {Promise<void>}
    */
-  async copyFile(
-    sourceFilepath: string,
-    destinationFilepath: string
-  ): Promise<void> {
+  async copyFile(sourceFilepath: string, destinationFilepath: string): Promise<void> {
     const command = new CopyObjectCommand({
       Bucket: this.bucketName,
       CopySource: `${this.bucketName}/${sourceFilepath}`,
@@ -222,11 +211,7 @@ export class S3Service {
    * @param {string} [contentType='application/pdf'] - The MIME type of the file.
    * @returns {Promise<string>} A promise that resolves to the URL of the uploaded file.
    */
-  async uploadBuffer(
-    buffer: Buffer,
-    filepath: string,
-    contentType: string = 'application/pdf'
-  ): Promise<string> {
+  async uploadBuffer(buffer: Buffer, filepath: string, contentType: string = 'application/pdf'): Promise<string> {
     const command = new PutObjectCommand({
       Bucket: this.bucketName,
       Key: filepath,

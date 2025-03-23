@@ -3,10 +3,7 @@ import { ProgramWithId } from '@/features/program/types/Program';
 import { getPdfVariation } from './getPdfVariation';
 
 // Extract shared HTML template
-export function generatePdfHtml(
-  program: ProgramWithId,
-  variation: number
-): string {
+export function generatePdfHtml(program: ProgramWithId, variation: number): string {
   return `
     <!DOCTYPE html>
     <html lang="en">

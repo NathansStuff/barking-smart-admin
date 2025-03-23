@@ -1,5 +1,10 @@
 {
-  "extends": ["next/core-web-vitals", "next/typescript", "prettier"],
+  "extends": [
+    "next/core-web-vitals",
+    "next/typescript",
+    "eslint-config-prettier",
+    "prettier"
+  ],
   "plugins": ["unused-imports", "simple-import-sort", "n"],
   "ignorePatterns": ["src/components/ui/*", "scripts/*"], // Shadcn UI components are not linted
   "rules": {

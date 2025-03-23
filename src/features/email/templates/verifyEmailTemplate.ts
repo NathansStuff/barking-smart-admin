@@ -73,15 +73,10 @@ export const verifyEmail: EmailTemplate = {
   name: 'Email Verification',
   subject,
   body: emailBody,
-  variables: ['firstName', 'verificationLink']
+  variables: ['firstName', 'verificationLink'],
 };
 
-export function verifyEmailTemplate(
-  firstName: string,
-  verificationLink: string
-): { body: string; subject: string } {
-  const body = emailBody
-    .replace('{{firstName}}', firstName)
-    .replace('{{verificationLink}}', verificationLink);
+export function verifyEmailTemplate(firstName: string, verificationLink: string): { body: string; subject: string } {
+  const body = emailBody.replace('{{firstName}}', firstName).replace('{{verificationLink}}', verificationLink);
   return { body, subject };
 }

@@ -1,9 +1,7 @@
 import { DogWithId } from '@/features/dog/types/Dog';
 import { EActivityType } from '@/features/program/types/EActivityType';
 
-export function calculateActivityTypeDistribution(
-  dog: DogWithId
-): Record<EActivityType, number> {
+export function calculateActivityTypeDistribution(dog: DogWithId): Record<EActivityType, number> {
   const baseDistribution = {
     [EActivityType.PHYSICAL]: 0.25,
     [EActivityType.MENTAL]: 0.15,
@@ -39,10 +37,8 @@ export function calculateActivityTypeDistribution(
 
   // Normalize the distribution to ensure sum is 1
   const total = Object.values(baseDistribution).reduce((a, b) => a + b, 0);
-  Object.keys(baseDistribution).forEach(key => {
-    baseDistribution[key as EActivityType] = Number(
-      (baseDistribution[key as EActivityType] / total).toFixed(2)
-    );
+  Object.keys(baseDistribution).forEach((key) => {
+    baseDistribution[key as EActivityType] = Number((baseDistribution[key as EActivityType] / total).toFixed(2));
   });
 
   return baseDistribution;

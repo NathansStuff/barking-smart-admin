@@ -66,30 +66,22 @@ export const ProgramTableColumns = (
   {
     accessorKey: 'tags.location',
     header: 'Location',
-    cell: ({ row }): ReactNode => (
-      <Badge variant='outline'>{row.original.tags.location}</Badge>
-    ),
+    cell: ({ row }): ReactNode => <Badge variant='outline'>{row.original.tags.location}</Badge>,
   },
   {
     accessorKey: 'tags.energyLevel',
     header: 'Energy Level',
-    cell: ({ row }): ReactNode => (
-      <Badge variant='outline'>{row.original.tags.energyLevel}</Badge>
-    ),
+    cell: ({ row }): ReactNode => <Badge variant='outline'>{row.original.tags.energyLevel}</Badge>,
   },
   {
     accessorKey: 'tags.duration',
     header: 'Duration',
-    cell: ({ row }): ReactNode => (
-      <Badge variant='outline'>{row.original.tags.duration}</Badge>
-    ),
+    cell: ({ row }): ReactNode => <Badge variant='outline'>{row.original.tags.duration}</Badge>,
   },
   {
     accessorKey: 'tags.challenge',
     header: 'Challenge',
-    cell: ({ row }): ReactNode => (
-      <Badge variant='outline'>{row.original.tags.challenge}</Badge>
-    ),
+    cell: ({ row }): ReactNode => <Badge variant='outline'>{row.original.tags.challenge}</Badge>,
   },
   {
     id: 'actions',

@@ -77,7 +77,7 @@ export const resetPasswordEmail: EmailTemplate = {
   name: 'Reset Password',
   subject,
   body: emailBody,
-  variables: ['firstName', 'resetPasswordLink']
+  variables: ['firstName', 'resetPasswordLink'],
 };
 
 export function resetPasswordEmailTemplate(

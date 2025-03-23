@@ -73,15 +73,13 @@ export const resendEmailVerification: EmailTemplate = {
   name: 'Resend Email Verification',
   subject,
   body: emailBody,
-  variables: ['firstName', 'verificationLink']
+  variables: ['firstName', 'verificationLink'],
 };
 
 export function resendEmailVerificationTemplate(
   firstName: string,
   verificationLink: string
 ): { body: string; subject: string } {
-  const body = emailBody
-    .replace('{{firstName}}', firstName)
-    .replace('{{verificationLink}}', verificationLink);
+  const body = emailBody.replace('{{firstName}}', firstName).replace('{{verificationLink}}', verificationLink);
   return { body, subject };
 }

@@ -13,9 +13,7 @@ function ProgramUpload({ onUploadSuccess }: { onUploadSuccess: (url: string) => 
     return `upload_${timestamp}_${randomString}`;
   };
 
-  const handleFileChange = async (
-    event: React.ChangeEvent<HTMLInputElement>
-  ): Promise<void> => {
+  const handleFileChange = async (event: React.ChangeEvent<HTMLInputElement>): Promise<void> => {
     event.preventDefault();
     const file = event.target.files?.[0];
     if (!file) return;
@@ -39,7 +37,10 @@ function ProgramUpload({ onUploadSuccess }: { onUploadSuccess: (url: string) => 
   };
   return (
     <>
-      <Button type="button" onClick={() => document.getElementById('upload')?.click()}>
+      <Button
+        type='button'
+        onClick={() => document.getElementById('upload')?.click()}
+      >
         Upload
       </Button>
       <input

@@ -131,7 +131,7 @@ function Footer(): React.ReactElement {
         alt='pawtrail'
         width={500}
         height={500}
-        className='absolute bottom-0 left-0 h-[50%] w-auto sm:h-[100%] '
+        className='absolute bottom-0 left-0 h-[50%] w-auto sm:h-[100%]'
       />
     </footer>
   );

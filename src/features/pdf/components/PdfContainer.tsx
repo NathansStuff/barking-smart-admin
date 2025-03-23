@@ -32,7 +32,7 @@ function PdfContainer({ program }: Props): React.ReactElement {
             <Link href={`/admin/program/${program._id}`}>Back to Program</Link>
           </Button>
         </div>
-        <div className='flex-1 flex gap-2 justify-center items-center'>
+        <div className='flex flex-1 items-center justify-center gap-2'>
           <Button onClick={() => changeVariation(1)}>Variation 1</Button>
           <Button onClick={() => changeVariation(2)}>Variation 2</Button>
           <Separator
@@ -49,14 +49,14 @@ function PdfContainer({ program }: Props): React.ReactElement {
           />
         </div>
       </div>
-      <div className='min-h-screen w-full flex justify-center py-8 bg-gray-100'>
+      <div className='flex min-h-screen w-full justify-center bg-gray-100 py-8'>
         <div className='relative mx-auto'>
           {/* Main container */}
-          <div className='relative w-full min-h-[297mm] bg-white shadow-md'>
+          <div className='relative min-h-[297mm] w-full bg-white shadow-md'>
             {/* Page break dotted lines */}
-            <div className='absolute inset-0 w-full h-full'>
+            <div className='absolute inset-0 h-full w-full'>
               <div
-                className='absolute inset-0 w-full z-10'
+                className='absolute inset-0 z-10 w-full'
                 style={{
                   backgroundImage:
                     'repeating-linear-gradient(to bottom, transparent, transparent calc(297mm - 1px), transparent calc(297mm - 1px), transparent 297mm)',
@@ -79,11 +79,11 @@ function PdfContainer({ program }: Props): React.ReactElement {
             </div>
 
             {/* Border container */}
-            <div className='relative w-full h-full border-2 border-dotted border-gray-400'>
+            <div className='relative h-full w-full border-2 border-dotted border-gray-400'>
               {/* Content wrapper with overflow handling */}
-              <div className='relative w-full h-full'>
+              <div className='relative h-full w-full'>
                 {/* Content with overflow container */}
-                <div className='p-8 overflow-x-auto'>
+                <div className='overflow-x-auto p-8'>
                   {variation === 1 && <PDFTemplate1 program={program} />}
                   {variation === 2 && <PDFTemplate2 program={program} />}
                 </div>

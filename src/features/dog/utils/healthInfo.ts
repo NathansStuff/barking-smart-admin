@@ -1,8 +1,6 @@
 import { EHealthIssues } from '../types/EHealthIssues';
 
-export const getHealthIssuesEnergy = (
-  healthIssues: EHealthIssues[]
-): number => {
+export const getHealthIssuesEnergy = (healthIssues: EHealthIssues[]): number => {
   let score = 0;
   if (healthIssues.includes(EHealthIssues.HEALTH_ISSUES)) score = -2;
   if (healthIssues.includes(EHealthIssues.CHRONIC_ILLNESS)) score += -3;

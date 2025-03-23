@@ -16,11 +16,7 @@ interface Props {
   onSuccess?: (link: string) => void;
 }
 
-function SavePdfButton({
-  program,
-  variation,
-  onSuccess,
-}: Props): React.ReactElement {
+function SavePdfButton({ program, variation, onSuccess }: Props): React.ReactElement {
   const updateMutation = useUpdateProgram();
   async function handleClick(): Promise<void> {
     try {

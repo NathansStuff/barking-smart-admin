@@ -52,7 +52,7 @@ const template = (program: Program): string => `
           ${program.materialsNeeded
             .split(',')
             .map(
-              item => `
+              (item) => `
                 <li class="flex items-center gap-2 text-gray-700">
                   <span class="w-2 h-2 bg-purple-400 rounded-full"></span>
                   ${item.trim()}
@@ -102,7 +102,7 @@ const template = (program: Program): string => `
           ${program.additionalTips
             .split(',')
             .map(
-              tip => `
+              (tip) => `
                 <li class="bg-blue-50 p-4 rounded-lg text-gray-700 flex items-start gap-3">
                   <span class="text-blue-500 flex-shrink-0">•</span>
                   ${tip.trim()}

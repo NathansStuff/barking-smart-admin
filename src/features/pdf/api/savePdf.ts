@@ -1,9 +1,6 @@
 import { ProgramWithId } from '@/features/program/types/Program';
 
-export async function savePdf(
-  program: ProgramWithId,
-  variation: number
-): Promise<string> {
+export async function savePdf(program: ProgramWithId, variation: number): Promise<string> {
   try {
     const response = await fetch('/api/program/save-pdf', {
       method: 'POST',

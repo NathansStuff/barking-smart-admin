@@ -21,7 +21,6 @@ const displaySlice = createSlice({
 
 export const { setIsLoaded } = displaySlice.actions;
 
-export const selectIsLoaded = (state: RootState): boolean =>
-  state.display.isLoaded;
+export const selectIsLoaded = (state: RootState): boolean => state.display.isLoaded;
 
 export const displayReducer = displaySlice.reducer;

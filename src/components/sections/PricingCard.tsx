@@ -24,7 +24,7 @@ export function PricingCard({
     <Card className='flex w-[350px] flex-col shadow-md'>
       <CardHeader className='space-y-2 text-center'>
         <h3
-          className='text-2xl font-bold pb-4 text-[#0D0D0D]'
+          className='pb-4 text-2xl font-bold text-[#0D0D0D]'
           dangerouslySetInnerHTML={{ __html: title }}
         />
         <div className='font-fredoka text-6xl font-bold text-[#0D0D0D]'>${price}</div>

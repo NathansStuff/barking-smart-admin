@@ -6,5 +6,4 @@ export enum EActivityType {
   FEEDING = 'FEEDING',
   ENVIRONMENTAL = 'ENVIRONMENTAL',
   OCCUPATIONAL = 'OCCUPATIONAL',
-
 }

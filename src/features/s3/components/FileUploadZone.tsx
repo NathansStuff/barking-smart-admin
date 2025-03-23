@@ -34,7 +34,7 @@ function FileUploadZone({ onFileSelect, className }: Props): ReactNode {
     <div
       {...getRootProps()}
       className={cn(
-        'border-2 border-dashed rounded-lg p-4 text-center cursor-pointer hover:border-primary transition-colors',
+        'cursor-pointer rounded-lg border-2 border-dashed p-4 text-center transition-colors hover:border-primary',
         isDragActive && 'border-primary bg-primary/10',
         className
       )}
@@ -42,9 +42,7 @@ function FileUploadZone({ onFileSelect, className }: Props): ReactNode {
       <input {...getInputProps()} />
       <Upload className='mx-auto h-8 w-8 text-muted-foreground' />
       <p className='mt-2 text-sm text-muted-foreground'>
-        {isDragActive
-          ? 'Drop the PDF here'
-          : 'Drag & drop a PDF here, or click to select'}
+        {isDragActive ? 'Drop the PDF here' : 'Drag & drop a PDF here, or click to select'}
       </p>
     </div>
   );

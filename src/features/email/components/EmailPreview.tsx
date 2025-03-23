@@ -19,10 +19,10 @@ export function EmailPreview({ html }: EmailPreviewProps): ReactElement {
   }, [html]);
 
   return (
-      <iframe
-        ref={iframeRef}
-        className='h-[800px] w-full border-0 rounded-xl'
-        title='Email preview'
-      />
+    <iframe
+      ref={iframeRef}
+      className='h-[800px] w-full rounded-xl border-0'
+      title='Email preview'
+    />
   );
 }

@@ -6,7 +6,7 @@ export function DogFormSkeleton(): ReactNode {
   return (
     <div className='space-y-6'>
       {/* Submit Button */}
-      <div className='flex gap-2 items-center'>
+      <div className='flex items-center gap-2'>
         <Skeleton className='h-10 w-40' />
       </div>
 

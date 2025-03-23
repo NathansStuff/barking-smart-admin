@@ -10,12 +10,12 @@ function PersonalisedProgram(): React.JSX.Element {
       icon: <PawPrint className='size-8 text-white' />,
       title: 'Tell Us About Your Dog',
       description:
-        'Complete a quick, interactive form to share details about your dog\'s breed, personality, energy level, and more.',
+        "Complete a quick, interactive form to share details about your dog's breed, personality, energy level, and more.",
     },
     {
       icon: <Sparkles className='size-8 text-white' />,
       title: 'Personalisation at Its Best',
-      description: 'We craft a custom exercise and enrichment plan designed to meet your dog\'s unique needs.',
+      description: "We craft a custom exercise and enrichment plan designed to meet your dog's unique needs.",
     },
     {
       icon: <Target className='size-8 text-white' />,

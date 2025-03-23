@@ -82,7 +82,6 @@ export const authOptions = {
     }),
   ],
   callbacks: {
-
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     async signIn({ user, account }: { user: any; account: Account | null }): Promise<boolean> {
       console.log('signIn callback initiated');

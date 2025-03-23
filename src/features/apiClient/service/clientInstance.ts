@@ -22,9 +22,7 @@ export function initializeApiClient(config: ApiClientConfig): ApiClient {
  */
 export function getApiClient(): ApiClient {
   if (!apiClientInstance) {
-    throw new Error(
-      'API client has not been initialized. Call initializeApiClient first.'
-    );
+    throw new Error('API client has not been initialized. Call initializeApiClient first.');
   }
   return apiClientInstance;
 }

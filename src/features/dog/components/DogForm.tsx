@@ -11,22 +11,9 @@ import { toast } from 'sonner';
 
 import { Button } from '@/components/ui/button';
 import ComboboxFormField from '@/components/ui/combobox-form-field';
-import {
-  Form,
-  FormControl,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from '@/components/ui/form';
+import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from '@/components/ui/select';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Switch } from '@/components/ui/switch';
 import { Textarea } from '@/components/ui/textarea';
 import { uploadFile } from '@/features/program/api/uploadFile';
@@ -77,7 +64,7 @@ function DogForm({ dog }: Props): ReactNode {
             toast.dismiss();
             toast.success('Dog profile updated successfully');
           },
-          onError: error => {
+          onError: (error) => {
             toast.dismiss();
             toast.error(`Failed to update dog profile: ${error.message}`);
           },
@@ -88,12 +75,12 @@ function DogForm({ dog }: Props): ReactNode {
       mutation.mutate(
         { data },
         {
-          onSuccess: response => {
+          onSuccess: (response) => {
             toast.dismiss();
             toast.success('Dog profile created successfully');
             router.push(`/admin/dog/${response._id}`);
           },
-          onError: error => {
+          onError: (error) => {
             toast.dismiss();
             toast.error(`Failed to create dog profile: ${error.message}`);
           },
@@ -108,7 +95,7 @@ function DogForm({ dog }: Props): ReactNode {
         onSubmit={form.handleSubmit(onSubmit)}
         className='space-y-6'
       >
-        <div className='flex gap-2 items-center '>
+        <div className='flex items-center gap-2'>
           <div>
             <Button
               type='submit'
@@ -119,9 +106,7 @@ function DogForm({ dog }: Props): ReactNode {
             </Button>
           </div>
           <Button asChild>
-            <Link href={`/admin/dog/${dog?._id}/generate-program`}>
-              Generate Program
-            </Link>
+            <Link href={`/admin/dog/${dog?._id}/generate-program`}>Generate Program</Link>
           </Button>
         </div>
         {/* Basic Information */}
@@ -149,12 +134,8 @@ function DogForm({ dog }: Props): ReactNode {
                 <FormControl>
                   <Input
                     type='date'
-                    value={
-                      field.value instanceof Date
-                        ? field.value.toISOString().split('T')[0]
-                        : ''
-                    }
-                    onChange={e => field.onChange(new Date(e.target.value))}
+                    value={field.value instanceof Date ? field.value.toISOString().split('T')[0] : ''}
+                    onChange={(e) => field.onChange(new Date(e.target.value))}
                   />
                 </FormControl>
                 <FormMessage />
@@ -169,7 +150,7 @@ function DogForm({ dog }: Props): ReactNode {
             name='breedOne'
             label='Primary Breed'
             placeholder='Select breed...'
-            options={Object.values(EBreed).map(breed => ({
+            options={Object.values(EBreed).map((breed) => ({
               value: breed,
               label: breed.replace(/_/g, ' '),
             }))}
@@ -180,7 +161,7 @@ function DogForm({ dog }: Props): ReactNode {
             name='breedTwo'
             label='Secondary Breed (Optional)'
             placeholder='Select breed...'
-            options={Object.values(EBreed).map(breed => ({
+            options={Object.values(EBreed).map((breed) => ({
               value: breed,
               label: breed.replace(/_/g, ' '),
             }))}
@@ -204,7 +185,7 @@ function DogForm({ dog }: Props): ReactNode {
                     </SelectTrigger>
                   </FormControl>
                   <SelectContent>
-                    {Object.values(EGender).map(gender => (
+                    {Object.values(EGender).map((gender) => (
                       <SelectItem
                         key={gender}
                         value={gender}
@@ -235,7 +216,7 @@ function DogForm({ dog }: Props): ReactNode {
                     </SelectTrigger>
                   </FormControl>
                   <SelectContent>
-                    {Object.values(ELocation).map(location => (
+                    {Object.values(ELocation).map((location) => (
                       <SelectItem
                         key={location}
                         value={location}
@@ -260,14 +241,14 @@ function DogForm({ dog }: Props): ReactNode {
                 <FormLabel>Health Issues</FormLabel>
                 <FormControl>
                   <div className='flex flex-wrap gap-2'>
-                    {Object.values(EHealthIssues).map(issue => (
+                    {Object.values(EHealthIssues).map((issue) => (
                       <Button
                         key={issue}
                         type='button'
                         variant={field.value.includes(issue) ? 'default' : 'outline'}
                         onClick={() => {
                           const newValue = field.value.includes(issue)
-                            ? field.value.filter(i => i !== issue)
+                            ? field.value.filter((i) => i !== issue)
                             : [...field.value, issue];
                           field.onChange(newValue);
                         }}
@@ -292,11 +273,7 @@ function DogForm({ dog }: Props): ReactNode {
                   <Input
                     type='number'
                     {...field}
-                    onChange={e =>
-                      field.onChange(
-                        e.target.value ? Number(e.target.value) : undefined
-                      )
-                    }
+                    onChange={(e) => field.onChange(e.target.value ? Number(e.target.value) : undefined)}
                   />
                 </FormControl>
                 <FormMessage />
@@ -317,7 +294,7 @@ function DogForm({ dog }: Props): ReactNode {
                   min={1}
                   max={10}
                   {...field}
-                  onChange={e => field.onChange(Number(e.target.value))}
+                  onChange={(e) => field.onChange(Number(e.target.value))}
                 />
               </FormControl>
               <FormMessage />
@@ -404,13 +381,13 @@ function DogForm({ dog }: Props): ReactNode {
                     <Image
                       src={field.value}
                       alt='Profile'
-                      className='h-32 w-32 object-cover rounded-lg'
+                      className='h-32 w-32 rounded-lg object-cover'
                       width={100}
                       height={100}
                     />
                   )}
                   <FileUploadZone
-                    onFileSelect={async file => {
+                    onFileSelect={async (file) => {
                       try {
                         toast.loading('Uploading image...');
                         const filename = `dog_${Date.now()}_${file.name}`;

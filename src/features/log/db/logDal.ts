@@ -13,16 +13,12 @@ const baseLogDal = {
 
   async getAll(filter = {}, skip = 0, limit = 10): Promise<{ logs: LogWithId[]; total: number }> {
     const [logs, total] = await Promise.all([
-      LogModel.find(filter)
-        .sort({ createdAt: -1 })
-        .skip(skip)
-        .limit(limit)
-        .populate({
-          path: 'userId',
-          model: UserModel,
-          select: 'email name',
-        }),
-      LogModel.countDocuments(filter)
+      LogModel.find(filter).sort({ createdAt: -1 }).skip(skip).limit(limit).populate({
+        path: 'userId',
+        model: UserModel,
+        select: 'email name',
+      }),
+      LogModel.countDocuments(filter),
     ]);
     return { logs, total };
   },

@@ -24,10 +24,7 @@ export function errorHandler(error: Error): NextResponse<object> {
       );
     } else {
       // This is some other internal error
-      return customErrorHandler(
-        { message: 'An unexpected error occurred' },
-        ResponseCode.INTERNAL_SERVER_ERROR
-      );
+      return customErrorHandler({ message: 'An unexpected error occurred' }, ResponseCode.INTERNAL_SERVER_ERROR);
     }
   } else {
     // This is some other internal error

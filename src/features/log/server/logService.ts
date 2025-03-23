@@ -55,7 +55,7 @@ export async function getAllLogsService(options: GetLogsOptions = {}): Promise<{
     const users = await UserModel.find({
       email: { $regex: options.filters.email, $options: 'i' },
     }).select('_id');
-    userIds = users.map(user => user._id);
+    userIds = users.map((user) => user._id);
     if (userIds.length === 0) {
       // If no users found with this email, return empty result
       return {

@@ -61,7 +61,7 @@ function Hero(): React.JSX.Element {
           />
         </div>
         {/* Hero Image container */}
-        <div className='absolute bottom-0 right-0 z-[2] flex h-auto w-full items-end justify-center overflow-hidden sm:left-1/2 sm:right-auto sm:w-2/3 sm:-translate-x-1/2 md:bottom-0 md:h-[560px] md:items-end md:justify-center lg:left-auto lg:right-0 lg:h-auto lg:translate-x-0 '>
+        <div className='absolute bottom-0 right-0 z-[2] flex h-auto w-full items-end justify-center overflow-hidden sm:left-1/2 sm:right-auto sm:w-2/3 sm:-translate-x-1/2 md:bottom-0 md:h-[560px] md:items-end md:justify-center lg:left-auto lg:right-0 lg:h-auto lg:translate-x-0'>
           <Image
             src='/assets/hero.png'
             alt='Happy Bernese Mountain Dog'

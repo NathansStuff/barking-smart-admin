@@ -29,10 +29,7 @@ export function generateProgramRequirements(
   const durations = flattenDistribution(durationDistribution, totalDays);
   const challenges = flattenDistribution(challengeDistribution, totalDays);
   const locations = flattenDistribution(locationDistribution, totalDays);
-  const activityTypes = flattenDistribution(
-    activityTypeDistribution,
-    totalDays
-  );
+  const activityTypes = flattenDistribution(activityTypeDistribution, totalDays);
 
   // Shuffle arrays
   shuffleArray(durations);
@@ -58,18 +55,13 @@ export function generateProgramRequirements(
 }
 
 // Helper function to convert percentage distributions to arrays of values
-function flattenDistribution<T extends string | number>(
-  distribution: Record<T, number>,
-  totalItems?: number
-): T[] {
+function flattenDistribution<T extends string | number>(distribution: Record<T, number>, totalItems?: number): T[] {
   const result: T[] = [];
-  (Object.entries(distribution) as [string, number][]).forEach(
-    ([key, count]) => {
-      const value = key as T;
-      const numberOfItems = totalItems ? Math.round(count * totalItems) : count;
-      result.push(...Array(numberOfItems).fill(value));
-    }
-  );
+  (Object.entries(distribution) as [string, number][]).forEach(([key, count]) => {
+    const value = key as T;
+    const numberOfItems = totalItems ? Math.round(count * totalItems) : count;
+    result.push(...Array(numberOfItems).fill(value));
+  });
   return result;
 }
 

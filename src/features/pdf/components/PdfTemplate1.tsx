@@ -46,7 +46,7 @@ const template = (program: Program): string => `
             ${program.materialsNeeded
               .split(',')
               .map(
-                item => `
+                (item) => `
                   <li class="text-indigo-700">${item.trim()}</li>
                 `
               )
@@ -87,7 +87,7 @@ const template = (program: Program): string => `
             ${program.additionalTips
               .split(',')
               .map(
-                tip => `
+                (tip) => `
                   <li class="text-indigo-700">${tip.trim()}</li>
                 `
               )

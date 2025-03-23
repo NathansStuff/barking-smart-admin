@@ -10,14 +10,7 @@ import { useRouter } from 'next/navigation';
 import { toast } from 'sonner';
 
 import { Button } from '@/components/ui/button';
-import {
-  Form,
-  FormControl,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from '@/components/ui/form';
+import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
 import { Separator } from '@/components/ui/separator';
 import { Switch } from '@/components/ui/switch';
@@ -86,7 +79,7 @@ function ProgramForm({ program, initialData }: Props): ReactNode {
             toast.dismiss();
             toast.success('Program updated successfully');
           },
-          onError: error => {
+          onError: (error) => {
             toast.dismiss();
             toast.error(`Failed to update program: ${error.message}`);
           },
@@ -95,12 +88,12 @@ function ProgramForm({ program, initialData }: Props): ReactNode {
     } else {
       toast.loading('Creating program...');
       createMutation.mutate(data, {
-        onSuccess: response => {
+        onSuccess: (response) => {
           toast.dismiss();
           toast.success('Program created successfully');
           router.push(`/admin/program/${response._id}`);
         },
-        onError: error => {
+        onError: (error) => {
           toast.dismiss();
           toast.error(`Failed to create program: ${error.message}`);
         },
@@ -116,18 +109,12 @@ function ProgramForm({ program, initialData }: Props): ReactNode {
       let prompt = 'Generate a fun and engaging dog enrichment activity';
 
       if (currentValues.title) prompt += ` similar to "${currentValues.title}"`;
-      if (currentValues.tags.location)
-        prompt += ` that can be done ${currentValues.tags.location}`;
-      if (currentValues.tags.space)
-        prompt += ` in a ${currentValues.tags.space} space`;
-      if (currentValues.tags.duration)
-        prompt += ` for a ${currentValues.tags.duration} duration`;
-      if (currentValues.tags.energyLevel)
-        prompt += ` with energy level ${currentValues.tags.energyLevel}/10`;
-      if (currentValues.tags.challenge)
-        prompt += ` at a ${currentValues.tags.challenge} difficulty level`;
-      if (currentValues.tags.type.length > 0)
-        prompt += ` involving ${currentValues.tags.type.join(' and ')}`;
+      if (currentValues.tags.location) prompt += ` that can be done ${currentValues.tags.location}`;
+      if (currentValues.tags.space) prompt += ` in a ${currentValues.tags.space} space`;
+      if (currentValues.tags.duration) prompt += ` for a ${currentValues.tags.duration} duration`;
+      if (currentValues.tags.energyLevel) prompt += ` with energy level ${currentValues.tags.energyLevel}/10`;
+      if (currentValues.tags.challenge) prompt += ` at a ${currentValues.tags.challenge} difficulty level`;
+      if (currentValues.tags.type.length > 0) prompt += ` involving ${currentValues.tags.type.join(' and ')}`;
 
       const aiContent = await generateProgramContent(prompt);
 
@@ -205,9 +192,7 @@ function ProgramForm({ program, initialData }: Props): ReactNode {
         'additionalTips',
       ] as const;
 
-      if (
-        !allowedFields.includes(fieldName as (typeof allowedFields)[number])
-      ) {
+      if (!allowedFields.includes(fieldName as (typeof allowedFields)[number])) {
         throw new Error(`Invalid field name: ${fieldName}`);
       }
 
@@ -220,11 +205,7 @@ function ProgramForm({ program, initialData }: Props): ReactNode {
     }
   };
 
-  function GenerateFieldButton({
-    onGenerate,
-  }: {
-    onGenerate: () => Promise<void>;
-  }): ReactNode {
+  function GenerateFieldButton({ onGenerate }: { onGenerate: () => Promise<void> }): ReactNode {
     return (
       <Button
         type='button'
@@ -250,7 +231,7 @@ function ProgramForm({ program, initialData }: Props): ReactNode {
       <Form {...form}>
         <div className='relative'>
           {isGenerating && (
-            <div className='absolute inset-0 bg-background/80 flex items-center justify-center z-50 rounded-lg'>
+            <div className='absolute inset-0 z-50 flex items-center justify-center rounded-lg bg-background/80'>
               <Loader2 className='size-40 animate-spin' />
             </div>
           )}
@@ -258,7 +239,7 @@ function ProgramForm({ program, initialData }: Props): ReactNode {
             onSubmit={form.handleSubmit(onSubmit)}
             className='space-y-6'
           >
-            <div className='flex gap-2 items-center '>
+            <div className='flex items-center gap-2'>
               {/* Add AI generation button */}
               <Button
                 type='button'
@@ -272,16 +253,14 @@ function ProgramForm({ program, initialData }: Props): ReactNode {
                   asChild
                   type='button'
                 >
-                  <Link href={`/admin/program/${program?._id}/preview`}>
-                    Preview PDF
-                  </Link>
+                  <Link href={`/admin/program/${program?._id}/preview`}>Preview PDF</Link>
                 </Button>
               )}
               {program && (
                 <SavePdfButton
                   program={program}
                   variation={form.getValues('variation')}
-                  onSuccess={link => {
+                  onSuccess={(link) => {
                     form.setValue('pdfLink', link);
                   }}
                 />
@@ -296,7 +275,7 @@ function ProgramForm({ program, initialData }: Props): ReactNode {
                       <FormControl>
                         <Switch
                           checked={field.value}
-                          onCheckedChange={checked => {
+                          onCheckedChange={(checked) => {
                             field.onChange(checked);
                           }}
                           className='!mt-0 data-[state=on]:bg-green-500'
@@ -330,7 +309,7 @@ function ProgramForm({ program, initialData }: Props): ReactNode {
                     <FormLabel>PDF Link</FormLabel>
                     <FormControl className='w-full'>
                       <div className='space-y-4'>
-                        <div className='flex gap-2 w-full'>
+                        <div className='flex w-full gap-2'>
                           <Input
                             className='w-full'
                             {...field}
@@ -338,15 +317,13 @@ function ProgramForm({ program, initialData }: Props): ReactNode {
                           <Button
                             variant='ghost'
                             size='icon'
-                            onClick={() =>
-                              window.open(form.getValues('pdfLink'), '_blank')
-                            }
+                            onClick={() => window.open(form.getValues('pdfLink'), '_blank')}
                           >
                             <FileText className='size-4' />
                           </Button>
                         </div>
                         <FileUploadZone
-                          onFileSelect={async file => {
+                          onFileSelect={async (file) => {
                             try {
                               toast.loading('Uploading PDF...');
                               const filename = `program_${Date.now()}.pdf`;
@@ -382,13 +359,11 @@ function ProgramForm({ program, initialData }: Props): ReactNode {
                     <FormLabel>Location</FormLabel>
                     <FormControl>
                       <div className='flex gap-2'>
-                        {Object.values(ELocation).map(location => (
+                        {Object.values(ELocation).map((location) => (
                           <Button
                             key={location}
                             type='button'
-                            variant={
-                              field.value === location ? 'default' : 'outline'
-                            }
+                            variant={field.value === location ? 'default' : 'outline'}
                             onClick={() => field.onChange(location)}
                           >
                             {location}
@@ -409,13 +384,11 @@ function ProgramForm({ program, initialData }: Props): ReactNode {
                     <FormLabel>Space Required</FormLabel>
                     <FormControl>
                       <div className='flex gap-2'>
-                        {Object.values(ESpace).map(space => (
+                        {Object.values(ESpace).map((space) => (
                           <Button
                             key={space}
                             type='button'
-                            variant={
-                              field.value === space ? 'default' : 'outline'
-                            }
+                            variant={field.value === space ? 'default' : 'outline'}
                             onClick={() => field.onChange(space)}
                           >
                             {space}
@@ -439,13 +412,11 @@ function ProgramForm({ program, initialData }: Props): ReactNode {
                     <FormLabel>Duration</FormLabel>
                     <FormControl>
                       <div className='flex gap-2'>
-                        {Object.values(EDuration).map(duration => (
+                        {Object.values(EDuration).map((duration) => (
                           <Button
                             key={duration}
                             type='button'
-                            variant={
-                              field.value === duration ? 'default' : 'outline'
-                            }
+                            variant={field.value === duration ? 'default' : 'outline'}
                             onClick={() => field.onChange(duration)}
                           >
                             {duration}
@@ -466,13 +437,11 @@ function ProgramForm({ program, initialData }: Props): ReactNode {
                     <FormLabel>Challenge Level</FormLabel>
                     <FormControl>
                       <div className='flex gap-2'>
-                        {Object.values(EChallenge).map(challenge => (
+                        {Object.values(EChallenge).map((challenge) => (
                           <Button
                             key={challenge}
                             type='button'
-                            variant={
-                              field.value === challenge ? 'default' : 'outline'
-                            }
+                            variant={field.value === challenge ? 'default' : 'outline'}
                             onClick={() => field.onChange(challenge)}
                           >
                             {challenge}
@@ -499,13 +468,11 @@ function ProgramForm({ program, initialData }: Props): ReactNode {
                         <div className='flex flex-col gap-2'>
                           <h3 className='text-sm font-medium'>Low Energy</h3>
                           <div className='flex gap-1'>
-                            {[1, 2, 3].map(level => (
+                            {[1, 2, 3].map((level) => (
                               <Button
                                 key={level}
                                 type='button'
-                                variant={
-                                  field.value === level ? 'default' : 'outline'
-                                }
+                                variant={field.value === level ? 'default' : 'outline'}
                                 onClick={() => field.onChange(level)}
                                 size='sm'
                               >
@@ -523,13 +490,11 @@ function ProgramForm({ program, initialData }: Props): ReactNode {
                         <div className='flex flex-col gap-2'>
                           <h3 className='text-sm font-medium'>Medium Energy</h3>
                           <div className='flex gap-1'>
-                            {[4, 5, 6].map(level => (
+                            {[4, 5, 6].map((level) => (
                               <Button
                                 key={level}
                                 type='button'
-                                variant={
-                                  field.value === level ? 'default' : 'outline'
-                                }
+                                variant={field.value === level ? 'default' : 'outline'}
                                 onClick={() => field.onChange(level)}
                                 size='sm'
                               >
@@ -547,13 +512,11 @@ function ProgramForm({ program, initialData }: Props): ReactNode {
                         <div className='flex flex-col gap-2'>
                           <h3 className='text-sm font-medium'>High Energy</h3>
                           <div className='flex gap-1'>
-                            {[7, 8, 9, 10].map(level => (
+                            {[7, 8, 9, 10].map((level) => (
                               <Button
                                 key={level}
                                 type='button'
-                                variant={
-                                  field.value === level ? 'default' : 'outline'
-                                }
+                                variant={field.value === level ? 'default' : 'outline'}
                                 onClick={() => field.onChange(level)}
                                 size='sm'
                               >
@@ -577,16 +540,14 @@ function ProgramForm({ program, initialData }: Props): ReactNode {
                     <FormLabel>Activity Types - Multiple Selection</FormLabel>
                     <FormControl>
                       <div className='flex flex-wrap gap-2'>
-                        {Object.values(EActivityType).map(type => (
+                        {Object.values(EActivityType).map((type) => (
                           <Button
                             key={type}
                             type='button'
-                            variant={
-                              field.value.includes(type) ? 'default' : 'outline'
-                            }
+                            variant={field.value.includes(type) ? 'default' : 'outline'}
                             onClick={() => {
                               const newTypes = field.value.includes(type)
-                                ? field.value.filter(t => t !== type)
+                                ? field.value.filter((t) => t !== type)
                                 : [...field.value, type];
                               field.onChange(newTypes);
                             }}
@@ -610,11 +571,9 @@ function ProgramForm({ program, initialData }: Props): ReactNode {
                 name='title'
                 render={({ field }) => (
                   <FormItem>
-                    <div className='flex gap-4 items-center'>
+                    <div className='flex items-center gap-4'>
                       <FormLabel>Title</FormLabel>
-                      <GenerateFieldButton
-                        onGenerate={() => handleGenerateField('title')}
-                      />
+                      <GenerateFieldButton onGenerate={() => handleGenerateField('title')} />
                     </div>
                     <FormControl>
                       <Input {...field} />
@@ -629,13 +588,9 @@ function ProgramForm({ program, initialData }: Props): ReactNode {
                 name='description'
                 render={({ field }) => (
                   <FormItem>
-                    <div className='flex gap-4 items-center'>
-                      <FormLabel>
-                        Description - Not in PDF, in UI only
-                      </FormLabel>
-                      <GenerateFieldButton
-                        onGenerate={() => handleGenerateField('description')}
-                      />
+                    <div className='flex items-center gap-4'>
+                      <FormLabel>Description - Not in PDF, in UI only</FormLabel>
+                      <GenerateFieldButton onGenerate={() => handleGenerateField('description')} />
                     </div>
                     <FormControl>
                       <Textarea
@@ -652,13 +607,9 @@ function ProgramForm({ program, initialData }: Props): ReactNode {
                 name='materialsNeeded'
                 render={({ field }) => (
                   <FormItem>
-                    <div className='flex gap-4 items-center'>
+                    <div className='flex items-center gap-4'>
                       <FormLabel>Materials Needed</FormLabel>
-                      <GenerateFieldButton
-                        onGenerate={() =>
-                          handleGenerateField('materialsNeeded')
-                        }
-                      />
+                      <GenerateFieldButton onGenerate={() => handleGenerateField('materialsNeeded')} />
                     </div>
                     <FormControl>
                       <Textarea
@@ -675,11 +626,9 @@ function ProgramForm({ program, initialData }: Props): ReactNode {
                 name='setup'
                 render={({ field }) => (
                   <FormItem>
-                    <div className='flex gap-4 items-center'>
+                    <div className='flex items-center gap-4'>
                       <FormLabel>Setup</FormLabel>
-                      <GenerateFieldButton
-                        onGenerate={() => handleGenerateField('setup')}
-                      />
+                      <GenerateFieldButton onGenerate={() => handleGenerateField('setup')} />
                     </div>
                     <FormControl>
                       <Textarea
@@ -696,11 +645,9 @@ function ProgramForm({ program, initialData }: Props): ReactNode {
                 name='instructions'
                 render={({ field }) => (
                   <FormItem>
-                    <div className='flex gap-4 items-center'>
+                    <div className='flex items-center gap-4'>
                       <FormLabel>Instructions</FormLabel>
-                      <GenerateFieldButton
-                        onGenerate={() => handleGenerateField('instructions')}
-                      />
+                      <GenerateFieldButton onGenerate={() => handleGenerateField('instructions')} />
                     </div>
                     <FormControl>
                       <Textarea
@@ -717,11 +664,9 @@ function ProgramForm({ program, initialData }: Props): ReactNode {
                 name='additionalTips'
                 render={({ field }) => (
                   <FormItem>
-                    <div className='flex gap-4 items-center'>
+                    <div className='flex items-center gap-4'>
                       <FormLabel>Additional Tips</FormLabel>
-                      <GenerateFieldButton
-                        onGenerate={() => handleGenerateField('additionalTips')}
-                      />
+                      <GenerateFieldButton onGenerate={() => handleGenerateField('additionalTips')} />
                     </div>
                     <FormControl>
                       <Textarea

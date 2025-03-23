@@ -74,7 +74,7 @@ export const purchaseConfirmationEmail: EmailTemplate = {
   name: 'Purchase Confirmation',
   subject,
   body: emailBody,
-  variables: ['firstName', 'productName', 'viewProductLink']
+  variables: ['firstName', 'productName', 'viewProductLink'],
 };
 
 export function purchaseConfirmationEmailTemplate(

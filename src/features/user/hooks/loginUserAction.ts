@@ -6,7 +6,6 @@ import { setUser } from '@/contexts/userSlice';
 import { BaseApiClient } from '@/features/apiClient/lib/BaseApiClient';
 import { UserWithId } from '@/features/user/types/User';
 
-
 export async function getUser(id: string): Promise<any> {
   try {
     const url = `/api/user/${id}`;

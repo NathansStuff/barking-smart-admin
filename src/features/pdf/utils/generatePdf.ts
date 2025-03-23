@@ -5,10 +5,7 @@ import { ProgramWithId } from '@/features/program/types/Program';
 import { generatePdfHtml } from './generatePdfHtml';
 
 // Extract shared PDF generation logic
-export async function generatePdf(
-  program: ProgramWithId,
-  variation: number
-): Promise<Uint8Array> {
+export async function generatePdf(program: ProgramWithId, variation: number): Promise<Uint8Array> {
   const browser = await puppeteer.launch({ headless: true });
   const page = await browser.newPage();
 

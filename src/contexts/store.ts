@@ -1,15 +1,6 @@
 import { combineReducers, configureStore } from '@reduxjs/toolkit';
 import logger from 'redux-logger';
-import {
-  FLUSH,
-  PAUSE,
-  PERSIST,
-  persistReducer,
-  persistStore,
-  PURGE,
-  REGISTER,
-  REHYDRATE,
-} from 'redux-persist';
+import { FLUSH, PAUSE, PERSIST, persistReducer, persistStore, PURGE, REGISTER, REHYDRATE } from 'redux-persist';
 import storage from 'redux-persist/lib/storage'; // defaults to localStorage for web
 
 import { env } from '@/constants';
@@ -34,13 +25,9 @@ const persistedReducer = persistReducer(persistConfig, rootReducer);
 
 // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
 export function setupStore() {
-
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const middleware: any[] = [];
-  if (
-    env.NEXT_PUBLIC_ENVIRONMENT !== 'production' &&
-    env.NEXT_PUBLIC_ENVIRONMENT !== 'test'
-  ) {
+  if (env.NEXT_PUBLIC_ENVIRONMENT !== 'production' && env.NEXT_PUBLIC_ENVIRONMENT !== 'test') {
     middleware.push(logger);
   }
 

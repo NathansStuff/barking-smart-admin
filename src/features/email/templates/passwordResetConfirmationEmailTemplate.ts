@@ -72,7 +72,7 @@ export const passwordResetConfirmationEmail: EmailTemplate = {
   name: 'Password Reset Confirmation',
   subject,
   body: emailBody,
-  variables: ['firstName']
+  variables: ['firstName'],
 };
 
 export function passwordResetConfirmationEmailTemplate(firstName: string): {

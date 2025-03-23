@@ -1,8 +1,6 @@
 import { EChallenge } from '@/features/program/types/EChallenge';
 
-export function calculateChallengeDistribution(
-  energyLevel: number
-): Record<EChallenge, number> {
+export function calculateChallengeDistribution(energyLevel: number): Record<EChallenge, number> {
   // For low energy dogs (1-3)
   if (energyLevel <= 3) {
     return {

@@ -104,7 +104,14 @@ export const userSlice = createSlice({
     setName(state, action: PayloadAction<string>) {
       state.name = action.payload;
     },
-    setPreferences(state, action: PayloadAction<{ emailNotifications: boolean; activityReminders: boolean; personalizedSuggestions: boolean }>) {
+    setPreferences(
+      state,
+      action: PayloadAction<{
+        emailNotifications: boolean;
+        activityReminders: boolean;
+        personalizedSuggestions: boolean;
+      }>
+    ) {
       state.preferences = action.payload;
     },
     setReceiptUrls(state, action: PayloadAction<string[]>) {
@@ -141,6 +148,9 @@ export const selectSid = (state: RootState): string => state.user.sid ?? '';
 export const selectUserId = (state: RootState): string => state.user._id;
 export const selectRole = (state: RootState): EUserRole | null => state.user.role;
 export const selectPreferredName = (state: RootState): string => state.user.preferredName ?? '';
-export const selectPreferences = (state: RootState): { emailNotifications: boolean; activityReminders: boolean; personalizedSuggestions: boolean; } => state.user.preferences ?? { emailNotifications: true, activityReminders: true, personalizedSuggestions: true };
+export const selectPreferences = (
+  state: RootState
+): { emailNotifications: boolean; activityReminders: boolean; personalizedSuggestions: boolean } =>
+  state.user.preferences ?? { emailNotifications: true, activityReminders: true, personalizedSuggestions: true };
 export const selectReceiptUrls = (state: RootState): string[] => state.user.receiptUrls ?? [];
 export const userReducer = userSlice.reducer;

@@ -6,26 +6,9 @@ import { Control, FieldValues, Path } from 'react-hook-form';
 import { Check, ChevronsUpDown } from 'lucide-react';
 
 import { Button } from '@/components/ui/button';
-import {
-  Command,
-  CommandEmpty,
-  CommandGroup,
-  CommandInput,
-  CommandItem,
-  CommandList,
-} from '@/components/ui/command';
-import {
-  FormControl,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from '@/components/ui/form';
-import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from '@/components/ui/popover';
+import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList } from '@/components/ui/command';
+import { FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
+import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
 import { cn } from '@/lib/utils';
 
 interface Option {
@@ -67,10 +50,7 @@ function ComboboxFormField<T extends FieldValues>({
                   role='combobox'
                   className='w-full justify-between'
                 >
-                  {field.value
-                    ? options.find(option => option.value === field.value)
-                        ?.label
-                    : placeholder}
+                  {field.value ? options.find((option) => option.value === field.value)?.label : placeholder}
                   <ChevronsUpDown className='ml-2 h-4 w-4 shrink-0 opacity-50' />
                 </Button>
               </FormControl>
@@ -81,9 +61,7 @@ function ComboboxFormField<T extends FieldValues>({
               align='start'
             >
               <Command>
-                <CommandInput
-                  placeholder={`Search ${label.toLowerCase()}...`}
-                />
+                <CommandInput placeholder={`Search ${label.toLowerCase()}...`} />
                 <CommandList>
                   <CommandEmpty>{emptyText}</CommandEmpty>
                   <CommandGroup>
@@ -93,15 +71,10 @@ function ComboboxFormField<T extends FieldValues>({
                         field.onChange('');
                       }}
                     >
-                      <Check
-                        className={cn(
-                          'mr-2 h-4 w-4',
-                          !field.value ? 'opacity-100' : 'opacity-0'
-                        )}
-                      />
+                      <Check className={cn('mr-2 h-4 w-4', !field.value ? 'opacity-100' : 'opacity-0')} />
                       {placeholder}
                     </CommandItem>
-                    {options.map(option => (
+                    {options.map((option) => (
                       <CommandItem
                         key={option.value}
                         value={option.value}
@@ -110,12 +83,7 @@ function ComboboxFormField<T extends FieldValues>({
                         }}
                       >
                         <Check
-                          className={cn(
-                            'mr-2 h-4 w-4',
-                            field.value === option.value
-                              ? 'opacity-100'
-                              : 'opacity-0'
-                          )}
+                          className={cn('mr-2 h-4 w-4', field.value === option.value ? 'opacity-100' : 'opacity-0')}
                         />
                         {option.label}
                       </CommandItem>
