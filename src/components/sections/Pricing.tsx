@@ -23,6 +23,8 @@ function Pricing(): React.ReactElement {
                 price={product.price}
                 features={product.features}
                 tagline={product.tagline}
+                priceId={product.priceId}
+                productId={product.productId}
               />
             ))}
           </div>

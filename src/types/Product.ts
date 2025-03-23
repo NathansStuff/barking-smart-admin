@@ -4,4 +4,5 @@ export interface Product {
   features: string[];
   tagline: string;
   productId: string;
+  priceId: string;
 }
