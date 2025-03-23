@@ -2,28 +2,37 @@ import { IFaq } from './types/Faq';
 
 export const faqItems: IFaq[] = [
   {
-    question: 'What is dog enrichment?',
+    question: 'What is Barkin Smart?',
     answer:
-      'Dog enrichment refers to activities and experiences that stimulate a dog\'s mind, encourage natural behaviors, and improve their overall quality of life. This can include puzzle toys, training exercises, sensory experiences, and more.',
+      "Barkin Smart creates custom enrichment plans tailored to your dog's unique personality, breed, age, and lifestyle. We help you keep your pup happy, healthy, and mentally stimulated — without the guesswork.",
   },
   {
-    question: 'How often should I engage my dog in enrichment activities?',
+    question: 'How does it work?',
     answer:
-      'It\'s recommended to provide some form of enrichment daily. This can be as simple as a 10-minute puzzle toy session or a new walking route. The key is consistency and variety.',
+      "You fill out a quick form about your dog, and we'll deliver a personalised plan straight to your inbox. It's packed with enrichment activities, training ideas, and play suggestions, all matched to your pup's needs.",
   },
   {
-    question: 'Are the activities suitable for all dog breeds and ages?',
+    question: 'What age is this suitable for?',
     answer:
-      'Yes, our platform offers a wide range of activities that can be adapted for different breeds, sizes, and ages. We provide modifications for senior dogs, high-energy breeds, and dogs with specific needs.',
+      "We've got you covered from puppyhood to senior years! Our plans adapt based on your dog's life stage, energy levels, and preferences.",
   },
   {
-    question: 'Do I need to buy special equipment for these activities?',
+    question: 'Do I need to buy anything?',
     answer:
-      'While some activities may suggest specific toys or tools, many can be done with household items. We provide DIY alternatives and focus on accessibility for all dog owners.',
+      "Not necessarily. Many activities use things you already have at home — towels, plastic bottles, cardboard boxes, etc. But we'll also give you a shopping list if you want to level up with things like puzzle toys or lick mats.",
   },
   {
-    question: 'How do I know if an enrichment activity is working for my dog?',
+    question: 'Can I use this with more than one dog?',
     answer:
-      'Look for signs of engagement and enjoyment in your dog. This can include increased focus, tail wagging, and a calm demeanor after the activity. If your dog seems stressed or uninterested, try a different approach.',
+      'Yes! Just fill out a form for each dog to get individualised plans. Every dog is different, and we want to make sure each one gets what they need.',
+  },
+  {
+    question: 'I have a full schedule, will this still work for me?',
+    answer:
+      'Not at all. We design the plan to fit around your schedule. Some activities take just 5–10 minutes a day, and you can swap or skip depending on your week.',
+  },
+  {
+    question: 'Can I get a sample before I commit?',
+    answer: 'Yes! We offer a free puppy enrichment week so you can try it out and see how your dog responds.',
   },
 ];
