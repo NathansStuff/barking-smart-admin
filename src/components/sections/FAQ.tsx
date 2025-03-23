@@ -7,7 +7,10 @@ import { faqItems } from '@/data/faqItems';
 
 function FAQ(): React.ReactElement {
   return (
-    <div className='bg-[#F9FAFB]'>
+    <div
+      className='bg-[#F9FAFB]'
+      id='faq'
+    >
       <section className='mx-auto w-full max-w-6xl px-4 py-24'>
         <div className='mb-12 text-center'>
           <h2 className='mb-4 font-fredoka text-3xl text-[#545454]'>FREQUENTLY ASKED QUESTIONS</h2>

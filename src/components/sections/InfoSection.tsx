@@ -11,11 +11,15 @@ interface InfoItem {
 interface InfoSectionProps {
   heading: string;
   items: InfoItem[];
+  id?: string;
 }
 
-function InfoSection({ heading, items }: InfoSectionProps): React.JSX.Element {
+function InfoSection({ heading, items, id }: InfoSectionProps): React.JSX.Element {
   return (
-    <section className='flex items-center justify-center bg-[#F9FAFB] py-12 sm:py-16 md:py-24 lg:py-32'>
+    <section
+      className='flex items-center justify-center bg-[#F9FAFB] py-12 sm:py-16 md:py-24 lg:py-32'
+      id={id}
+    >
       <div className='container mx-auto px-4 sm:px-6 lg:px-8'>
         <h2 className='mb-8 text-center font-fredoka text-2xl font-bold text-gray-800 sm:mb-12 sm:text-3xl lg:text-4xl'>
           {heading}

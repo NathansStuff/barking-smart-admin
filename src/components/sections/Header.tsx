@@ -2,9 +2,9 @@
 import React from 'react';
 
 import Image from 'next/image';
+import Link from 'next/link';
 
 function Header(): React.JSX.Element {
-  
   return (
     <div className='absolute top-20 z-[100] w-full'>
       <header className='mx-auto w-[80%] rounded-full bg-white px-10 shadow-md'>
@@ -22,24 +22,36 @@ function Header(): React.JSX.Element {
 
           {/* Navigation Links */}
           <nav className='flex items-center space-x-8'>
-            <a
+            <Link
               href='#why'
-              className='border-b-2 border-teal-500 text-teal-500'
+              className='transition-colors hover:text-primary'
+              onClick={(e) => {
+                e.preventDefault();
+                document.querySelector('#why')?.scrollIntoView({ behavior: 'smooth' });
+              }}
             >
               Why Barkin smart?
-            </a>
-            <a
+            </Link>
+            <Link
               href='#pricing'
-              className='text-gray-700 transition-colors hover:text-teal-500'
+              className='transition-colors hover:text-primary'
+              onClick={(e) => {
+                e.preventDefault();
+                document.querySelector('#pricing')?.scrollIntoView({ behavior: 'smooth' });
+              }}
             >
               Pricing
-            </a>
-            <a
+            </Link>
+            <Link
               href='#faqs'
-              className='text-gray-700 transition-colors hover:text-teal-500'
+              className='transition-colors hover:text-primary'
+              onClick={(e) => {
+                e.preventDefault();
+                document.querySelector('#faqs')?.scrollIntoView({ behavior: 'smooth' });
+              }}
             >
               FAQs
-            </a>
+            </Link>
           </nav>
         </div>
       </header>

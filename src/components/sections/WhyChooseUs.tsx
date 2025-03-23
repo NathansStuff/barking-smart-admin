@@ -27,6 +27,7 @@ function WhyChooseUs(): React.JSX.Element {
     <InfoSection
       heading='WHY CHOOSE BARKIN SMART?'
       items={items}
+      id='why'
     />
   );
 }

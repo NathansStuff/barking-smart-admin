@@ -5,7 +5,10 @@ import { products } from '@/data/products';
 
 function Pricing(): React.ReactElement {
   return (
-    <div className='bg-[#F9FAFB]'>
+    <div
+      className='bg-[#F9FAFB]'
+      id='pricing'
+    >
       <section className='container mx-auto px-4 py-16'>
         <div className='mb-12 text-center'>
           <h2 className='mb-4 font-fredoka text-3xl text-[#545454]'>PRICING</h2>
