@@ -58,6 +58,7 @@ function Hero(): React.JSX.Element {
             width={400}
             height={400}
             className='absolute bottom-0 right-0 h-full w-full rotate-12 opacity-90 sm:relative'
+            priority
           />
         </div>
         {/* Hero Image container */}

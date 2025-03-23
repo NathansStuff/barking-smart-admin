@@ -34,7 +34,7 @@ export default async function RootLayout({
         rel='icon'
         href='/logo/favicon.svg'
       />
-      <body className='flex min-h-screen w-full flex-col bg-[url(/assets/bg_img.svg)] bg-cover bg-repeat dark:bg-[url(/assets/bg_img.svg)]'>
+      <body className='flex min-h-screen w-full flex-col'>
         <ClientProviders>
           <main className='flex-grow overflow-auto'>
             <div className='mx-auto w-full'>{children}</div>

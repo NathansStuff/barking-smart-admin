@@ -2,6 +2,8 @@ import React from 'react';
 
 import Image from 'next/image';
 
+import DownloadFreeSample from '../buttons/DownloadFreeSample';
+
 function FreePlan(): React.JSX.Element {
   return (
     <section className='mx-auto flex max-w-6xl flex-col items-center justify-between gap-8 px-4 py-16 lg:flex-row lg:gap-16 lg:px-8 lg:py-40'>
@@ -28,9 +30,7 @@ function FreePlan(): React.JSX.Element {
           Start your pup off right—our gift to you! <span className='text-[#545454]'>🐾</span>
         </p>
 
-        <button className='w-full rounded-full bg-[#E9B949] px-6 py-3 font-semibold text-white transition-colors hover:bg-[#d6a83a] lg:w-auto lg:px-8'>
-          Download free program
-        </button>
+        <DownloadFreeSample />
       </div>
 
       <div className='relative mt-8 w-full lg:mt-0 lg:w-[550px] xl:w-[600px]'>
@@ -43,6 +43,7 @@ function FreePlan(): React.JSX.Element {
               src='/assets/dog_with_owner.png'
               alt='Woman in yellow sweater holding a white Pomeranian puppy'
               fill
+              sizes='(max-width: 1024px) 95vw, 600px'
               className='object-cover'
               priority
             />
