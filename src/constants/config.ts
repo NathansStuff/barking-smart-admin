@@ -1,4 +1,5 @@
 export const PROJECT_NAME = 'Barkin Smart';
+export const PUBLIC_EMAIL = 'support@barkinsmart.com';
 
 // Token expiry time in milliseconds (e.g., 1 hour = 3600000 ms)
 export const TOKEN_EXPIRY_TIME = 3600000;
