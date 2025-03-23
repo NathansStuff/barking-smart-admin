@@ -5,9 +5,10 @@ import { products } from '@/data/products';
 
 function Pricing(): React.ReactElement {
   return (
-    <section className='container mx-auto px-4 py-16'>
-      <div className='mb-12 text-center'>
-        <h2 className='mb-4 font-fredoka text-3xl text-[#545454]'>PRICING</h2>
+    <div className='bg-[#F9FAFB]'>
+      <section className='container mx-auto px-4 py-16'>
+        <div className='mb-12 text-center'>
+          <h2 className='mb-4 font-fredoka text-3xl text-[#545454]'>PRICING</h2>
         <p className='text-black'>Smart training, happy dogs! Choose the plan that fits your pup&apos;s needs.</p>
       </div>
       <div className='flex w-full justify-center'>
@@ -22,8 +23,9 @@ function Pricing(): React.ReactElement {
             />
           ))}
         </div>
-      </div>
-    </section>
+        </div>
+      </section>
+    </div>
   );
 }
 

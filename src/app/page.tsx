@@ -2,6 +2,7 @@ import React from 'react';
 
 import FAQ from '@/components/sections/FAQ';
 import Footer from '@/components/sections/Footer';
+import FreePlan from '@/components/sections/FreePlan';
 import Hero from '@/components/sections/Hero';
 import NewPuppy from '@/components/sections/NewPuppy';
 import PersonalisedProgram from '@/components/sections/PersonalisedProgram';
@@ -20,6 +21,7 @@ function Homepage(): React.JSX.Element {
       <WhyChooseUs />
       <Testimonials />
       <Pricing />
+      <FreePlan />
       <FAQ />
       <Footer />
     </>
