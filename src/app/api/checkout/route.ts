@@ -21,8 +21,8 @@ export async function POST(req: Request): Promise<NextResponse> {
           quantity: 1,
         } as Stripe.Checkout.SessionCreateParams.LineItem,
       ],
-      success_url: `${env.NEXT_PUBLIC_BASE_URL}/success?session_id={CHECKOUT_SESSION_ID}`,
-      cancel_url: `${env.NEXT_PUBLIC_BASE_URL}`,
+      success_url: `${env.NEXT_PUBLIC_BASE_URL}/checkout/success?session_id={CHECKOUT_SESSION_ID}`,
+      cancel_url: `${env.NEXT_PUBLIC_BASE_URL}/checkout/canceled`,
       custom_fields: [
         {
           key: 'first_name',
