@@ -1,9 +1,9 @@
 'use client';
-import React, { useEffect, useState } from 'react';
+import React, { Suspense, useEffect, useState } from 'react';
 
 import { useSearchParams } from 'next/navigation';
 
-export default function SuccessPage(): React.ReactElement {
+function CheckoutSuccessContent(): React.ReactElement {
   const [status, setStatus] = useState<'loading' | 'success' | 'error'>('loading');
   const searchParams = useSearchParams();
   const sessionId = searchParams.get('session_id');
@@ -32,5 +32,13 @@ export default function SuccessPage(): React.ReactElement {
       )}
       {status === 'error' && <p>There was an error confirming your payment. Please contact support.</p>}
     </div>
+  );
+}
+
+export default function SuccessPage(): React.ReactElement {
+  return (
+    <Suspense fallback={<div>Loading...</div>}>
+      <CheckoutSuccessContent />
+    </Suspense>
   );
 }
