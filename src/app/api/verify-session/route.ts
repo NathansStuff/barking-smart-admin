@@ -14,6 +14,7 @@ export async function GET(req: Request): Promise<NextResponse> {
     const session = await stripe.checkout.sessions.retrieve(sessionId);
     return NextResponse.json({ success: true, session });
   } catch (error) {
+    console.error('Error verifying session:', error);
     return NextResponse.json({ error: 'Invalid session' }, { status: 400 });
   }
 }
