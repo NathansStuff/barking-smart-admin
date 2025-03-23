@@ -79,8 +79,9 @@ function Testimonials(): React.ReactElement {
         src='/assets/dog.png'
         alt='dog'
         width={600}
-        height={400}
+        height={600}
         className='absolute bottom-0 left-1/2 z-10 -translate-x-1/2 transform'
+        style={{ width: 'auto', height: 'auto' }}
       />
     </section>
   );

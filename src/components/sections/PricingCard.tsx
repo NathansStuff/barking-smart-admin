@@ -1,9 +1,12 @@
+'use client';
+
 import React from 'react';
 
 import Image from 'next/image';
 
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardFooter, CardHeader } from '@/components/ui/card';
+import { redirectToCheckout } from '@/lib/checkout';
 
 interface PricingCardProps {
   title: string;
@@ -11,6 +14,8 @@ interface PricingCardProps {
   features: string[];
   tagline: string;
   ctaText?: string;
+  productId: string;
+  priceId: string;
 }
 
 export function PricingCard({
@@ -19,7 +24,16 @@ export function PricingCard({
   features,
   tagline,
   ctaText = 'Get Started Now',
+  priceId,
 }: PricingCardProps): React.ReactElement {
+  const handlePurchase = async (priceId: string): Promise<void> => {
+    try {
+      await redirectToCheckout(priceId);
+    } catch (error) {
+      console.error('Error:', error);
+      // Handle error (show error message to user)
+    }
+  };
   return (
     <Card className='flex w-[350px] flex-col shadow-md'>
       <CardHeader className='space-y-2 text-center'>
@@ -30,7 +44,12 @@ export function PricingCard({
         <div className='font-fredoka text-6xl font-bold text-[#0D0D0D]'>${price}</div>
       </CardHeader>
       <CardContent className='m flex flex-grow flex-col gap-6'>
-        <Button className='w-full py-6'>{ctaText}</Button>
+        <Button
+          className='w-full py-6'
+          onClick={() => handlePurchase(priceId)}
+        >
+          {ctaText}
+        </Button>
         <div className='space-y-4'>
           {features.map((feature, index) => (
             <div

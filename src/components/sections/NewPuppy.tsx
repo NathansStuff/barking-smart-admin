@@ -2,7 +2,7 @@ import React from 'react';
 
 import Image from 'next/image';
 
-import { Button } from '../ui/button';
+import DownloadFreeSample from '../buttons/DownloadFreeSample';
 
 function NewPuppy(): React.JSX.Element {
   return (
@@ -46,9 +46,7 @@ function NewPuppy(): React.JSX.Element {
           </span>
           Enrichment Plan - Our Gift To You!
         </p>
-        <Button className='z-10 bg-[#E4BD60] px-6 py-3 text-lg text-white sm:text-xl md:p-6 md:text-2xl'>
-          Download free program
-        </Button>
+        <DownloadFreeSample />
       </div>
     </section>
   );
