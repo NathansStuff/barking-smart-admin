@@ -1,10 +1,9 @@
 'use client';
-
-import { useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 
 import { useSearchParams } from 'next/navigation';
 
-export default function SuccessPage() {
+export default function SuccessPage(): React.ReactElement {
   const [status, setStatus] = useState<'loading' | 'success' | 'error'>('loading');
   const searchParams = useSearchParams();
   const sessionId = searchParams.get('session_id');
@@ -14,7 +13,7 @@ export default function SuccessPage() {
       // Verify the session with your backend
       fetch(`/api/verify-session?session_id=${sessionId}`)
         .then((res) => res.json())
-        .then((data) => {
+        .then(() => {
           setStatus('success');
           // Handle successful payment confirmation
         })
@@ -28,7 +27,7 @@ export default function SuccessPage() {
       {status === 'success' && (
         <div>
           <h1>Thank you for your purchase!</h1>
-          <p>We'll send you a confirmation email shortly.</p>
+          <p>We&apos;ll send you a confirmation email shortly.</p>
         </div>
       )}
       {status === 'error' && <p>There was an error confirming your payment. Please contact support.</p>}

@@ -2,7 +2,7 @@ import { NextResponse } from 'next/server';
 
 import { stripe } from '@/lib/stripe';
 
-export async function GET(req: Request) {
+export async function GET(req: Request): Promise<NextResponse> {
   const { searchParams } = new URL(req.url);
   const sessionId = searchParams.get('session_id');
 
