@@ -1,4 +1,4 @@
-import { HeaderLink } from './types/HeaderLink';
+import { HeaderLink } from '../types/HeaderLink';
 
 export const publicHeaderLinks: HeaderLink[] = [
   {
@@ -16,27 +16,5 @@ export const publicHeaderLinks: HeaderLink[] = [
   {
     title: 'Testimonials',
     href: '/#testimonials',
-  },
-  {
-    title: 'Contact',
-    href: '/contact',
-  },
-];
-
-export const privateHeaderLinks: HeaderLink[] = [
-  {
-    title: 'Profile',
-    href: '/settings/profile',
-  },
-  {
-    title: 'Dashboard',
-    href: '#/dashboard',
-  },
-];
-
-export const adminHeaderLinks: HeaderLink[] = [
-  {
-    title: 'Admin',
-    href: '/admin',
   },
 ];

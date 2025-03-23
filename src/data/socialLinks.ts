@@ -1,6 +1,6 @@
 import { Facebook, Instagram, Twitter, Youtube } from 'lucide-react';
 
-import { SocialLink } from './types/SocialLink';
+import { SocialLink } from '../types/SocialLink';
 
 export const socialLinks: SocialLink[] = [
   { icon: Instagram, href: 'https://instagram.com/dogenrichment' },
