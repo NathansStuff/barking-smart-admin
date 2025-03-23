@@ -15,11 +15,11 @@ function Hero(): React.JSX.Element {
       <div className='to-[#F9E539]/54 absolute inset-0 bg-gradient-to-tl from-[#FB5A00] opacity-20'></div>
 
       {/* Content wrapper with max-width */}
-      <div className='relative mx-auto max-w-[1920px]'>
+      <div className='relative mx-auto max-w-[1600px]'>
         {/* Blurred ellipse */}
         <div className='opacity-62 absolute bottom-0 right-0 h-[300px] w-[300px] rounded-full bg-[#E5DB78] blur-[50px] sm:h-[400px] sm:w-[400px] sm:blur-[70px] md:bottom-10 md:right-10 lg:bottom-20 lg:right-20 lg:h-[600px] lg:w-[600px] lg:blur-[100px] xl:h-[700px] xl:w-[700px]'></div>
         {/* Text Content */}
-        <div className='relative flex min-h-[800px] w-full flex-col items-start justify-start px-4 pt-24 text-center sm:px-8 sm:pt-32 lg:w-3/4 lg:justify-center lg:px-12 lg:pt-0 xl:w-1/2 xl:px-10 2xl:px-40'>
+        <div className='relative flex min-h-[800px] w-full flex-col items-start justify-start px-4 pt-24 text-center sm:px-8 sm:pt-32 lg:w-3/4 lg:justify-center lg:px-12 lg:pt-0 xl:w-1/2 xl:px-10 2xl:px-20'>
           <h1 className='mb-4 w-full font-fredoka text-3xl font-bold sm:text-4xl lg:mb-6 lg:text-5xl xl:text-left'>
             UNLOCK YOUR
             <br />
@@ -51,17 +51,17 @@ function Hero(): React.JSX.Element {
         </div>
 
         {/* Pawprint pattern container */}
-        <div className='absolute right-0 top-0 z-[1] h-full w-full overflow-hidden sm:w-4/5 md:w-3/4'>
+        <div className='absolute bottom-0 left-20 z-[1] h-[55%] w-full overflow-hidden lg:h-full'>
           <Image
             src='/assets/pawprints.svg'
             alt='Pawprints'
             width={400}
             height={400}
-            className='h-full w-full rotate-12 opacity-30 sm:opacity-40 md:opacity-60'
+            className='absolute bottom-0 right-0 h-full w-full rotate-12 opacity-90 sm:relative'
           />
         </div>
         {/* Hero Image container */}
-        <div className='absolute bottom-0 right-0 z-[2] flex h-auto w-full items-end justify-center overflow-hidden sm:left-1/2 sm:right-auto sm:w-2/3 sm:-translate-x-1/2 md:bottom-0 md:h-[560px] md:items-end md:justify-center lg:left-auto lg:right-0 lg:h-auto lg:translate-x-0 xl:-right-20 xl:pr-0'>
+        <div className='absolute bottom-0 right-0 z-[2] flex h-auto w-full items-end justify-center overflow-hidden sm:left-1/2 sm:right-auto sm:w-2/3 sm:-translate-x-1/2 md:bottom-0 md:h-[560px] md:items-end md:justify-center lg:left-auto lg:right-0 lg:h-auto lg:translate-x-0 '>
           <Image
             src='/assets/hero.png'
             alt='Happy Bernese Mountain Dog'
