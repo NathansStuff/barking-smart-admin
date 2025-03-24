@@ -119,9 +119,9 @@ function Footer(): React.ReactElement {
       <Image
         src='/assets/dog2.png'
         alt='happy dog'
-        width={400}
-        height={400}
-        className='absolute bottom-0 right-0 h-[200px] w-[200px] lg:h-[400px] lg:w-[400px] xl:h-[500px] xl:w-[500px]'
+        width={829}
+        height={573}
+        className='absolute bottom-0 right-0 h-[207px] w-[300px] lg:h-[414px] lg:w-[600px] xl:h-[518px] xl:w-[750px]'
         priority
       />
 
