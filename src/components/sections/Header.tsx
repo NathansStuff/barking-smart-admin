@@ -101,7 +101,7 @@ const Logo = (): React.ReactElement => (
 
 function Header(): React.JSX.Element {
   return (
-    <div className='absolute top-20 z-[100] w-full'>
+    <div className='absolute top-16 z-[100] w-full'>
       <header className='mx-auto w-[80%] rounded-full bg-white px-4 shadow-md md:px-10'>
         <div className='mx-auto flex max-w-7xl items-center justify-between px-4 py-4'>
           <Logo />

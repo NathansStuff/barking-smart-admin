@@ -2,13 +2,12 @@ import React from 'react';
 
 import Image from 'next/image';
 
-import Banner from '@/components/general/Banner';
 import { Button } from '@/components/ui/button';
 
 function Hero(): React.JSX.Element {
   return (
     <main className='relative min-h-[800px] w-full overflow-hidden'>
-      <Banner />
+      {/* <Banner /> */}
       {/* Base fill layer */}
       <div className='absolute inset-0 bg-[#EFCB68]'></div>
       {/* Gradient overlay */}

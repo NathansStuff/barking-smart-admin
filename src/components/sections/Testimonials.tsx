@@ -27,7 +27,7 @@ function Testimonials(): React.ReactElement {
         />
       </div>
 
-      <div className='relative z-10 w-full'>
+      <div className='relative z-20 w-full'>
         <div className='mb-12 text-center'>
           <h2 className='mb-4 font-fredoka text-3xl text-[#545454]'>CLIENT SUCCESS STORIES</h2>
           <p className='font-medium text-[#0D0D0D]'>
@@ -80,7 +80,7 @@ function Testimonials(): React.ReactElement {
         alt='dog'
         width={600}
         height={800}
-        className='absolute bottom-0 left-1/2 z-10 -translate-x-1/2 transform'
+        className='pointer-events-none absolute bottom-0 left-1/2 z-10 -translate-x-1/2 transform'
       />
     </section>
   );

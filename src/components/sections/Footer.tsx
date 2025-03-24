@@ -121,7 +121,7 @@ function Footer(): React.ReactElement {
         alt='happy dog'
         width={829}
         height={573}
-        className='absolute bottom-0 right-0 h-[207px] w-[300px] lg:h-[414px] lg:w-[600px] xl:h-[518px] xl:w-[750px]'
+        className='pointer-events-none absolute bottom-0 right-0 h-[207px] w-[300px] lg:h-[414px] lg:w-[600px] xl:h-[518px] xl:w-[750px]'
         priority
       />
 
