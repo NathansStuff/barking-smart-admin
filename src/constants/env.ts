@@ -11,6 +11,7 @@ enum Environment {
 export const env = createEnv({
   server: {
     STRIPE_SECRET_KEY: z.string(),
+    BREVO_API_KEY: z.string(),
   },
   client: {
     NEXT_PUBLIC_ENVIRONMENT: z.nativeEnum(Environment),
@@ -25,6 +26,7 @@ export const env = createEnv({
   runtimeEnv: {
     // Server-side environment variables
     STRIPE_SECRET_KEY: process.env.STRIPE_SECRET_KEY,
+    BREVO_API_KEY: process.env.BREVO_API_KEY,
     // Client-side environment variables
     NEXT_PUBLIC_ENVIRONMENT: process.env.NEXT_PUBLIC_ENVIRONMENT,
     NEXT_PUBLIC_BASE_URL: process.env.NEXT_PUBLIC_BASE_URL,
