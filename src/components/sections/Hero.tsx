@@ -18,7 +18,7 @@ function Hero(): React.JSX.Element {
         {/* Blurred ellipse */}
         <div className='opacity-62 absolute bottom-0 right-0 h-[300px] w-[300px] rounded-full bg-[#E5DB78] blur-[50px] sm:h-[400px] sm:w-[400px] sm:blur-[70px] md:bottom-10 md:right-10 lg:bottom-20 lg:right-20 lg:h-[600px] lg:w-[600px] lg:blur-[100px] xl:h-[700px] xl:w-[700px]'></div>
         {/* Text Content */}
-        <div className='relative flex min-h-[800px] w-full flex-col items-start justify-start px-4 pt-24 text-center sm:px-8 sm:pt-32 lg:w-3/4 lg:justify-center lg:px-12 lg:pt-0 xl:w-1/2 xl:px-10 2xl:px-20'>
+        <div className='relative flex min-h-[800px] w-full flex-col items-start justify-start px-4 pt-32 text-center sm:px-8 lg:w-3/4 lg:justify-center lg:px-12 lg:pt-0 xl:w-1/2 xl:px-10 2xl:px-20'>
           <h1 className='mb-4 w-full font-fredoka text-3xl font-bold sm:text-4xl lg:mb-6 lg:text-5xl xl:text-left'>
             UNLOCK YOUR
             <br />
@@ -29,7 +29,7 @@ function Hero(): React.JSX.Element {
             Tailored training and enriching activities – all designed to make your dog smarter, happier, and healthier.
           </p>
 
-          <div className='relative z-20 flex w-full flex-col items-center justify-center gap-4 sm:flex-row'>
+          <div className='relative z-20 flex w-full px-10 flex-col items-center justify-center gap-4 sm:flex-row'>
             <Button className='w-full p-4 transition-all duration-300 hover:scale-105 hover:shadow-[0_0_30px_hsl(var(--primary))] sm:w-[180px] md:w-[220px] md:p-5 lg:w-[250px] xl:w-full'>
               Get Started Now{' '}
               <Image

@@ -81,27 +81,27 @@ const MobileNav = (): React.ReactElement => (
 const Logo = (): React.ReactElement => (
   <div className='flex-shrink-0'>
     <Image
-      src='/logo/logo_rectangle.svg'
-      className='md:hidden'
+      src='/logo/logo_rectangle_white.svg'
+      className='h-8 w-auto md:hidden'
       alt='Barkin Smart Logo'
       width={150}
       height={50}
-      style={{ width: 'auto', height: 'auto' }}
+      priority
     />
     <Image
-      src='/logo/logo_rectangle_white.svg'
-      className='hidden md:block'
+      src='/logo/logo_rectangle.svg'
+      className='hidden h-8 w-auto md:block'
       alt='Barkin Smart Logo'
       width={150}
       height={50}
-      style={{ width: 'auto', height: 'auto' }}
+      priority
     />
   </div>
 );
 
 function Header(): React.JSX.Element {
   return (
-    <div className='absolute top-16 z-[100] w-full'>
+    <div className='absolute top-10 xl:top-16 z-[100] w-full'>
       <header className='mx-auto w-[80%] rounded-full bg-white px-4 shadow-md md:px-10'>
         <div className='mx-auto flex max-w-7xl items-center justify-between px-4 py-4'>
           <Logo />

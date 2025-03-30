@@ -11,8 +11,8 @@ export const products: Product[] = [
       'Designed for all breeds & ages',
     ],
     tagline: "Kickstart your <br /> pup's paw-tential!",
-    productId: 'prod_RzvljEpxetII04',
-    priceId: 'price_1R5vtlBnveZ9vbaKbkuOLxU1',
+    productId: 'prod_S2Y4gcEUNtMjDu',
+    priceId: 'price_1R8SyFD6zGilf7mRjS2j2F6X',
   },
   {
     title: '30-Day <br />  Smart Success',
@@ -24,7 +24,7 @@ export const products: Product[] = [
       'Designed for long-term enrichment',
     ],
     tagline: "Transform your dog's routine with a month of enrichment!",
-    productId: 'prod_RzvlrDyjKSboza',
-    priceId: 'price_1R5vuDBnveZ9vbaKKrbfg9kC',
+    productId: 'prod_S2Y54Eh52NXmbw',
+    priceId: 'price_1R8SysD6zGilf7mRlnKYR9hX',
   },
 ];
